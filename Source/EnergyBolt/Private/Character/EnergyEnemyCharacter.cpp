@@ -27,15 +27,35 @@ void AEnergyEnemyCharacter::BeginPlay()
 void AEnergyEnemyCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
-
+	
+	// Initialize BehaviorTree, BlackBoard
 	EnergyAIController = Cast<AEnergyAIController>(NewController);
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, TEXT("AIControllerSet"));
-	}
 	EnergyAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
 	EnergyAIController->RunBehaviorTree(BehaviorTree);
+
+	InitializeDefaultAttributes();
 }
+
+void AEnergyEnemyCharacter::InitializeDefaultAttributes() const
+{
+	check(IsValid(GetAbilitySystemComponent()));
+	check(DefaultAttribute);
+	const FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
+	const FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(DefaultAttribute, 1, ContextHandle);
+	
+	
+	if (SpecHandle.IsValid())
+	{
+		GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+		
+	}
+	
+	
+}
+
+
+
+
 
 
 

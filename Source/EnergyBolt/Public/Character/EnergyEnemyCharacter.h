@@ -5,6 +5,7 @@
 #include "EnergyBaseCharacter.h"
 #include "EnergyEnemyCharacter.generated.h"
 
+class UGameplayEffect;
 class AEnergyAIController;
 class UBehaviorTree;
 
@@ -29,5 +30,9 @@ protected:
 public:
 	virtual void PossessedBy(AController* NewController) override;
 
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attrbutes")
+	TSubclassOf<UGameplayEffect> DefaultAttribute;
 	
+	void InitializeDefaultAttributes() const;
 };

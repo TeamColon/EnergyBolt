@@ -18,6 +18,7 @@ public:
 	AEnergyAIController();
 
 protected:
+	// BlackBoard는 AIController 내부에 있는 변수 사용.
 	UPROPERTY()
 	TObjectPtr<UBehaviorTreeComponent> BehaviorTreeComponent;
 };

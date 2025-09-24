@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystemInterface.h"
 #include "GameFramework/Character.h"
 #include "EnergyBaseCharacter.generated.h"
 
@@ -10,7 +11,7 @@ class UEnergyAttributeSet;
 class UEnergyAbilitySystemComponent;
 
 UCLASS()
-class ENERGYBOLT_API AEnergyBaseCharacter : public ACharacter
+class ENERGYBOLT_API AEnergyBaseCharacter : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -29,10 +30,14 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
 	UEnergyAttributeSet* EnergyAttributeSet;
 
+	// IAbilitySystemInterface에 저장된 함수를 사용하여 AbilitySystem Getter로 이용할 수 있다.
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+
 public:
 	
-	FORCEINLINE UEnergyAbilitySystemComponent* GetWarriorAbilitySystemComponent() const {return EnergyAbilitySystemComponent;}
+	
+	FORCEINLINE UEnergyAbilitySystemComponent* GetEnergyAbilitySystemComponent() const {return EnergyAbilitySystemComponent;}
 
-	FORCEINLINE UEnergyAttributeSet* GetWarriorAttributeSet() const {return EnergyAttributeSet;}
+	FORCEINLINE UEnergyAttributeSet* GetEnergyAttributeSet() const {return EnergyAttributeSet;}
 	
 };

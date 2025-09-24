@@ -5,6 +5,6 @@
 
 UEnergyAttributeSet::UEnergyAttributeSet()
 {
-	InitCurrentHealth(1.f);
-	InitMaxHealth(1.f);
+	//InitCurrentHealth(1.f);
+	//InitMaxHealth(1.f);
 }

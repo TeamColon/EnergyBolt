@@ -29,3 +29,8 @@ void AEnergyBaseCharacter::PossessedBy(AController* NewController)
 	}
 }
 
+UAbilitySystemComponent* AEnergyBaseCharacter::GetAbilitySystemComponent() const
+{
+	return EnergyAbilitySystemComponent;
+}
+

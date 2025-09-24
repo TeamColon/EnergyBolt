@@ -1,32 +1,41 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
+﻿
 
 #include "Character/EnergyEnemyCharacter.h"
+
+#include "AbilitySystem/EnergyAbilitySystemComponent.h"
+#include "AI/EnergyAIController.h"
+#include "BehaviorTree/BehaviorTree.h"
+#include "BehaviorTree/BlackboardComponent.h"
 
 
 // Sets default values
 AEnergyEnemyCharacter::AEnergyEnemyCharacter()
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-}
-
-// Called when the game starts or when spawned
-void AEnergyEnemyCharacter::BeginPlay()
-{
-	Super::BeginPlay();
+	PrimaryActorTick.bCanEverTick = false;
 	
 }
 
-// Called every frame
-void AEnergyEnemyCharacter::Tick(float DeltaTime)
+
+void AEnergyEnemyCharacter::BeginPlay()
 {
-	Super::Tick(DeltaTime);
+	Super::BeginPlay();
+
+	check(EnergyAbilitySystemComponent);
+	EnergyAbilitySystemComponent->InitAbilityActorInfo(this, this);
 }
 
-// Called to bind functionality to input
-void AEnergyEnemyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void AEnergyEnemyCharacter::PossessedBy(AController* NewController)
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	Super::PossessedBy(NewController);
+
+	EnergyAIController = Cast<AEnergyAIController>(NewController);
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, TEXT("AIControllerSet"));
+	}
+	EnergyAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
+	EnergyAIController->RunBehaviorTree(BehaviorTree);
 }
+
+
 

@@ -9,5 +9,11 @@ namespace EnergyGameplayTags
 	/** input **/
 	ENERGYBOLT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Move);
 	ENERGYBOLT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Look);
+
+
+
+	/** Enemy **/
+	ENERGYBOLT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_Melee);
+	ENERGYBOLT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_Ranged);
 	
 }

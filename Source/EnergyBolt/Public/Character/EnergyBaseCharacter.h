@@ -23,15 +23,16 @@ protected:
 	//~ Begin APawn Interface.
 	virtual void PossessedBy(AController* NewController) override;
 	//~ End APawn Interface.
+
+	//~ Begin IAbilitySystemInterface.
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	//~ End IAbilitySystemInterface.
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
 	UEnergyAbilitySystemComponent* EnergyAbilitySystemComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
 	UEnergyAttributeSet* EnergyAttributeSet;
-
-	// IAbilitySystemInterface에 저장된 함수를 사용하여 AbilitySystem Getter로 이용할 수 있다.
-	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 public:
 	

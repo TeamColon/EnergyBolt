@@ -25,7 +25,6 @@ void AEnergyBaseCharacter::PossessedBy(AController* NewController)
 	if (EnergyAbilitySystemComponent)
 	{ 
 		EnergyAbilitySystemComponent->InitAbilityActorInfo(this,this);
-		
 	}
 }
 

@@ -13,4 +13,5 @@ UCLASS()
 class ENERGYBOLT_API UEnergyWidget : public UWidget
 {
 	GENERATED_BODY()
+	
 };

@@ -4,13 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "AbilitySystemInterface.h"
 #include "EnergyBaseCharacter.generated.h"
 
 class UEnergyAttributeSet;
 class UEnergyAbilitySystemComponent;
 
 UCLASS()
-class ENERGYBOLT_API AEnergyBaseCharacter : public ACharacter
+class ENERGYBOLT_API AEnergyBaseCharacter : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -22,17 +23,22 @@ protected:
 	//~ Begin APawn Interface.
 	virtual void PossessedBy(AController* NewController) override;
 	//~ End APawn Interface.
+
+	//~ Begin IAbilitySystemInterface Interface.
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	//~ End IAbilitySystemInterface Interface.
+
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
 	UEnergyAbilitySystemComponent* EnergyAbilitySystemComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
 	UEnergyAttributeSet* EnergyAttributeSet;
-
+	
 public:
 	
-	FORCEINLINE UEnergyAbilitySystemComponent* GetWarriorAbilitySystemComponent() const {return EnergyAbilitySystemComponent;}
+	FORCEINLINE UEnergyAbilitySystemComponent* GetEnergyAbilitySystemComponent() const {return EnergyAbilitySystemComponent;}
 
-	FORCEINLINE UEnergyAttributeSet* GetWarriorAttributeSet() const {return EnergyAttributeSet;}
+	FORCEINLINE UEnergyAttributeSet* GetEnergyAttributeSet() const {return EnergyAttributeSet;}
 	
 };

@@ -32,14 +32,20 @@ void AEnergyEnemyCharacter::BeginPlay()
 void AEnergyEnemyCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
+
+	//InitializeDefaultAttributes();
+	UEnergyBlueprintFunctionLibrary::InitializeDefaultAttribute(this, CharacterClass, EnergyAbilitySystemComponent);
 	
 	// Initialize BehaviorTree, BlackBoard
 	EnergyAIController = Cast<AEnergyAIController>(NewController);
 	EnergyAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
 	EnergyAIController->RunBehaviorTree(BehaviorTree);
 
-	//InitializeDefaultAttributes();
-	UEnergyBlueprintFunctionLibrary::InitializeDefaultAttribute(this, CharacterClass, EnergyAbilitySystemComponent);
+	// BlackBoard의 변수 초기화
+	EnergyAIController->GetBlackboardComponent()->SetValueAsBool(FName("IsRanged"), CharacterClass != ECharacterClass::Melee);
+	
+
+	
 }
 
 /*

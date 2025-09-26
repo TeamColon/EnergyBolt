@@ -12,17 +12,15 @@ class ENERGYBOLT_API AEnergyPlayerCharacter : public AEnergyBaseCharacter
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	AEnergyPlayerCharacter();
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	
+	//~ Begin APawn Interface.
+	virtual void PossessedBy(AController* NewController) override;
+	//~ End APawn Interface.
 
-public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+private:
+	void InitAbilityActorInfo() const;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
 };

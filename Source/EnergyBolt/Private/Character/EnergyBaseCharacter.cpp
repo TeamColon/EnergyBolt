@@ -11,25 +11,27 @@ AEnergyBaseCharacter::AEnergyBaseCharacter()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
-	
-	EnergyAbilitySystemComponent = CreateDefaultSubobject<UEnergyAbilitySystemComponent>(TEXT("EnergyAbilitySystemComponent"));
+	// Energy ASC, Set
+	/*EnergyAbilitySystemComponent = CreateDefaultSubobject<UEnergyAbilitySystemComponent>(TEXT("EnergyAbilitySystemComponent"));
+	EnergyAttributeSet = CreateDefaultSubobject<UEnergyAttributeSet>(TEXT("EnergyAttributeSet"));*/
 
-	EnergyAttributeSet = CreateDefaultSubobject<UEnergyAttributeSet>(TEXT("EnergyAttributeSet"));
-	
+	// 캐스팅만 Energy로 <U"Energy"AbilitySystemComponent>
+	AbilitySystemComponent = CreateDefaultSubobject<UEnergyAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+	AttributeSet = CreateDefaultSubobject<UEnergyAttributeSet>(TEXT("AttributeSet"));
 }
 
 void AEnergyBaseCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
-	if (EnergyAbilitySystemComponent)
+	if (AbilitySystemComponent)
 	{ 
-		EnergyAbilitySystemComponent->InitAbilityActorInfo(this,this);
+		AbilitySystemComponent->InitAbilityActorInfo(this,this);
 	}
 }
 
 UAbilitySystemComponent* AEnergyBaseCharacter::GetAbilitySystemComponent() const
 {
-	return EnergyAbilitySystemComponent;
+	return AbilitySystemComponent;
 }
 

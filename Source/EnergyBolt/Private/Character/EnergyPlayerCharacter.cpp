@@ -3,10 +3,13 @@
 
 #include "Character/EnergyPlayerCharacter.h"
 
+#include "AbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Player/EnergyPlayerController.h"
+#include "Player/EnergyPlayerState.h"
+#include "UI/HUD/EnergyHUD.h"
 
 
-// Sets default values
 AEnergyPlayerCharacter::AEnergyPlayerCharacter()
 {
 	GetCharacterMovement()->bOrientRotationToMovement = true;
@@ -19,22 +22,26 @@ AEnergyPlayerCharacter::AEnergyPlayerCharacter()
 	bUseControllerRotationRoll = false;
 }
 
-// Called when the game starts or when spawned
-void AEnergyPlayerCharacter::BeginPlay()
+void AEnergyPlayerCharacter::PossessedBy(AController* NewController)
 {
-	Super::BeginPlay();
+	Super::PossessedBy(NewController);
+
+	// 초기 액터 정보 부여
+	InitAbilityActorInfo();
+}
+
+void AEnergyPlayerCharacter::InitAbilityActorInfo() const
+{
+	AEnergyPlayerState* EnergyPlayerState = GetPlayerState<AEnergyPlayerState>();
+	check(EnergyPlayerState);		// Player State를 EnergyPlayerState로 해줘야 크러쉬가 안남.
 	
-}
-
-// Called every frame
-void AEnergyPlayerCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-
-// Called to bind functionality to input
-void AEnergyPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	// HUD 시작하기
+	if (AEnergyPlayerController* EnergyPlayerController = Cast<AEnergyPlayerController>(GetController()))
+	{
+		if (AEnergyHUD* EnergyHUD = Cast<AEnergyHUD>(EnergyPlayerController->GetHUD()))
+		{
+			EnergyHUD->InitOverlay(EnergyPlayerController, EnergyPlayerState, AbilitySystemComponent, AttributeSet);
+		}
+	}
 }
 

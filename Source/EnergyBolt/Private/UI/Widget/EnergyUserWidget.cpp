@@ -7,5 +7,5 @@
 void UEnergyUserWidget::SetWidgetController(UObject* InWidgetController)
 {
 	WidgetController = InWidgetController;
-	WidgetControllerSet();
+	WidgetControllerSet();	// Blueprint에 컨트롤러 지정 해주는 함수 실행
 }

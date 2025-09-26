@@ -27,9 +27,9 @@ public:
 	
 	UPROPERTY(BlueprintReadOnly, Category = "Health")
 	FGameplayAttributeData CurrentHealth;
-	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet,CurrentHealth)
+	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, CurrentHealth)
 
 	UPROPERTY(BlueprintReadOnly, Category = "Health")
 	FGameplayAttributeData MaxHealth;
-	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet,MaxHealth)
+	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, MaxHealth)
 };

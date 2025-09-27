@@ -7,6 +7,7 @@
 #include "AbilitySystemInterface.h"
 #include "EnergyBaseCharacter.generated.h"
 
+class UGameplayAbility;
 class UAttributeSet;
 class UEnergyAttributeSet;
 class UEnergyAbilitySystemComponent;
@@ -41,11 +42,21 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
 	UEnergyAttributeSet* EnergyAttributeSet;*/
+
+	void AddCharacterAbilities();
 	
 public:
 	
 	/*FORCEINLINE UEnergyAbilitySystemComponent* GetEnergyAbilitySystemComponent() const {return EnergyAbilitySystemComponent;}
 
 	FORCEINLINE UEnergyAttributeSet* GetEnergyAttributeSet() const {return EnergyAttributeSet;}*/
+
+	
+
+private:
+
+	UPROPERTY(EditAnywhere, Category = "Abilities")
+	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 	
 };
+

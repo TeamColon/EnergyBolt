@@ -30,5 +30,9 @@ private:
 	UPROPERTY(EditAnywhere, Category = "input")
 	TObjectPtr<UInputAction> MoveAction;
 
+	UPROPERTY(EditAnywhere, Category = "input")
+	TObjectPtr<UInputAction> AttackAction;
+
 	void Move(const FInputActionValue& InputActionValue);
+	void Attack(const FInputActionValue& InputActionValue);
 };

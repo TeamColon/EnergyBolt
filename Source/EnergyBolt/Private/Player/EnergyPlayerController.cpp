@@ -28,6 +28,7 @@ void AEnergyPlayerController::SetupInputComponent()
 
 	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ThisClass::Move);
+	EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &ThisClass::Attack);
 }
 
 void AEnergyPlayerController::Move(const FInputActionValue& InputActionValue)
@@ -44,4 +45,10 @@ void AEnergyPlayerController::Move(const FInputActionValue& InputActionValue)
 		ControllerPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y);
 		ControllerPawn->AddMovementInput(RightDirection, InputAxisVector.X);
 	}
+}
+
+
+void AEnergyPlayerController::Attack(const FInputActionValue& InputActionValue)
+{
+	// Projectile 발사 코드 추가
 }

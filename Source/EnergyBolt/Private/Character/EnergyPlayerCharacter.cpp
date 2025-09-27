@@ -28,6 +28,7 @@ void AEnergyPlayerCharacter::PossessedBy(AController* NewController)
 
 	// 초기 액터 정보 부여
 	InitAbilityActorInfo();
+	AddCharacterAbilities();
 }
 
 void AEnergyPlayerCharacter::InitAbilityActorInfo() const

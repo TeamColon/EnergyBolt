@@ -3,6 +3,7 @@
 
 #include "Character/EnergyBaseCharacter.h"
 
+#include "AbilitySystemComponent.h"
 #include "AbilitySystem/EnergyAbilitySystemComponent.h"
 #include "AbilitySystem/EnergyAttributeSet.h"
 
@@ -35,3 +36,9 @@ UAbilitySystemComponent* AEnergyBaseCharacter::GetAbilitySystemComponent() const
 	return AbilitySystemComponent;
 }
 
+void AEnergyBaseCharacter::AddCharacterAbilities()
+{
+	UEnergyAbilitySystemComponent* EnergyASC = CastChecked<UEnergyAbilitySystemComponent>(AbilitySystemComponent);
+
+	EnergyASC->AddCharacterAbilities(StartupAbilities);
+}

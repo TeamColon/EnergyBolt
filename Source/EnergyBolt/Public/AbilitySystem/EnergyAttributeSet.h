@@ -24,7 +24,11 @@ class ENERGYBOLT_API UEnergyAttributeSet : public UAttributeSet
 public:
 
 	UEnergyAttributeSet();
-	
+
+
+	/**
+	 * Character Stats
+	 */
 	UPROPERTY(BlueprintReadOnly, Category = "Health")
 	FGameplayAttributeData CurrentHealth;
 	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, CurrentHealth)
@@ -32,4 +36,30 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Health")
 	FGameplayAttributeData MaxHealth;
 	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, MaxHealth)
+
+	UPROPERTY(BlueprintReadOnly, Category = "Speed")
+	FGameplayAttributeData Speed;
+	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, Speed)
+	
+
+	/**
+	 * Attack Stats
+	 */
+	UPROPERTY(BlueprintReadOnly, Category = "Damage")
+	FGameplayAttributeData Damage;
+	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, Damage)
+
+	UPROPERTY(BlueprintReadOnly, Category = "Range")
+	FGameplayAttributeData Range;
+	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, Range)
+
+	UPROPERTY(BlueprintReadOnly, Category = "FireRate")
+	FGameplayAttributeData FireRate;
+	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, FireRate)
+
+	UPROPERTY(BlueprintReadOnly, Category = "ProjectileSpeed")
+	FGameplayAttributeData ProjectileSpeed;
+	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, ProjectileSpeed)
+
+	
 };

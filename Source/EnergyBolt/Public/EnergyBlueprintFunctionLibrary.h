@@ -19,4 +19,7 @@ class ENERGYBOLT_API UEnergyBlueprintFunctionLibrary : public UBlueprintFunction
 public:
 	UFUNCTION(BlueprintCallable, Category="EnergyFunctionLibrary")
 	static void InitializeDefaultAttribute(const UObject* WorldContextObject, ECharacterClass CharacterClass, UAbilitySystemComponent* ASC);
+
+	UFUNCTION(BlueprintCallable, Category="EnergyFunctionLibrary")	
+	static void GiveStartupAbilities(const UObject* WorldContextObject, ECharacterClass CharacterClass, UAbilitySystemComponent* ASC);
 };

@@ -3,6 +3,7 @@
 #include "Character/EnergyEnemyCharacter.h"
 
 #include "EnergyBlueprintFunctionLibrary.h"
+#include "EnergyGameplayTags.h"
 #include "AbilitySystem/EnergyAbilitySystemComponent.h"
 #include "AI/EnergyAIController.h"
 #include "BehaviorTree/BehaviorTree.h"
@@ -33,8 +34,11 @@ void AEnergyEnemyCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
-	//InitializeDefaultAttributes();
+	// InitializeDefaultAttributes
 	UEnergyBlueprintFunctionLibrary::InitializeDefaultAttribute(this, CharacterClass, EnergyAbilitySystemComponent);
+
+	// InitializeDefaultAbilities
+	UEnergyBlueprintFunctionLibrary::GiveStartupAbilities(this, CharacterClass, EnergyAbilitySystemComponent);
 	
 	// Initialize BehaviorTree, BlackBoard
 	EnergyAIController = Cast<AEnergyAIController>(NewController);
@@ -44,7 +48,6 @@ void AEnergyEnemyCharacter::PossessedBy(AController* NewController)
 	// BlackBoard의 변수 초기화
 	EnergyAIController->GetBlackboardComponent()->SetValueAsBool(FName("IsRanged"), CharacterClass != ECharacterClass::Melee);
 	
-
 	
 }
 

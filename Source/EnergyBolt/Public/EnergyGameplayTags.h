@@ -13,7 +13,7 @@ namespace EnergyGameplayTags
 
 
 	/** Enemy **/
-	ENERGYBOLT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_Melee);
-	ENERGYBOLT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_Ranged);
+	ENERGYBOLT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_Attack_Melee);
+	ENERGYBOLT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_Attack_Ranged);
 	
 }

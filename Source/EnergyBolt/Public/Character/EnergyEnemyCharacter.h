@@ -30,10 +30,17 @@ protected:
 	TObjectPtr<AEnergyAIController> EnergyAIController;
 
 public:
-	virtual void PossessedBy(AController* NewController) override;
+	virtual void PossessedBy(AController* NewController) override;\
 
+	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
+
+	UPROPERTY(BlueprintReadOnly, Category="Combat")
+	bool bHitReacting = false;
+
+	UPROPERTY(BlueprintReadOnly, Category="Combat")
+	float BaseWalkSpeed = 200.f;
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attrbutes")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attributes")
 	TSubclassOf<UGameplayEffect> DefaultAttribute;
 	
 	//void InitializeDefaultAttributes() const;

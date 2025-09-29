@@ -13,5 +13,11 @@ namespace EnergyGameplayTags
 	/** Enemy Tags **/
 	UE_DEFINE_GAMEPLAY_TAG(Enemy_Ability_Melee,"Enemy.Ability.Attack.Melee");
 	UE_DEFINE_GAMEPLAY_TAG(Enemy_Ability_Ranged,"Enemy.Ability.Attack.Ranged");
+
+	/** Damage Tags**/
+	UE_DEFINE_GAMEPLAY_TAG(Damage,"Damage");
+
+	/** HitReact Tags**/
+	UE_DEFINE_GAMEPLAY_TAG(HitReact,"HitReact");
 	
 }

@@ -27,7 +27,22 @@ AEnergyEnemyCharacter::AEnergyEnemyCharacter()
 void AEnergyEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 	
+	// GameplayTag가 추가되거나 제거될 때 이벤트 등록
+	// HitReactTag가 추가 혹은 제거될 때 마다 HitReactTagChanged 함수 호출
+	EnergyAbilitySystemComponent->RegisterGameplayTagEvent(
+		EnergyGameplayTags::HitReact, EGameplayTagEventType::NewOrRemoved).AddUObject(
+			this, &ThisClass::HitReactTagChanged
+		);
+}
+
+void AEnergyEnemyCharacter::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	// TODO: HitReact Ability 만들고 Activate 하기
+	bHitReacting = NewCount > 0.f;
+	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : BaseWalkSpeed;
 }
 
 void AEnergyEnemyCharacter::PossessedBy(AController* NewController)

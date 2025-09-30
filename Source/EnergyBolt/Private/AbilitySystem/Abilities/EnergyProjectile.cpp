@@ -3,6 +3,9 @@
 
 #include "AbilitySystem/Abilities/EnergyProjectile.h"
 
+#include "Actor/EnergyBoltProjectile.h"
+#include "Interfaces/CombatInterface.h"
+
 UEnergyProjectile::UEnergyProjectile()
 {
 	// 인스턴스 1개 쭉 유지
@@ -14,6 +17,53 @@ void UEnergyProjectile::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+	
+	/*ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo());
+	if (CombatInterface)
+	{
+		const FVector SocketLocation = CombatInterface->GetCombatSocketLocation();
 
-	// 로직 작성 예정
+		FTransform SpawnTransform;
+		SpawnTransform.SetLocation(SocketLocation);
+		//TODO: Set the Projectile Rotation
+		
+		AEnergyBoltProjectile* Projectile = GetWorld()->SpawnActorDeferred<AEnergyBoltProjectile>(
+			ProjectileClass,
+			SpawnTransform,
+			GetOwningActorFromActorInfo(),
+			Cast<APawn>(GetOwningActorFromActorInfo()),
+			ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+
+		//TODO: Give the Projectile a Gameplay Effect Spec for causing Damage.
+		
+		Projectile->FinishSpawning(SpawnTransform);
+	}*/
 }
+
+void UEnergyProjectile::SpawnProjectile()
+{
+	ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo());
+	if (CombatInterface)
+	{
+		const FVector SocketLocation = CombatInterface->GetCombatSocketLocation();
+
+		// Rotation 관련
+		const FRotator Rotation = GetAvatarActorFromActorInfo()->GetActorRotation();
+		
+		FTransform SpawnTransform;
+		SpawnTransform.SetLocation(SocketLocation);
+		SpawnTransform.SetRotation(Rotation.Quaternion());
+		
+		AEnergyBoltProjectile* Projectile = GetWorld()->SpawnActorDeferred<AEnergyBoltProjectile>(
+			ProjectileClass,
+			SpawnTransform,
+			GetOwningActorFromActorInfo(),
+			Cast<APawn>(GetOwningActorFromActorInfo()),
+			ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+
+		//TODO: Give the Projectile a Gameplay Effect Spec for causing Damage.
+		
+		Projectile->FinishSpawning(SpawnTransform);
+	}
+}
+

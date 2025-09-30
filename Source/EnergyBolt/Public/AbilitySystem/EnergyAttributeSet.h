@@ -13,6 +13,43 @@ GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
 GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
+
+USTRUCT()
+struct FEffectProperties
+{
+	GENERATED_BODY()
+
+	FEffectProperties(){}
+
+	FGameplayEffectContextHandle EffectContextHandle;
+
+	// 시전자
+	UPROPERTY()
+	UAbilitySystemComponent* SourceASC = nullptr;
+
+	UPROPERTY()
+	AActor* SourceAvatarActor = nullptr;
+
+	UPROPERTY()
+	AController* SourceController = nullptr;
+
+	UPROPERTY()
+	ACharacter* SourceCharacter = nullptr;
+
+	// 피격자
+	UPROPERTY()
+	UAbilitySystemComponent* TargetASC = nullptr;
+
+	UPROPERTY()
+	AActor* TargetAvatarActor = nullptr;
+
+	UPROPERTY()
+	AController* TargetController = nullptr;
+
+	UPROPERTY()
+	ACharacter* TargetCharacter = nullptr;
+};
+
 /**
  * 
  */
@@ -24,7 +61,8 @@ class ENERGYBOLT_API UEnergyAttributeSet : public UAttributeSet
 public:
 
 	UEnergyAttributeSet();
-
+	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
+	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
 	/**
 	 * Character Stats
@@ -43,7 +81,7 @@ public:
 	
 
 	/**
-	 * Attack Stats
+	 * Attack Stats (임시 / 변경가능)
 	 */
 	UPROPERTY(BlueprintReadOnly, Category = "Damage")
 	FGameplayAttributeData Damage;
@@ -61,5 +99,6 @@ public:
 	FGameplayAttributeData ProjectileSpeed;
 	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, ProjectileSpeed)
 
-	
+private:
+	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const;
 };

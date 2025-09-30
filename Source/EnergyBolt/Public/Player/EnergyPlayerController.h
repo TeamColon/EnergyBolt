@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerController.h"
 #include "EnergyPlayerController.generated.h"
 
+class UEnergyAbilitySystemComponent;
 class UInputAction;
 class UInputMappingContext;
 struct FInputActionValue;
@@ -35,4 +36,10 @@ private:
 
 	void Move(const FInputActionValue& InputActionValue);
 	void Attack(const FInputActionValue& InputActionValue);
+
+private:
+	UPROPERTY()
+	TObjectPtr<UEnergyAbilitySystemComponent> EnergyAbilitySystemComponent;
+	
+	UEnergyAbilitySystemComponent* GetASC();
 };

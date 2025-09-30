@@ -4,6 +4,8 @@
 #include "Character/EnergyPlayerCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/EnergyAbilitySystemComponent.h"
+#include "AbilitySystem/EnergyAttributeSet.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Player/EnergyPlayerController.h"
 #include "Player/EnergyPlayerState.h"
@@ -41,7 +43,7 @@ void AEnergyPlayerCharacter::InitAbilityActorInfo() const
 	{
 		if (AEnergyHUD* EnergyHUD = Cast<AEnergyHUD>(EnergyPlayerController->GetHUD()))
 		{
-			EnergyHUD->InitOverlay(EnergyPlayerController, EnergyPlayerState, AbilitySystemComponent, AttributeSet);
+			EnergyHUD->InitOverlay(EnergyPlayerController, EnergyPlayerState, EnergyAbilitySystemComponent, EnergyAttributeSet);
 		}
 	}
 }

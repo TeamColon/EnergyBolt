@@ -17,28 +17,36 @@ AEnergyBaseCharacter::AEnergyBaseCharacter()
 	EnergyAttributeSet = CreateDefaultSubobject<UEnergyAttributeSet>(TEXT("EnergyAttributeSet"));*/
 
 	// 캐스팅만 Energy로 <U"Energy"AbilitySystemComponent>
-	AbilitySystemComponent = CreateDefaultSubobject<UEnergyAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
-	AttributeSet = CreateDefaultSubobject<UEnergyAttributeSet>(TEXT("AttributeSet"));
+	EnergyAbilitySystemComponent = CreateDefaultSubobject<UEnergyAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+	EnergyAttributeSet = CreateDefaultSubobject<UEnergyAttributeSet>(TEXT("AttributeSet"));
 }
 
 void AEnergyBaseCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
-	if (AbilitySystemComponent)
+	if (EnergyAbilitySystemComponent)
 	{ 
-		AbilitySystemComponent->InitAbilityActorInfo(this,this);
+		EnergyAbilitySystemComponent->InitAbilityActorInfo(this,this);
 	}
 }
 
 UAbilitySystemComponent* AEnergyBaseCharacter::GetAbilitySystemComponent() const
 {
-	return AbilitySystemComponent;
+	return EnergyAbilitySystemComponent;
+}
+
+FVector AEnergyBaseCharacter::GetCombatSocketLocation()
+{
+	check(GetMesh())
+	
+	return GetMesh()->GetSocketLocation(WeaponTipSocketName);
 }
 
 void AEnergyBaseCharacter::AddCharacterAbilities()
 {
-	UEnergyAbilitySystemComponent* EnergyASC = CastChecked<UEnergyAbilitySystemComponent>(AbilitySystemComponent);
+	// PlayerCharacter PossessedBy에서 호출됨.
+	UEnergyAbilitySystemComponent* EnergyASC = CastChecked<UEnergyAbilitySystemComponent>(EnergyAbilitySystemComponent);
 
 	EnergyASC->AddCharacterAbilities(StartupAbilities);
 }

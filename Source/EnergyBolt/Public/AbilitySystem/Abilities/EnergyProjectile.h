@@ -6,6 +6,8 @@
 #include "AbilitySystem/Abilities/EnergyDamageGameplayAbility.h"
 #include "EnergyProjectile.generated.h"
 
+
+class AEnergyBoltProjectile;
 /**
  * 
  */
@@ -14,7 +16,8 @@ class ENERGYBOLT_API UEnergyProjectile : public UEnergyDamageGameplayAbility
 {
 	GENERATED_BODY()
 
-public:
+
+protected:
 	UEnergyProjectile();
 
 	virtual void ActivateAbility(
@@ -23,8 +26,9 @@ public:
 		const FGameplayAbilityActivationInfo ActivationInfo,
 		const FGameplayEventData* TriggerEventData) override;
 
-	
-protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
-	TSubclassOf<class AEnergyBoltProjectile> ProjectileClass;
+	TSubclassOf<AEnergyBoltProjectile> ProjectileClass;
+	
+	UFUNCTION(BlueprintCallable, Category = "Projectile")
+	void SpawnProjectile();
 };

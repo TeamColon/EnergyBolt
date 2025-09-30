@@ -3,8 +3,11 @@
 
 #include "Player/EnergyPlayerController.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "AbilitySystem/EnergyAbilitySystemComponent.h"
+#include "AbilitySystem/Abilities/EnergyProjectile.h"
 
 AEnergyPlayerController::AEnergyPlayerController()
 {
@@ -51,4 +54,25 @@ void AEnergyPlayerController::Move(const FInputActionValue& InputActionValue)
 void AEnergyPlayerController::Attack(const FInputActionValue& InputActionValue)
 {
 	// Projectile 발사 코드 추가
+
+	for (const FGameplayAbilitySpec& Spec : GetASC()->GetActivatableAbilities())
+	{
+		if (Spec.Ability && Spec.Ability->GetClass()->IsChildOf(UEnergyProjectile::StaticClass()))
+		{
+			GetASC()->TryActivateAbility(Spec.Handle);
+			break;
+		}
+	}
 }
+
+UEnergyAbilitySystemComponent* AEnergyPlayerController::GetASC()
+{
+	if (EnergyAbilitySystemComponent == nullptr)
+	{
+		EnergyAbilitySystemComponent = Cast<UEnergyAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
+	}
+	
+	return EnergyAbilitySystemComponent;
+}
+
+

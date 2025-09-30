@@ -12,4 +12,7 @@ namespace EnergyGameplayTags
 	/** Player Tags **/
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Attack,"Player.Ability.Attack");
 	
+	/** Event Tags **/
+	UE_DEFINE_GAMEPLAY_TAG(Event_Montage_EnergyBolt ,"Event.Montage.EnergyBolt");
+	
 }

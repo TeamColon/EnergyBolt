@@ -4,6 +4,7 @@
 #include "AbilitySystem/EnergyAttributeSet.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
+#include "EnergyGameplayTags.h"
 #include "GameplayEffectExtension.h"
 #include "GameFramework/Character.h"
 
@@ -77,7 +78,13 @@ void UEnergyAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffect
 			SetCurrentHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
 
 			const bool bFatal = NewHealth <= 0.f;
-			
+			if (!bFatal)
+			{
+				FGameplayTagContainer TagContainer;
+				TagContainer.AddTag(EnergyGameplayTags::HitReact);
+				// 매개변수로 들어온 태그를 가지고 있으면 해당 태그를 가진 능력을 활성화 시키는 함수
+				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+			}
 		}
 	}
 }

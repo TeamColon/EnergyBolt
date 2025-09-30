@@ -15,6 +15,10 @@ AEnergyBaseCharacter::AEnergyBaseCharacter()
 	EnergyAbilitySystemComponent = CreateDefaultSubobject<UEnergyAbilitySystemComponent>(TEXT("EnergyAbilitySystemComponent"));
 
 	EnergyAttributeSet = CreateDefaultSubobject<UEnergyAttributeSet>(TEXT("EnergyAttributeSet"));
+
+	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Weapon"));
+	Weapon->SetupAttachment(GetMesh(), FName("WeaponHandSocket"));
+	Weapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	
 }
 
@@ -32,5 +36,10 @@ void AEnergyBaseCharacter::PossessedBy(AController* NewController)
 UAbilitySystemComponent* AEnergyBaseCharacter::GetAbilitySystemComponent() const
 {
 	return EnergyAbilitySystemComponent;
+}
+
+UAnimMontage* AEnergyBaseCharacter::GetHitReactMontage_Implementation()
+{
+	return HitReactMontage;
 }
 

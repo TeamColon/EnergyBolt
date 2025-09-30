@@ -6,6 +6,7 @@
 #include "Data/EnergyCharacterClassInfo.h"
 #include "EnergyEnemyCharacter.generated.h"
 
+struct FGameplayTag;
 enum class ECharacterClass : uint8;
 class UGameplayEffect;
 class AEnergyAIController;
@@ -38,7 +39,16 @@ public:
 	bool bHitReacting = false;
 
 	UPROPERTY(BlueprintReadOnly, Category="Combat")
-	float BaseWalkSpeed = 200.f;
+	float BaseWalkSpeed = 300.f;
+
+	UPROPERTY(BlueprintReadWrite, Category="Combat")
+	TObjectPtr<AActor> CombatTarget;
+	
+	//~Begin ICombatInterface
+	virtual void SetCombatTarget_Implementation(AActor* InCombatTarget) override;
+	virtual AActor* GetCombatTarget_Implementation() const override;
+	//~End ICombatInterface
+	
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attributes")
 	TSubclassOf<UGameplayEffect> DefaultAttribute;

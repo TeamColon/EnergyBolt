@@ -63,7 +63,16 @@ void AEnergyEnemyCharacter::PossessedBy(AController* NewController)
 	// BlackBoard의 변수 초기화
 	EnergyAIController->GetBlackboardComponent()->SetValueAsBool(FName("IsRanged"), CharacterClass != ECharacterClass::Melee);
 	
-	
+}
+
+void AEnergyEnemyCharacter::SetCombatTarget_Implementation(AActor* InCombatTarget)
+{
+	CombatTarget = InCombatTarget;
+}
+
+AActor* AEnergyEnemyCharacter::GetCombatTarget_Implementation() const
+{
+	return CombatTarget;
 }
 
 /*

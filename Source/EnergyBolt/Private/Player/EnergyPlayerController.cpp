@@ -4,6 +4,7 @@
 #include "Player/EnergyPlayerController.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
+#include "EnergyGameplayTags.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "AbilitySystem/EnergyAbilitySystemComponent.h"
@@ -31,7 +32,11 @@ void AEnergyPlayerController::SetupInputComponent()
 
 	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ThisClass::Move);
-	EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &ThisClass::Attack);
+	EnhancedInputComponent->BindAction(AttackAction_Up, ETriggerEvent::Triggered, this, &ThisClass::Attack);
+	EnhancedInputComponent->BindAction(AttackAction_Down, ETriggerEvent::Triggered, this, &ThisClass::Attack);
+	EnhancedInputComponent->BindAction(AttackAction_Left, ETriggerEvent::Triggered, this, &ThisClass::Attack);
+	EnhancedInputComponent->BindAction(AttackAction_Right, ETriggerEvent::Triggered, this, &ThisClass::Attack);
+	
 }
 
 void AEnergyPlayerController::Move(const FInputActionValue& InputActionValue)
@@ -51,9 +56,19 @@ void AEnergyPlayerController::Move(const FInputActionValue& InputActionValue)
 }
 
 
-void AEnergyPlayerController::Attack(const FInputActionValue& InputActionValue)
+void AEnergyPlayerController::Attack(const FInputActionInstance& Instance)
 {
 	// Projectile 발사 코드 추가
+	FVector Direction = FVector::ZeroVector;
+
+	if (Instance.GetSourceAction() == AttackAction_Up)
+		Direction = FVector(0, 1, 0);
+	else if (Instance.GetSourceAction() == AttackAction_Down)
+		Direction = FVector(0, -1, 0);
+	else if (Instance.GetSourceAction() == AttackAction_Left)
+		Direction = FVector(-1, 0, 0);
+	else if (Instance.GetSourceAction() == AttackAction_Right)
+		Direction = FVector(1, 0, 0);
 
 	for (const FGameplayAbilitySpec& Spec : GetASC()->GetActivatableAbilities())
 	{

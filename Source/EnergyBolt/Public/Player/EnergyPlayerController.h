@@ -32,10 +32,20 @@ private:
 	TObjectPtr<UInputAction> MoveAction;
 
 	UPROPERTY(EditAnywhere, Category = "input")
-	TObjectPtr<UInputAction> AttackAction;
+	TObjectPtr<UInputAction> AttackAction_Up;
+	
+	UPROPERTY(EditAnywhere, Category = "input")
+	TObjectPtr<UInputAction> AttackAction_Down;
+	
+	UPROPERTY(EditAnywhere, Category = "input")
+	TObjectPtr<UInputAction> AttackAction_Left;
+	
+	UPROPERTY(EditAnywhere, Category = "input")
+	TObjectPtr<UInputAction> AttackAction_Right;
 
+	
 	void Move(const FInputActionValue& InputActionValue);
-	void Attack(const FInputActionValue& InputActionValue);
+	void Attack(const FInputActionInstance& Instance);
 
 private:
 	UPROPERTY()

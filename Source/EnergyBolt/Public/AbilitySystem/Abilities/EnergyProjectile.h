@@ -31,4 +31,5 @@ protected:
 	
 	UFUNCTION(BlueprintCallable, Category = "Projectile")
 	void SpawnProjectile();
+
 };

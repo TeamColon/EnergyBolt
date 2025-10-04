@@ -9,6 +9,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "AbilitySystem/EnergyAbilitySystemComponent.h"
 #include "AbilitySystem/Abilities/EnergyProjectile.h"
+#include "Player/Input/EnergyInputComponent.h"
 
 AEnergyPlayerController::AEnergyPlayerController()
 {
@@ -30,13 +31,12 @@ void AEnergyPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
-	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ThisClass::Move);
-	EnhancedInputComponent->BindAction(AttackAction_Up, ETriggerEvent::Triggered, this, &ThisClass::Attack);
-	EnhancedInputComponent->BindAction(AttackAction_Down, ETriggerEvent::Triggered, this, &ThisClass::Attack);
-	EnhancedInputComponent->BindAction(AttackAction_Left, ETriggerEvent::Triggered, this, &ThisClass::Attack);
-	EnhancedInputComponent->BindAction(AttackAction_Right, ETriggerEvent::Triggered, this, &ThisClass::Attack);
+	// custom input comp
+	// 엔진 에디터 -> Project Setting -> Input -> EnergyInputComponent로 변경.
+	UEnergyInputComponent* EnergyInputComponent = CastChecked<UEnergyInputComponent>(InputComponent);
 	
+	EnergyInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ThisClass::Move);
+	EnergyInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
 }
 
 void AEnergyPlayerController::Move(const FInputActionValue& InputActionValue)
@@ -56,19 +56,10 @@ void AEnergyPlayerController::Move(const FInputActionValue& InputActionValue)
 }
 
 
-void AEnergyPlayerController::Attack(const FInputActionInstance& Instance)
+/*void AEnergyPlayerController::Attack(o)
 {
 	// Projectile 발사 코드 추가
 	FVector Direction = FVector::ZeroVector;
-
-	if (Instance.GetSourceAction() == AttackAction_Up)
-		Direction = FVector(0, 1, 0);
-	else if (Instance.GetSourceAction() == AttackAction_Down)
-		Direction = FVector(0, -1, 0);
-	else if (Instance.GetSourceAction() == AttackAction_Left)
-		Direction = FVector(-1, 0, 0);
-	else if (Instance.GetSourceAction() == AttackAction_Right)
-		Direction = FVector(1, 0, 0);
 
 	for (const FGameplayAbilitySpec& Spec : GetASC()->GetActivatableAbilities())
 	{
@@ -78,6 +69,23 @@ void AEnergyPlayerController::Attack(const FInputActionInstance& Instance)
 			break;
 		}
 	}
+}*/
+
+void AEnergyPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
+{
+	// GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, *InputTag.ToString());
+}
+
+void AEnergyPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
+{
+	if (GetASC() == nullptr) return;
+	GetASC()->AbilityInputTagReleased(InputTag);
+}
+
+void AEnergyPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
+{
+	if (GetASC() == nullptr) return;
+	GetASC()->AbilityInputTagHeld(InputTag);
 }
 
 UEnergyAbilitySystemComponent* AEnergyPlayerController::GetASC()

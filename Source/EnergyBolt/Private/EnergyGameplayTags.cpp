@@ -12,10 +12,10 @@ namespace EnergyGameplayTags
 	/** Player Tags **/
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Attack,"Player.Ability.Attack");
 	
-	UE_DEFINE_GAMEPLAY_TAG(Player_Left_Attack,"Player.Left.Attack");
-	UE_DEFINE_GAMEPLAY_TAG(Player_Right_Attack,"Player.Right.Attack");
-	UE_DEFINE_GAMEPLAY_TAG(Player_Up_Attack,"Player.Up.Attack");
-	UE_DEFINE_GAMEPLAY_TAG(Player_Down_Attack,"Player.Down.Attack");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Attack_Left,"Player.Attack.Left");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Attack_Right,"Player.Attack.Right");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Attack_Up,"Player.Attack.Up");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Attack_Down,"Player.Attack.Down");
 	
 	/** Event Tags **/
 	UE_DEFINE_GAMEPLAY_TAG(Event_Montage_EnergyBolt ,"Event.Montage.EnergyBolt");

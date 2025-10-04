@@ -15,4 +15,9 @@ UCLASS()
 class ENERGYBOLT_API UEnergyGameplayAbility : public UGameplayAbility
 {
 	GENERATED_BODY()
+
+public:
+
+	UPROPERTY(EditDefaultsOnly, Category="Input")
+	TArray<FGameplayTag> StartupInputTag;
 };

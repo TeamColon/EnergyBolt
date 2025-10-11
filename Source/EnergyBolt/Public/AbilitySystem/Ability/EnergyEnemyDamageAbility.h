@@ -14,6 +14,10 @@ class ENERGYBOLT_API UEnergyEnemyDamageAbility : public UGameplayAbility
 {
 	GENERATED_BODY()
 
+public:
+	UFUNCTION(BlueprintCallable)
+	void CauseDamage(AActor* Target);
+	
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSubclassOf<UGameplayEffect> DamageEffectClass;

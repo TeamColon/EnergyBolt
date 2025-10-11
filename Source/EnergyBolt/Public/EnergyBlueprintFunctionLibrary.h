@@ -22,4 +22,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="EnergyFunctionLibrary")	
 	static void GiveStartupAbilities(const UObject* WorldContextObject, ECharacterClass CharacterClass, UAbilitySystemComponent* ASC);
+
+	UFUNCTION(BlueprintCallable, Category="EnergyFunctionLibrary")
+	static void GetLivePlayersWithRadius(const UObject* WorldContextObject,
+		TArray<AActor*>& OutOverlappingActors, const TArray<AActor*>& ActorsToIgnore, float Radius, const FVector& SphereOrigin);
+
 };

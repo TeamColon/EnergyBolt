@@ -5,6 +5,7 @@
 
 #include "AbilitySystem/EnergyAbilitySystemComponent.h"
 #include "AbilitySystem/EnergyAttributeSet.h"
+#include "Components/CapsuleComponent.h"
 
 
 AEnergyBaseCharacter::AEnergyBaseCharacter()
@@ -36,6 +37,39 @@ void AEnergyBaseCharacter::PossessedBy(AController* NewController)
 UAbilitySystemComponent* AEnergyBaseCharacter::GetAbilitySystemComponent() const
 {
 	return EnergyAbilitySystemComponent;
+}
+
+FVector AEnergyBaseCharacter::GetCombatSocketLocation_Implementation()
+{
+	check(Weapon);
+	return Weapon->GetSocketLocation(WeaponTipSocketName);
+}
+
+void AEnergyBaseCharacter::Die()
+{
+	Weapon->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));
+	Weapon->SetSimulatePhysics(true);
+	Weapon->SetEnableGravity(true);
+	Weapon->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+
+	GetMesh()->SetSimulatePhysics(true);
+	GetMesh()->SetEnableGravity(true);
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+	GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+	
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	bDead = true;
+}
+
+bool AEnergyBaseCharacter::IsDead_Implementation() const
+{
+	return bDead;
+}
+
+AActor* AEnergyBaseCharacter::GetAvatar_Implementation()
+{
+	return this;
 }
 
 UAnimMontage* AEnergyBaseCharacter::GetHitReactMontage_Implementation()

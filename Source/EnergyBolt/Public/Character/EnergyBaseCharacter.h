@@ -22,6 +22,10 @@ public:
 
 	//~ Begin ICombatInterface
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
+	virtual FVector GetCombatSocketLocation_Implementation() override;
+	virtual void Die() override;
+	virtual bool IsDead_Implementation() const override;
+	virtual AActor* GetAvatar_Implementation() override;
 	//~ End ICombatInterface
 
 protected:
@@ -40,7 +44,12 @@ protected:
 	UEnergyAttributeSet* EnergyAttributeSet;
 
 	UPROPERTY(EditAnywhere, Category="Combat")
-	TObjectPtr<USkeletalMeshComponent> Weapon; 
+	TObjectPtr<USkeletalMeshComponent> Weapon;
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	FName WeaponTipSocketName;
+
+	bool bDead = false;
 
 private:
 	UPROPERTY(EditAnywhere, Category="Combat")

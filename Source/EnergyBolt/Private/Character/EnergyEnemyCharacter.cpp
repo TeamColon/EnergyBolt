@@ -75,6 +75,13 @@ AActor* AEnergyEnemyCharacter::GetCombatTarget_Implementation() const
 	return CombatTarget;
 }
 
+void AEnergyEnemyCharacter::Die()
+{
+	// LifeSpan을 정하여 N초 이후에 Destroy하게 할 수 있다.
+	SetLifeSpan(LifeSpan);
+	Super::Die();
+}
+
 /*
 DataAsset을 통해 Class 지정, 속성 초기화 하면서 필요 없어진 함수
 추후 삭제 고려

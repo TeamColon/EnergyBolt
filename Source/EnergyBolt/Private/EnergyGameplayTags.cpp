@@ -19,5 +19,8 @@ namespace EnergyGameplayTags
 
 	/** HitReact Tags**/
 	UE_DEFINE_GAMEPLAY_TAG(HitReact,"HitReact");
+
+	
+	UE_DEFINE_GAMEPLAY_TAG(Event_Montage_Attack_Melee,"Event.Montage.Attack.Melee");
 	
 }

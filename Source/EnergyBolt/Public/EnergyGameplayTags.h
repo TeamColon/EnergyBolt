@@ -20,5 +20,7 @@ namespace EnergyGameplayTags
 
 	/** HitReact **/
 	ENERGYBOLT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(HitReact);
+
+	ENERGYBOLT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Event_Montage_Attack_Melee);
 	
 }

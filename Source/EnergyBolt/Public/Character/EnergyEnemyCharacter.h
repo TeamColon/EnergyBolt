@@ -31,7 +31,7 @@ protected:
 	TObjectPtr<AEnergyAIController> EnergyAIController;
 
 public:
-	virtual void PossessedBy(AController* NewController) override;\
+	virtual void PossessedBy(AController* NewController) override;
 
 	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
 
@@ -47,7 +47,11 @@ public:
 	//~Begin ICombatInterface
 	virtual void SetCombatTarget_Implementation(AActor* InCombatTarget) override;
 	virtual AActor* GetCombatTarget_Implementation() const override;
+	virtual void Die() override;
 	//~End ICombatInterface
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Combat")
+	float LifeSpan = 5.f;
 	
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attributes")

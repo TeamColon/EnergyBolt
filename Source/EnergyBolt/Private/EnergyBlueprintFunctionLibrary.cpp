@@ -81,3 +81,11 @@ void UEnergyBlueprintFunctionLibrary::GetLivePlayersWithRadius(const UObject* Wo
 		}
 	}
 }
+
+bool UEnergyBlueprintFunctionLibrary::IsNotFriend(AActor* FirstActor, AActor* SecondActor)
+{
+	const bool bBothArePlayer = FirstActor->ActorHasTag(FName("Player")) && SecondActor->ActorHasTag(FName("Player"));
+	const bool bBothAreEnemy = FirstActor->ActorHasTag(FName("Enemy")) && SecondActor->ActorHasTag(FName("Enemy"));
+
+	return !(bBothArePlayer || bBothAreEnemy);
+}

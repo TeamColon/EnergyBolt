@@ -22,5 +22,8 @@ namespace EnergyGameplayTags
 
 	
 	UE_DEFINE_GAMEPLAY_TAG(Event_Montage_Attack_Melee,"Event.Montage.Attack.Melee");
+
+	
+	UE_DEFINE_GAMEPLAY_TAG(Montage_Attack_Weapon,"Montage.Attack.Weapon");
 	
 }

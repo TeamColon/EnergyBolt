@@ -72,6 +72,11 @@ AActor* AEnergyBaseCharacter::GetAvatar_Implementation()
 	return this;
 }
 
+TArray<FTaggedMontage> AEnergyBaseCharacter::GetAttackMontages_Implementation()
+{
+	return AttackMontages;
+}
+
 UAnimMontage* AEnergyBaseCharacter::GetHitReactMontage_Implementation()
 {
 	return HitReactMontage;

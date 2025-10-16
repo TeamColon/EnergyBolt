@@ -3,6 +3,9 @@
 
 #include "Actor/EnergyEnemyProjectile.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
+#include "EnergyBlueprintFunctionLibrary.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
@@ -38,7 +41,17 @@ void AEnergyEnemyProjectile::BeginPlay()
 void AEnergyEnemyProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	// TODO: 맞았을 때 없어지게 하기, Damage 적용
+	// TODO: 맞았을 때 없어지게 하기
+
+	// Enemy에 대한 Damage 적용 방지
+	if (!UEnergyBlueprintFunctionLibrary::IsNotFriend(GetOwner(),OtherActor)) return;
+	
+	if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
+	{
+		TargetASC->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data.Get());
+	}
+	
+	//Destroy();
 }
 
 

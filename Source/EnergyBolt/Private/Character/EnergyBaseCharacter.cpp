@@ -6,6 +6,7 @@
 #include "AbilitySystem/EnergyAbilitySystemComponent.h"
 #include "AbilitySystem/EnergyAttributeSet.h"
 #include "Components/CapsuleComponent.h"
+#include "EnergyBolt/EnergyBolt.h"
 
 
 AEnergyBaseCharacter::AEnergyBaseCharacter()
@@ -16,6 +17,13 @@ AEnergyBaseCharacter::AEnergyBaseCharacter()
 	EnergyAbilitySystemComponent = CreateDefaultSubobject<UEnergyAbilitySystemComponent>(TEXT("EnergyAbilitySystemComponent"));
 
 	EnergyAttributeSet = CreateDefaultSubobject<UEnergyAttributeSet>(TEXT("EnergyAttributeSet"));
+
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	GetCapsuleComponent()->SetGenerateOverlapEvents(false);
+	
+	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	GetMesh()->SetCollisionResponseToChannel(ECC_Projectile, ECR_Overlap);
+	GetMesh()->SetGenerateOverlapEvents(true);
 
 	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Weapon"));
 	Weapon->SetupAttachment(GetMesh(), FName("WeaponHandSocket"));

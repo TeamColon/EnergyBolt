@@ -35,4 +35,7 @@ public:
 
 	UPROPERTY(BlueprintReadWrite)
 	FGameplayEffectSpecHandle DamageEffectSpecHandle;
+
+	UPROPERTY(EditAnywhere)
+	float LifeSpan = 5.f;
 };

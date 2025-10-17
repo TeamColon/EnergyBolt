@@ -40,9 +40,9 @@ void AEnergyEnemyCharacter::BeginPlay()
 
 void AEnergyEnemyCharacter::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
 {
-	// TODO: HitReact Ability 만들고 Activate 하기
 	bHitReacting = NewCount > 0.f;
 	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : BaseWalkSpeed;
+	EnergyAIController->GetBlackboardComponent()->SetValueAsBool(FName("IsHitReacting"), true);
 }
 
 void AEnergyEnemyCharacter::PossessedBy(AController* NewController)
@@ -62,6 +62,7 @@ void AEnergyEnemyCharacter::PossessedBy(AController* NewController)
 
 	// BlackBoard의 변수 초기화
 	EnergyAIController->GetBlackboardComponent()->SetValueAsBool(FName("IsRanged"), CharacterClass != ECharacterClass::Melee);
+	EnergyAIController->GetBlackboardComponent()->SetValueAsBool(FName("IsHitReacting"), false);
 	
 }
 
@@ -79,6 +80,10 @@ void AEnergyEnemyCharacter::Die()
 {
 	// LifeSpan을 정하여 N초 이후에 Destroy하게 할 수 있다.
 	SetLifeSpan(LifeSpan);
+	if (EnergyAIController)
+	{
+		EnergyAIController->GetBlackboardComponent()->SetValueAsBool(FName("IsDead"), true);
+	}
 	Super::Die();
 }
 

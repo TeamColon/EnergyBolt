@@ -15,8 +15,6 @@ UCLASS()
 class ENERGYBOLT_API UEnergyProjectile : public UEnergyDamageGameplayAbility
 {
 	GENERATED_BODY()
-
-
 protected:
 	UEnergyProjectile();
 
@@ -25,11 +23,11 @@ protected:
 		const FGameplayAbilityActorInfo* ActorInfo,
 		const FGameplayAbilityActivationInfo ActivationInfo,
 		const FGameplayEventData* TriggerEventData) override;
-
+	
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
 	TSubclassOf<AEnergyBoltProjectile> ProjectileClass;
 	
 	UFUNCTION(BlueprintCallable, Category = "Projectile")
-	void SpawnProjectile();
+	void SpawnProjectile(const FGameplayTag &InputTag);
 
 };

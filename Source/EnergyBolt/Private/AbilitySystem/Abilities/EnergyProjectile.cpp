@@ -3,6 +3,7 @@
 
 #include "AbilitySystem/Abilities/EnergyProjectile.h"
 
+#include "EnergyGameplayTags.h"
 #include "Actor/EnergyBoltProjectile.h"
 #include "Interfaces/CombatInterface.h"
 
@@ -17,18 +18,40 @@ void UEnergyProjectile::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-	
+
+	// 일단 유지
 }
 
-void UEnergyProjectile::SpawnProjectile()
+void UEnergyProjectile::SpawnProjectile(const FGameplayTag &InputTag)
 {
+	// Socket 얻기 위해서 사용
 	ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo());
-	if (CombatInterface)
+	if (!CombatInterface) return;
+	
 	{
 		const FVector SocketLocation = CombatInterface->GetCombatSocketLocation();
 
 		// Rotation 관련
-		const FRotator Rotation = GetAvatarActorFromActorInfo()->GetActorRotation();
+		// FRotator Rotation = GetAvatarActorFromActorInfo()->GetActorRotation(); // 캐릭터 기준 방향
+		FRotator Rotation = FRotator::ZeroRotator; // world 상 방향
+		
+		// InputTag에 따라 회전 변경
+		if (InputTag == EnergyGameplayTags::Player_Attack_Up)
+		{
+			Rotation.Yaw += 0.f;
+		}
+		else if (InputTag == EnergyGameplayTags::Player_Attack_Down)
+		{
+			Rotation.Yaw += 180.f;
+		}
+		else if (InputTag == EnergyGameplayTags::Player_Attack_Left)
+		{
+			Rotation.Yaw += -90.f;
+		}
+		else if (InputTag == EnergyGameplayTags::Player_Attack_Right)
+		{
+			Rotation.Yaw += 90.f;
+		}
 		
 		FTransform SpawnTransform;
 		SpawnTransform.SetLocation(SocketLocation);

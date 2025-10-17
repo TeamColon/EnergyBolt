@@ -31,6 +31,9 @@ void UEnergyAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclass
 void UEnergyAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTag)
 {
 	if (!InputTag.IsValid()) return;
+	
+	/*FGameplayEventData EventData;
+	EventData.EventTag = InputTag;*/
 
 	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{
@@ -40,6 +43,13 @@ void UEnergyAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& Inpu
 			AbilitySpecInputPressed(AbilitySpec);	// Pressed 상태 전달
 			if (!AbilitySpec.IsActive())				// 아직 실행 중이 아니라면
 			{
+				if (UGameplayAbility* Ability = AbilitySpec.GetPrimaryInstance())
+				{
+					if (UEnergyGameplayAbility* MyAbility = Cast<UEnergyGameplayAbility>(Ability))
+					{
+						MyAbility->TriggeredInputTag = InputTag; // Input Tag 직접 전달
+					}
+				}
 				TryActivateAbility(AbilitySpec.Handle);	// 실행 시도
 			}
 		}

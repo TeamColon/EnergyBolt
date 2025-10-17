@@ -20,4 +20,8 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TArray<FGameplayTag> StartupInputTag;
+	
+	UPROPERTY(BlueprintReadWrite, Category = "Input")
+	FGameplayTag TriggeredInputTag;
+
 };

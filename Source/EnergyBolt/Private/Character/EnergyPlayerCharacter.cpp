@@ -33,10 +33,12 @@ void AEnergyPlayerCharacter::PossessedBy(AController* NewController)
 	AddCharacterAbilities();
 }
 
-void AEnergyPlayerCharacter::InitAbilityActorInfo() const
+void AEnergyPlayerCharacter::InitAbilityActorInfo()
 {
 	AEnergyPlayerState* EnergyPlayerState = GetPlayerState<AEnergyPlayerState>();
 	check(EnergyPlayerState);		// Player State를 EnergyPlayerState로 해줘야 크러쉬가 안남.
+	
+	Cast<UEnergyAbilitySystemComponent>(GetAbilitySystemComponent())->AbilityActorInfoSet();
 	
 	// HUD 시작하기
 	if (AEnergyPlayerController* EnergyPlayerController = Cast<AEnergyPlayerController>(GetController()))
@@ -46,5 +48,6 @@ void AEnergyPlayerCharacter::InitAbilityActorInfo() const
 			EnergyHUD->InitOverlay(EnergyPlayerController, EnergyPlayerState, EnergyAbilitySystemComponent, EnergyAttributeSet);
 		}
 	}
+	InitializeDefaultAttributes(); // AttributeSet 값 설정 함수
 }
 

@@ -2,31 +2,27 @@
 
 
 #include "Character/EnergyEnemyCharacter.h"
+#include "AbilitySystem/EnergyAbilitySystemComponent.h"
+#include "AbilitySystem/EnergyAttributeSet.h"
 
 
-// Sets default values
 AEnergyEnemyCharacter::AEnergyEnemyCharacter()
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-}
-
-// Called when the game starts or when spawned
-void AEnergyEnemyCharacter::BeginPlay()
-{
-	Super::BeginPlay();
+	PrimaryActorTick.bCanEverTick = false;
 	
 }
 
-// Called every frame
-void AEnergyEnemyCharacter::Tick(float DeltaTime)
+void AEnergyEnemyCharacter::BeginPlay()
 {
-	Super::Tick(DeltaTime);
+	Super::BeginPlay();
+
+	InitAbilityActorInfo();
 }
 
-// Called to bind functionality to input
-void AEnergyEnemyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void AEnergyEnemyCharacter::InitAbilityActorInfo()
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-}
+	EnergyAbilitySystemComponent->InitAbilityActorInfo(this, this);
+	Cast<UEnergyAbilitySystemComponent>(EnergyAbilitySystemComponent)->AbilityActorInfoSet();
 
+	InitializeDefaultAttributes();
+}

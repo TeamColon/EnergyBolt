@@ -65,17 +65,17 @@ public:
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
 	/**
-	 * Character Stats
+	 * Character Stats (임시 / 변경가능)
 	 */
-	UPROPERTY(BlueprintReadOnly, Category = "Health")
+	UPROPERTY(BlueprintReadOnly, Category = "Character")
 	FGameplayAttributeData CurrentHealth;
 	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, CurrentHealth)
 
-	UPROPERTY(BlueprintReadOnly, Category = "Health")
+	UPROPERTY(BlueprintReadOnly, Category = "Character")
 	FGameplayAttributeData MaxHealth;
 	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, MaxHealth)
 
-	UPROPERTY(BlueprintReadOnly, Category = "Speed")
+	UPROPERTY(BlueprintReadOnly, Category = "Character")
 	FGameplayAttributeData Speed;
 	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, Speed)
 	
@@ -83,21 +83,29 @@ public:
 	/**
 	 * Attack Stats (임시 / 변경가능)
 	 */
-	UPROPERTY(BlueprintReadOnly, Category = "Damage")
+	UPROPERTY(BlueprintReadOnly, Category = "Attack")
 	FGameplayAttributeData Damage;
 	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, Damage)
 
-	UPROPERTY(BlueprintReadOnly, Category = "Range")
+	UPROPERTY(BlueprintReadOnly, Category = "Attack")
 	FGameplayAttributeData Range;
 	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, Range)
 
-	UPROPERTY(BlueprintReadOnly, Category = "FireRate")
+	UPROPERTY(BlueprintReadOnly, Category = "Attack")
 	FGameplayAttributeData FireRate;
 	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, FireRate)
 
-	UPROPERTY(BlueprintReadOnly, Category = "ProjectileSpeed")
+	UPROPERTY(BlueprintReadOnly, Category = "Attack")
 	FGameplayAttributeData ProjectileSpeed;
 	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, ProjectileSpeed)
+
+	/*UPROPERTY(BlueprintReadOnly, Category = "Attack")
+	FGameplayAttributeData CriticalDamage;
+	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, CriticalDamage)*/
+
+	/*UPROPERTY(BlueprintReadOnly, Category = "Attack")
+	FGameplayAttributeData CriticalChance;
+	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, CriticalChance)*/
 
 private:
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const;

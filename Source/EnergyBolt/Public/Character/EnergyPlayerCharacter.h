@@ -20,7 +20,7 @@ public:
 	//~ End APawn Interface.
 
 private:
-	void InitAbilityActorInfo() const;
+	virtual void InitAbilityActorInfo() override;
 
-
+	
 };

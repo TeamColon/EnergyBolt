@@ -8,12 +8,13 @@
 #include "Interfaces/CombatInterface.h"
 #include "EnergyBaseCharacter.generated.h"
 
+class UGameplayEffect;
 class UGameplayAbility;
 class UAttributeSet;
 class UEnergyAttributeSet;
 class UEnergyAbilitySystemComponent;
 
-UCLASS()
+UCLASS(Abstract)
 class ENERGYBOLT_API AEnergyBaseCharacter : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
 {
 	GENERATED_BODY()
@@ -35,12 +36,8 @@ protected:
 	//~ Begin APawn Interface.
 	virtual void PossessedBy(AController* NewController) override;
 	//~ End APawn Interface.
-	
-	/*UPROPERTY()
-	TObjectPtr<UAbilitySystemComponent> EnergyAbilitySystemComponent;
-	
-	UPROPERTY()
-	TObjectPtr<UAttributeSet> EnergyAttributeSet;*/
+
+	virtual void InitAbilityActorInfo();
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
 	UEnergyAbilitySystemComponent* EnergyAbilitySystemComponent;
@@ -56,16 +53,22 @@ protected:
 
 	void AddCharacterAbilities();
 	
+	UPROPERTY(EditAnywhere, Category = "Abilities")
+	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
+	TSubclassOf<UGameplayEffect> DefaultCharacterAttributes;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
+	TSubclassOf<UGameplayEffect> DefaultAttackAttributes;
+
+	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, float Level) const;
+	void InitializeDefaultAttributes() const;
+	
 public:
 	/*FORCEINLINE UEnergyAbilitySystemComponent* GetEnergyAbilitySystemComponent() const {return EnergyAbilitySystemComponent;}
 
 	FORCEINLINE UEnergyAttributeSet* GetEnergyAttributeSet() const {return EnergyAttributeSet;}*/
-
-
-private:
-
-	UPROPERTY(EditAnywhere, Category = "Abilities")
-	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 	
 };
 

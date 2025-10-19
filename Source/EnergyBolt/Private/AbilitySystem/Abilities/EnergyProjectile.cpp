@@ -3,6 +3,8 @@
 
 #include "AbilitySystem/Abilities/EnergyProjectile.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
 #include "EnergyGameplayTags.h"
 #include "Actor/EnergyBoltProjectile.h"
 #include "Interfaces/CombatInterface.h"
@@ -65,6 +67,9 @@ void UEnergyProjectile::SpawnProjectile(const FGameplayTag &InputTag)
 			ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
 		//TODO: Give the Projectile a Gameplay Effect Spec for causing Damage.
+		const UAbilitySystemComponent* SourceASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetAvatarActorFromActorInfo());
+		const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), SourceASC->MakeEffectContext());
+		Projectile->DamageEffectSpecHandle = SpecHandle;
 		
 		Projectile->FinishSpawning(SpawnTransform);
 	}

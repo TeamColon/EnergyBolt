@@ -8,6 +8,7 @@
 
 
 class AEnergyBoltProjectile;
+class UGameplayEffect;
 /**
  * 
  */
@@ -26,6 +27,10 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
 	TSubclassOf<AEnergyBoltProjectile> ProjectileClass;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Projectile")
+	TSubclassOf<UGameplayEffect> DamageEffectClass;
+	
 	
 	UFUNCTION(BlueprintCallable, Category = "Projectile")
 	void SpawnProjectile(const FGameplayTag &InputTag);

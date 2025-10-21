@@ -30,4 +30,10 @@ public:
 	UFUNCTION(BlueprintPure, Category="EnergyFunctionLibrary")
 	static bool IsNotFriend(AActor* FirstActor, AActor* SecondActor);
 
+	UFUNCTION(BlueprintPure, Category="EnergyFunctionLibrary")
+	static TArray<FRotator> EvenlySpreadRotators(const FVector& ForwardVector, const FVector& Axis, float Spread, int32 NumRotators);
+	
+	UFUNCTION(BlueprintPure, Category="EnergyFunctionLibrary")
+	static TArray<FVector> EvenlyRotatedVectors(const FVector& ForwardVector, const FVector& Axis, float Spread, int32 NumVectors);
+
 };

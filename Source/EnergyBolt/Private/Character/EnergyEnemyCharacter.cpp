@@ -8,6 +8,7 @@
 #include "AI/EnergyAIController.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "EnergyBolt/EnergyBolt.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 
@@ -20,7 +21,9 @@ AEnergyEnemyCharacter::AEnergyEnemyCharacter()
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
 	GetCharacterMovement()->bUseControllerDesiredRotation = true;
-	
+
+	GetMesh()->SetCollisionResponseToChannel(ECC_Projectile, ECR_Ignore);
+	GetMesh()->SetGenerateOverlapEvents(false);
 }
 
 

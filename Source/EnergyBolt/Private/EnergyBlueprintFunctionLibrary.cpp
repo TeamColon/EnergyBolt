@@ -89,3 +89,49 @@ bool UEnergyBlueprintFunctionLibrary::IsNotFriend(AActor* FirstActor, AActor* Se
 
 	return !(bBothArePlayer || bBothAreEnemy);
 }
+
+TArray<FRotator> UEnergyBlueprintFunctionLibrary::EvenlySpreadRotators(const FVector& ForwardVector,
+	const FVector& Axis, float Spread, int32 NumRotators)
+{
+	TArray<FRotator> Rotators;
+	
+	const FVector LeftSpread = ForwardVector.RotateAngleAxis(-Spread / 2.f, Axis);
+	if (NumRotators > 1)
+	{
+		const float DeltaSpread = Spread / (NumRotators - 1);
+		for (int32 i = 0; i < NumRotators; i++)
+		{
+			const FVector Direction = LeftSpread.RotateAngleAxis(DeltaSpread * i, Axis);
+			Rotators.Add(Direction.Rotation());
+		}
+	}
+	else
+	{
+		Rotators.Add(ForwardVector.Rotation());
+	}
+	
+	return Rotators;
+}
+
+TArray<FVector> UEnergyBlueprintFunctionLibrary::EvenlyRotatedVectors(const FVector& ForwardVector, const FVector& Axis,
+	float Spread, int32 NumVectors)
+{
+	TArray<FVector> Vectors;
+	
+	const FVector LeftSpread = ForwardVector.RotateAngleAxis(-Spread / 2.f, Axis);
+	if (NumVectors > 1)
+	{
+		const float DeltaSpread = Spread / (NumVectors - 1);
+		for (int32 i = 0; i < NumVectors; i++)
+		{
+			const FVector Direction = LeftSpread.RotateAngleAxis(DeltaSpread * i, Axis);
+			Vectors.Add(Direction);
+		}
+	}
+	else
+	{
+		Vectors.Add(ForwardVector);
+	}
+	
+	return Vectors;
+}

@@ -6,6 +6,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "EnergyGameplayTags.h"
+#include "AbilitySystem/EnergyAttributeSet.h"
 #include "Actor/EnergyBoltProjectile.h"
 #include "Interfaces/CombatInterface.h"
 
@@ -35,25 +36,8 @@ void UEnergyProjectile::SpawnProjectile(const FGameplayTag &InputTag)
 
 		// Rotation 관련
 		// FRotator Rotation = GetAvatarActorFromActorInfo()->GetActorRotation(); // 캐릭터 기준 방향
-		FRotator Rotation = FRotator::ZeroRotator; // world 상 방향
-		
-		// InputTag에 따라 회전 변경
-		if (InputTag == EnergyGameplayTags::Player_Attack_Up)
-		{
-			Rotation.Yaw += 0.f;
-		}
-		else if (InputTag == EnergyGameplayTags::Player_Attack_Down)
-		{
-			Rotation.Yaw += 180.f;
-		}
-		else if (InputTag == EnergyGameplayTags::Player_Attack_Left)
-		{
-			Rotation.Yaw += -90.f;
-		}
-		else if (InputTag == EnergyGameplayTags::Player_Attack_Right)
-		{
-			Rotation.Yaw += 90.f;
-		}
+		FRotator Rotation = FRotator::ZeroRotator; // world 상 방향으로 초기화 시켜두기
+		ProjectileCalcRotation(InputTag, Rotation);
 		
 		FTransform SpawnTransform;
 		SpawnTransform.SetLocation(SocketLocation);
@@ -70,8 +54,42 @@ void UEnergyProjectile::SpawnProjectile(const FGameplayTag &InputTag)
 		const UAbilitySystemComponent* SourceASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetAvatarActorFromActorInfo());
 		const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), SourceASC->MakeEffectContext());
 		Projectile->DamageEffectSpecHandle = SpecHandle;
+
+		const float Damage = SourceASC->GetNumericAttribute(UEnergyAttributeSet::GetDamageAttribute());
+		const float Speed = SourceASC->GetNumericAttribute(UEnergyAttributeSet::GetProjectileSpeedAttribute());
+		const float Range = SourceASC->GetNumericAttribute(UEnergyAttributeSet::GetRangeAttribute());
+
+		// Projectile에 세팅
+		Projectile->InitializeProjectile(Damage, Speed, Range);
 		
 		Projectile->FinishSpawning(SpawnTransform);
 	}
 }
+
+void UEnergyProjectile::ProjectileAttribute()
+{
+	
+}
+
+void UEnergyProjectile::ProjectileCalcRotation(const FGameplayTag& InputTag, FRotator& Rotation)
+{
+	// InputTag에 따라 회전 변경
+	if (InputTag == EnergyGameplayTags::Player_Attack_Up)
+	{
+		Rotation.Yaw += 0.f;
+	}
+	else if (InputTag == EnergyGameplayTags::Player_Attack_Down)
+	{
+		Rotation.Yaw += 180.f;
+	}
+	else if (InputTag == EnergyGameplayTags::Player_Attack_Left)
+	{
+		Rotation.Yaw += -90.f;
+	}
+	else if (InputTag == EnergyGameplayTags::Player_Attack_Right)
+	{
+		Rotation.Yaw += 90.f;
+	}
+}
+
 

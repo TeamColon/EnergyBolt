@@ -14,18 +14,15 @@ AEnergyBaseCharacter::AEnergyBaseCharacter()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
-	// Energy ASC, Set
-	/*EnergyAbilitySystemComponent = CreateDefaultSubobject<UEnergyAbilitySystemComponent>(TEXT("EnergyAbilitySystemComponent"));
-	EnergyAttributeSet = CreateDefaultSubobject<UEnergyAttributeSet>(TEXT("EnergyAttributeSet"));*/
-
 	// 캐스팅만 Energy로 <U"Energy"AbilitySystemComponent>
 	EnergyAbilitySystemComponent = CreateDefaultSubobject<UEnergyAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	EnergyAttributeSet = CreateDefaultSubobject<UEnergyAttributeSet>(TEXT("AttributeSet"));
 
-	GetCapsuleComponent()->SetGenerateOverlapEvents(false);
+	GetCapsuleComponent()->SetGenerateOverlapEvents(false);		// overlap event cpp, bp 둘다 끄거나 켜줘야됨.
+	
 	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Projectile, ECR_Overlap);
-	GetMesh()->SetGenerateOverlapEvents(true);
+	GetMesh()->SetGenerateOverlapEvents(true);					// overlap event cpp, bp 둘다 끄거나 켜줘야됨.
 }
 
 void AEnergyBaseCharacter::PossessedBy(AController* NewController)

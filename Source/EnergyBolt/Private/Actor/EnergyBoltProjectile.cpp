@@ -28,15 +28,21 @@ AEnergyBoltProjectile::AEnergyBoltProjectile()
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovement"));
 	ProjectileMovement->InitialSpeed = 1000.f;
-	ProjectileMovement->MaxSpeed = 1000.f;
-	ProjectileMovement->ProjectileGravityScale = 0.f;
+	ProjectileMovement->MaxSpeed = 2000.f;							// 최대 ProjectileSpeed = 2로 고정
+	ProjectileMovement->ProjectileGravityScale = 0.f;				// 중력 부여 X
+}
+
+void AEnergyBoltProjectile::InitializeProjectile(float InDamage, float InSpeed, float InRange)
+{
+	DamageAmount = InDamage;
+	ProjectileMovement->InitialSpeed = 1000.f * InSpeed;			// 1000 유닛/초 , ue5 -> 1 Unit = 1 cm
+	SetLifeSpan(LifeSpan * InRange);						// Actor 수명 설정 Default = 3.0 -> 3초 뒤 삭제로 사거리 지정
 }
 
 void AEnergyBoltProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-
-	SetLifeSpan(LifeSpan);	// Actor 수명 설정
+	
 	Sphere->OnComponentBeginOverlap.AddDynamic(this, &AEnergyBoltProjectile::OnSphereOverlap);
 	/*LoopingSoundComponent = UGameplayStatics::SpawnSoundAttached(LoopingSound, GetRootComponent());*/
 }
@@ -59,10 +65,12 @@ void AEnergyBoltProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedCompo
 	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
 	LoopingSoundComponent->Stop();*/
 
-	/*if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
+	if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
 	{
 		TargetASC->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data.Get());
-	}*/
+
+		UE_LOG(LogTemp, Warning, TEXT("Attacking!!"));
+	}
 	
 	Destroy();
 }

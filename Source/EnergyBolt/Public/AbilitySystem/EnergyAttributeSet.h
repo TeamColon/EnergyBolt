@@ -99,6 +99,10 @@ public:
 	FGameplayAttributeData ProjectileSpeed;
 	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, ProjectileSpeed)
 
+	// Tag 방식 속성 부여 (추후 고려)
+	UPROPERTY(BlueprintReadOnly, Category = "Attack")
+	FGameplayTagContainer AttackEffects; // 예: Burn, Poison, Freeze
+
 	/*UPROPERTY(BlueprintReadOnly, Category = "Attack")
 	FGameplayAttributeData CriticalDamage;
 	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, CriticalDamage)*/

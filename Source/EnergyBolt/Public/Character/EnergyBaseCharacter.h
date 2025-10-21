@@ -30,7 +30,7 @@ public:
 	virtual FVector GetCombatSocketLocation() override;
 	//~ End ICombatInterface Interface.
 	
-	UEnergyAttributeSet* GetAttributeSet() const {return EnergyAttributeSet;};
+	UAttributeSet* GetAttributeSet() const {return EnergyAttributeSet;};
 
 protected:
 	//~ Begin APawn Interface.
@@ -40,10 +40,10 @@ protected:
 	virtual void InitAbilityActorInfo();
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
-	UEnergyAbilitySystemComponent* EnergyAbilitySystemComponent;
+	TObjectPtr<UAbilitySystemComponent> EnergyAbilitySystemComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
-	UEnergyAttributeSet* EnergyAttributeSet;
+	TObjectPtr<UAttributeSet> EnergyAttributeSet;
 
 	/*UPROPERTY(EditAnywhere, Category = "Combat")
 	TObjectPtr<USkeletalMeshComponent> Weapon;*/		// 무기 있으면 그 Socket에 부착하기 위한 용도

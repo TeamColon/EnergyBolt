@@ -35,4 +35,10 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "Projectile")
 	void SpawnProjectile(const FGameplayTag &InputTag);
 
+	UFUNCTION()
+	void ProjectileAttribute();
+
+	UFUNCTION()
+	void ProjectileCalcRotation(const FGameplayTag &InputTag, FRotator& Rotation);
+
 };

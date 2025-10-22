@@ -16,7 +16,6 @@ UEnergyAttributeSet::UEnergyAttributeSet()
 	 */
 	InitCurrentHealth(100.f);
 	InitMaxHealth(100.f);
-	InitSpeed(100.f);
 	
 	/**
 	 * Attack Stats

@@ -18,7 +18,6 @@ UCLASS(Abstract)
 class ENERGYBOLT_API AEnergyBaseCharacter : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
 {
 	GENERATED_BODY()
-
 public:
 	AEnergyBaseCharacter();
 
@@ -30,7 +29,7 @@ public:
 	virtual FVector GetCombatSocketLocation() override;
 	//~ End ICombatInterface Interface.
 	
-	UAttributeSet* GetAttributeSet() const {return EnergyAttributeSet;};
+	UEnergyAttributeSet* GetAttributeSet() const {return EnergyAttributeSet;};
 
 protected:
 	//~ Begin APawn Interface.
@@ -40,10 +39,10 @@ protected:
 	virtual void InitAbilityActorInfo();
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
-	TObjectPtr<UAbilitySystemComponent> EnergyAbilitySystemComponent;
+	UEnergyAbilitySystemComponent*  EnergyAbilitySystemComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
-	TObjectPtr<UAttributeSet> EnergyAttributeSet;
+	UEnergyAttributeSet* EnergyAttributeSet;
 
 	/*UPROPERTY(EditAnywhere, Category = "Combat")
 	TObjectPtr<USkeletalMeshComponent> Weapon;*/		// 무기 있으면 그 Socket에 부착하기 위한 용도

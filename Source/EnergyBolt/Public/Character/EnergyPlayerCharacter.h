@@ -6,6 +6,8 @@
 #include "EnergyBaseCharacter.h"
 #include "EnergyPlayerCharacter.generated.h"
 
+struct FOnAttributeChangeData;
+
 UCLASS()
 class ENERGYBOLT_API AEnergyPlayerCharacter : public AEnergyBaseCharacter
 {
@@ -22,5 +24,8 @@ public:
 private:
 	virtual void InitAbilityActorInfo() override;
 
+	
+	void OnSpeedMultiplierChanged(const FOnAttributeChangeData& Data);
+	void UpdateMovementSpeed();
 	
 };

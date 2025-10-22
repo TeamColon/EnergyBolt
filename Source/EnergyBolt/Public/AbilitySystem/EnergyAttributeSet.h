@@ -76,8 +76,12 @@ public:
 	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, MaxHealth)
 
 	UPROPERTY(BlueprintReadOnly, Category = "Character")
-	FGameplayAttributeData Speed;
-	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, Speed)
+	FGameplayAttributeData BaseSpeed;
+	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, BaseSpeed)				// 기본 이동 속도 (기본 : 600)
+
+	UPROPERTY(BlueprintReadOnly, Category = "Character")
+	FGameplayAttributeData SpeedMultiplier;
+	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, SpeedMultiplier)		// 이동 속도 배율 (기본 : 1)
 	
 
 	/**
@@ -85,19 +89,23 @@ public:
 	 */
 	UPROPERTY(BlueprintReadOnly, Category = "Attack")
 	FGameplayAttributeData Damage;
-	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, Damage)
+	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, Damage)				// 기본 공격력 (기본 : 10)
+
+	UPROPERTY(BlueprintReadOnly, Category = "Attack")
+	FGameplayAttributeData DamageMultiplier;
+	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, DamageMultiplier)		// 공격력 배율 (기본 : 1)
 
 	UPROPERTY(BlueprintReadOnly, Category = "Attack")
 	FGameplayAttributeData Range;
-	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, Range)
+	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, Range)					// 사거리 (기본 : 3)
 
 	UPROPERTY(BlueprintReadOnly, Category = "Attack")
 	FGameplayAttributeData FireRate;
-	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, FireRate)
+	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, FireRate)				// 연사 배율 (최대 3.5)
 
 	UPROPERTY(BlueprintReadOnly, Category = "Attack")
 	FGameplayAttributeData ProjectileSpeed;
-	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, ProjectileSpeed)
+	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, ProjectileSpeed)		// 탄속 배율 (최대 2.0)
 
 	// Tag 방식 속성 부여 (추후 고려)
 	UPROPERTY(BlueprintReadOnly, Category = "Attack")

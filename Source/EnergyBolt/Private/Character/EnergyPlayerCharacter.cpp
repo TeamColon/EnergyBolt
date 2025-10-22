@@ -31,6 +31,15 @@ void AEnergyPlayerCharacter::PossessedBy(AController* NewController)
 	// 초기 액터 정보 부여
 	InitAbilityActorInfo();
 	AddCharacterAbilities();
+
+	// Character Stats의 변화 감지 함수 바인딩 (배율만)
+	if (GetAttributeSet() && GetAbilitySystemComponent())
+	{
+		EnergyAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
+			GetAttributeSet()->GetSpeedMultiplierAttribute()).AddUObject(this, &AEnergyPlayerCharacter::OnSpeedMultiplierChanged);
+
+		UpdateMovementSpeed();
+	}
 }
 
 void AEnergyPlayerCharacter::InitAbilityActorInfo()
@@ -49,5 +58,25 @@ void AEnergyPlayerCharacter::InitAbilityActorInfo()
 		}
 	}
 	InitializeDefaultAttributes(); // AttributeSet 값 설정 함수
+}
+
+void AEnergyPlayerCharacter::OnSpeedMultiplierChanged(const FOnAttributeChangeData& Data)
+{
+	UpdateMovementSpeed();
+}
+
+void AEnergyPlayerCharacter::UpdateMovementSpeed()
+{
+	if (EnergyAbilitySystemComponent && EnergyAttributeSet)
+	{
+		const float Base = EnergyAttributeSet->GetBaseSpeed();
+		const float Multiplier = EnergyAttributeSet->GetSpeedMultiplier();
+		const float FinalSpeed = Base * Multiplier;
+		
+		GetCharacterMovement()->MaxWalkSpeed = FinalSpeed;
+
+		UE_LOG(LogTemp, Warning, TEXT("Speed Updated: Base=%.1f Mult=%.2f -> MaxWalkSpeed=%.1f"), 
+			Base, Multiplier, FinalSpeed);
+	}
 }
 

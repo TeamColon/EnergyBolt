@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
+#include "Data/EnergyCharacterClassInfo.h"
 #include "GameFramework/Character.h"
 #include "Interface/CombatInterface.h"
 #include "EnergyBaseCharacter.generated.h"
@@ -54,6 +55,9 @@ protected:
 	FName WeaponTipSocketName;
 
 	bool bDead = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	ECharacterClass CharacterClass = ECharacterClass::Melee;
 
 private:
 	UPROPERTY(EditAnywhere, Category="Combat")

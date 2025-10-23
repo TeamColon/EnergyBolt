@@ -18,7 +18,9 @@ UENUM(BlueprintType)
 enum class ECharacterClass : uint8
 {
 	Melee,
-	Ranged
+	Ranged,
+	Boss,
+	Player
 };
 
 // Data 구조체

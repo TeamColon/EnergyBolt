@@ -8,6 +8,7 @@
 #include "EnergyBlueprintFunctionLibrary.h"
 #include "EnergyGameplayTags.h"
 #include "Actor/EnergyEnemyProjectile.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 #include "Interface/CombatInterface.h"
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -41,9 +42,15 @@ void UEnergyEnemyMultiRangedAttack::SpawnProjectiles(const FVector& TargetLocati
 
 		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, EnergyGameplayTags::Damage, Damage);
 		Projectile->DamageEffectSpecHandle = SpecHandle;
-	
+
+		Projectile->ProjectileMovement->HomingTargetComponent = Target->GetRootComponent();
+		Projectile->ProjectileMovement->HomingAccelerationMagnitude = FMath::RandRange(MinHomingAcceleration, MaxHomingAcceleration);
+		Projectile->ProjectileMovement->bIsHomingProjectile = true;
+		
 		Projectile->FinishSpawning(SpawnTransform);
 	}
+
+	
 
 	
 	// Debugging Projectiles Vectors

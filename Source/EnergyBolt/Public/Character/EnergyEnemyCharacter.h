@@ -58,7 +58,5 @@ protected:
 	TSubclassOf<UGameplayEffect> DefaultAttribute;
 	
 	//void InitializeDefaultAttributes() const;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	ECharacterClass CharacterClass = ECharacterClass::Melee;
+	
 };

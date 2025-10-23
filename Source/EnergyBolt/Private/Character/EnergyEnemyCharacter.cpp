@@ -51,12 +51,6 @@ void AEnergyEnemyCharacter::HitReactTagChanged(const FGameplayTag CallbackTag, i
 void AEnergyEnemyCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
-
-	// InitializeDefaultAttributes
-	UEnergyBlueprintFunctionLibrary::InitializeDefaultAttribute(this, CharacterClass, EnergyAbilitySystemComponent);
-
-	// InitializeDefaultAbilities
-	UEnergyBlueprintFunctionLibrary::GiveStartupAbilities(this, CharacterClass, EnergyAbilitySystemComponent);
 	
 	// Initialize BehaviorTree, BlackBoard
 	EnergyAIController = Cast<AEnergyAIController>(NewController);

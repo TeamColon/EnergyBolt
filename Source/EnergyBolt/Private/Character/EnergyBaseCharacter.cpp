@@ -3,6 +3,7 @@
 
 #include "Character/EnergyBaseCharacter.h"
 
+#include "EnergyBlueprintFunctionLibrary.h"
 #include "AbilitySystem/EnergyAbilitySystemComponent.h"
 #include "AbilitySystem/EnergyAttributeSet.h"
 #include "Components/CapsuleComponent.h"
@@ -38,7 +39,12 @@ void AEnergyBaseCharacter::PossessedBy(AController* NewController)
 	if (EnergyAbilitySystemComponent)
 	{ 
 		EnergyAbilitySystemComponent->InitAbilityActorInfo(this,this);
-		
+
+		// InitializeDefaultAttributes
+		UEnergyBlueprintFunctionLibrary::InitializeDefaultAttribute(this, CharacterClass, EnergyAbilitySystemComponent);
+
+		// InitializeDefaultAbilities
+		UEnergyBlueprintFunctionLibrary::GiveStartupAbilities(this, CharacterClass, EnergyAbilitySystemComponent);
 	}
 }
 

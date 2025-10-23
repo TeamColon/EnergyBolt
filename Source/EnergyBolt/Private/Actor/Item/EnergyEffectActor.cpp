@@ -25,7 +25,7 @@ void AEnergyEffectActor::BeginPlay()
 }
 
 // GAS Effect 적용 함수
-void AEnergyEffectActor::ApplyEffectToTarget(AActor* Target, TSubclassOf<UGameplayEffect> GameplayEffectClass)
+void AEnergyEffectActor::ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGameplayEffect> GameplayEffectClass)
 {
 	/*
 	 * 적용 방법 1 (정석)
@@ -45,7 +45,7 @@ void AEnergyEffectActor::ApplyEffectToTarget(AActor* Target, TSubclassOf<UGamepl
 	 */
 	
 	// UAbilitySystemBlueprintLibrary를 사용해 적용 대상 ASC 들고오기
-	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(Target);
+	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
 	if (TargetASC == nullptr) return;
 	
 	check(GameplayEffectClass);

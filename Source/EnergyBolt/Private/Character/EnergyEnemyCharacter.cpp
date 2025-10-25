@@ -8,6 +8,7 @@
 #include "AI/EnergyAIController.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "EnergyBolt/EnergyBolt.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -24,6 +25,7 @@ AEnergyEnemyCharacter::AEnergyEnemyCharacter()
 
 	GetMesh()->SetCollisionResponseToChannel(ECC_Projectile, ECR_Ignore);
 	GetMesh()->SetGenerateOverlapEvents(false);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Projectile, ECR_Ignore);
 }
 
 

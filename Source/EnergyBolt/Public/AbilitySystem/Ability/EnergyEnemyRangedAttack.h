@@ -24,5 +24,14 @@ protected:
 	TSubclassOf<AEnergyEnemyProjectile> ProjectileClass;
 
 	UFUNCTION(BlueprintCallable)
-	void SpawnProjectile(const FVector& TargetLocation);
+	void SpawnProjectile(const FVector& TargetLocation, AActor* HomingTarget);
+
+	UPROPERTY(EditDefaultsOnly)
+	float MinHomingAcceleration = 1500.f;
+	
+	UPROPERTY(EditDefaultsOnly)
+	float MaxHomingAcceleration = 3000.f;
+
+	UPROPERTY(EditDefaultsOnly)
+	bool bIsHoming = false;
 };

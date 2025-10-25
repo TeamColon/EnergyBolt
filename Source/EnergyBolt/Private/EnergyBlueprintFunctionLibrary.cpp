@@ -31,7 +31,7 @@ void UEnergyBlueprintFunctionLibrary::GiveStartupAbilities(const UObject* WorldC
 	if (EnergyGameMode == nullptr) return;
 	UEnergyCharacterClassInfo* CharacterClassInfo = EnergyGameMode->CharacterClassInfo;
 	if (CharacterClassInfo == nullptr) return;
-
+	
 	// 모든 클래스들이 가지는 Default Ability 부여
 	for (const TSubclassOf<UGameplayAbility> AbilityClass : CharacterClassInfo->DefaultAbilities)
 	{

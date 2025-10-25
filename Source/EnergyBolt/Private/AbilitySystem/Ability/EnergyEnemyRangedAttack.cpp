@@ -7,6 +7,7 @@
 #include "AbilitySystemComponent.h"
 #include "EnergyGameplayTags.h"
 #include "Actor/EnergyEnemyProjectile.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 #include "Interface/CombatInterface.h"
 
 void UEnergyEnemyRangedAttack::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
@@ -17,7 +18,7 @@ void UEnergyEnemyRangedAttack::ActivateAbility(const FGameplayAbilitySpecHandle 
 	
 }
 
-void UEnergyEnemyRangedAttack::SpawnProjectile(const FVector& TargetLocation)
+void UEnergyEnemyRangedAttack::SpawnProjectile(const FVector& TargetLocation, AActor* HomingTarget)
 {
 	const FVector SocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(GetAvatarActorFromActorInfo());
 
@@ -42,6 +43,13 @@ void UEnergyEnemyRangedAttack::SpawnProjectile(const FVector& TargetLocation)
 
 	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, EnergyGameplayTags::Damage, Damage);
 	Projectile->DamageEffectSpecHandle = SpecHandle;
+
+	if (IsValid(HomingTarget))
+	{
+		Projectile->ProjectileMovement->HomingTargetComponent = HomingTarget->GetRootComponent();
+		Projectile->ProjectileMovement->HomingAccelerationMagnitude = FMath::RandRange(MinHomingAcceleration, MaxHomingAcceleration);
+	}
+	Projectile->ProjectileMovement->bIsHomingProjectile = bIsHoming;
 	
 	Projectile->FinishSpawning(SpawnTransform);
 }

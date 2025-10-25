@@ -18,6 +18,8 @@ AEnergyPlayerCharacter::AEnergyPlayerCharacter()
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
+
+	CharacterClass = ECharacterClass::Player;
 }
 
 // Called when the game starts or when spawned

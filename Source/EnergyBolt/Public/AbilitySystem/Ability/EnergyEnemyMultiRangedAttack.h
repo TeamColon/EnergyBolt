@@ -15,7 +15,7 @@ class ENERGYBOLT_API UEnergyEnemyMultiRangedAttack : public UEnergyEnemyRangedAt
 	GENERATED_BODY()
 
 	UFUNCTION(BlueprintCallable)
-	void SpawnProjectiles(const FVector& TargetLocation, AActor* Target);
+	void SpawnProjectiles(const FVector& TargetLocation, AActor* HomingTarget);
 
 protected:
 
@@ -25,8 +25,5 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	int32 NumProjectiles = 5;
 
-	UPROPERTY(EditDefaultsOnly)
-	float MinHomingAcceleration = 1500.f;
-	UPROPERTY(EditDefaultsOnly)
-	float MaxHomingAcceleration = 3000.f;
+	
 };

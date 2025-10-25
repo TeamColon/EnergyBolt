@@ -12,10 +12,10 @@
 #include "Interface/CombatInterface.h"
 #include "Kismet/KismetSystemLibrary.h"
 
-void UEnergyEnemyMultiRangedAttack::SpawnProjectiles(const FVector& TargetLocation, AActor* Target)
+void UEnergyEnemyMultiRangedAttack::SpawnProjectiles(const FVector& TargetLocation, AActor* HomingTarget)
 {
 	// StartLocation = ActorLocation에서 위로 10.f 만큼 이동한 곳.
-	const FVector StartLocation = GetAvatarActorFromActorInfo()->GetActorLocation() + FVector(0.f, 0.f, 10.f);
+	const FVector StartLocation = GetAvatarActorFromActorInfo()->GetActorLocation() + FVector(0.f, 0.f, 0.f);
 	FRotator Rotation = (TargetLocation - StartLocation).Rotation();
 	Rotation.Pitch = 0.f;
 
@@ -36,22 +36,23 @@ void UEnergyEnemyMultiRangedAttack::SpawnProjectiles(const FVector& TargetLocati
 			Cast<APawn>(GetOwningActorFromActorInfo()),
 			ESpawnActorCollisionHandlingMethod::AlwaysSpawn
 		);
-
+		
 		const UAbilitySystemComponent* SourceASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetAvatarActorFromActorInfo());
 		const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, 1.f, SourceASC->MakeEffectContext());
 
 		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, EnergyGameplayTags::Damage, Damage);
 		Projectile->DamageEffectSpecHandle = SpecHandle;
 
-		Projectile->ProjectileMovement->HomingTargetComponent = Target->GetRootComponent();
-		Projectile->ProjectileMovement->HomingAccelerationMagnitude = FMath::RandRange(MinHomingAcceleration, MaxHomingAcceleration);
-		Projectile->ProjectileMovement->bIsHomingProjectile = true;
+		if (IsValid(HomingTarget))
+		{
+			Projectile->ProjectileMovement->HomingTargetComponent = HomingTarget->GetRootComponent();
+			Projectile->ProjectileMovement->HomingAccelerationMagnitude = FMath::RandRange(MinHomingAcceleration, MaxHomingAcceleration);
+		}
+		Projectile->ProjectileMovement->bIsHomingProjectile = bIsHoming;
+		
 		
 		Projectile->FinishSpawning(SpawnTransform);
 	}
-
-	
-
 	
 	// Debugging Projectiles Vectors
 	/*for (FRotator& Rotator : Rotators)
@@ -66,6 +67,4 @@ void UEnergyEnemyMultiRangedAttack::SpawnProjectiles(const FVector& TargetLocati
 			1.f
 		);
 	}*/
-	
-	
 }

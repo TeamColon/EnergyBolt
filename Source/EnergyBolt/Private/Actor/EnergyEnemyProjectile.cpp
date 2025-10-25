@@ -51,10 +51,7 @@ void AEnergyEnemyProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComp
 	 */ 
 	
 	// Enemy에 대한 Damage 적용 방지
-	if (!UEnergyBlueprintFunctionLibrary::IsNotFriend(GetOwner(),OtherActor))
-	{
-		return;
-	}
+	if (!UEnergyBlueprintFunctionLibrary::IsNotFriend(GetOwner(),OtherActor)) return;
 	
 	if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
 	{
@@ -62,6 +59,16 @@ void AEnergyEnemyProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComp
 	}
 	
 	Destroy();
+	/*if (UEnergyBlueprintFunctionLibrary::IsNotFriend(GetOwner(), OtherActor))
+	{
+		if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
+		{
+			TargetASC->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data.Get());
+		}
+
+		Destroy();
+	}
+	else return;*/
 }
 
 

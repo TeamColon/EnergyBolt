@@ -23,9 +23,10 @@ AEnergyEnemyCharacter::AEnergyEnemyCharacter()
 	bUseControllerRotationRoll = false;
 	GetCharacterMovement()->bUseControllerDesiredRotation = true;
 
-	GetMesh()->SetCollisionResponseToChannel(ECC_Projectile, ECR_Ignore);
+	/*GetMesh()->SetCollisionResponseToChannel(ECC_Projectile, ECR_Ignore);
 	GetMesh()->SetGenerateOverlapEvents(false);
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Projectile, ECR_Ignore);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Projectile, ECR_Ignore);*/
 }
 
 

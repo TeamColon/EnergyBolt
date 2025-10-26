@@ -50,7 +50,11 @@ void AEnergyEnemyProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComp
 	 * Overlap이 아닌 OnComponentHit로 구현해야 할 수 도 있다.
 	 */ 
 	
-	// Enemy에 대한 Damage 적용 방지
+	//if (!(DamageEffectSpecHandle.Data.IsValid() && DamageEffectSpecHandle.Data.Get()->GetContext().GetEffectCauser() == OtherActor)) return;
+	if (GetOwner() == OtherActor) return;
+	
+	if (GetInstigator() == OtherActor) return;
+	
 	if (!UEnergyBlueprintFunctionLibrary::IsNotFriend(GetOwner(),OtherActor)) return;
 	
 	if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
@@ -59,16 +63,7 @@ void AEnergyEnemyProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComp
 	}
 	
 	Destroy();
-	/*if (UEnergyBlueprintFunctionLibrary::IsNotFriend(GetOwner(), OtherActor))
-	{
-		if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
-		{
-			TargetASC->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data.Get());
-		}
-
-		Destroy();
-	}
-	else return;*/
+	
 }
 
 

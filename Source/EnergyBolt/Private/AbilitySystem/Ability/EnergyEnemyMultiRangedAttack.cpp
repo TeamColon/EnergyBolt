@@ -12,7 +12,7 @@
 #include "Interface/CombatInterface.h"
 #include "Kismet/KismetSystemLibrary.h"
 
-void UEnergyEnemyMultiRangedAttack::SpawnProjectiles(const FVector& TargetLocation, AActor* HomingTarget)
+void UEnergyEnemyMultiRangedAttack::SpawnProjectiles(const FVector& TargetLocation)
 {
 	// StartLocation = ActorLocation에서 위로 10.f 만큼 이동한 곳.
 	const FVector StartLocation = GetAvatarActorFromActorInfo()->GetActorLocation() + FVector(0.f, 0.f, 0.f);
@@ -42,14 +42,6 @@ void UEnergyEnemyMultiRangedAttack::SpawnProjectiles(const FVector& TargetLocati
 
 		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, EnergyGameplayTags::Damage, Damage);
 		Projectile->DamageEffectSpecHandle = SpecHandle;
-
-		if (IsValid(HomingTarget))
-		{
-			Projectile->ProjectileMovement->HomingTargetComponent = HomingTarget->GetRootComponent();
-			Projectile->ProjectileMovement->HomingAccelerationMagnitude = FMath::RandRange(MinHomingAcceleration, MaxHomingAcceleration);
-		}
-		Projectile->ProjectileMovement->bIsHomingProjectile = bIsHoming;
-		
 		
 		Projectile->FinishSpawning(SpawnTransform);
 	}

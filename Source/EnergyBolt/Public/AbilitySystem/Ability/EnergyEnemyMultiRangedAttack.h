@@ -15,7 +15,7 @@ class ENERGYBOLT_API UEnergyEnemyMultiRangedAttack : public UEnergyEnemyRangedAt
 	GENERATED_BODY()
 
 	UFUNCTION(BlueprintCallable)
-	void SpawnProjectiles(const FVector& TargetLocation, AActor* HomingTarget);
+	void SpawnProjectiles(const FVector& TargetLocation);
 
 protected:
 

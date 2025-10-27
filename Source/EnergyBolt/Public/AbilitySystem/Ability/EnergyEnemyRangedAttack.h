@@ -26,11 +26,29 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void SpawnProjectile(const FVector& TargetLocation, AActor* HomingTarget);
 
+	UFUNCTION(BlueprintCallable)
+	void SpawnProjectileMultiTimes(const FVector& TargetLocation, AActor* HomingTarget);
+
+	UPROPERTY(EditDefaultsOnly)
+	int32 Times;
+	
 	UPROPERTY(EditDefaultsOnly)
 	float MinHomingAcceleration = 1500.f;
 	
 	UPROPERTY(EditDefaultsOnly)
 	float MaxHomingAcceleration = 3000.f;
+
+	UPROPERTY(EditDefaultsOnly)
+	float MinYawOffset = -15.f;
+
+	UPROPERTY(EditDefaultsOnly)
+	float MaxYawOffset = 15.f;
+
+	UPROPERTY(EditDefaultsOnly)
+	float MinPitchOffset = -15.f;
+
+	UPROPERTY(EditDefaultsOnly)
+	float MaxPitchOffset = 15.f;
 
 	UPROPERTY(EditDefaultsOnly)
 	bool bIsHoming = false;

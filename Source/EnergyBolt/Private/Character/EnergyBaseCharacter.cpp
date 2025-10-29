@@ -50,6 +50,10 @@ UAbilitySystemComponent* AEnergyBaseCharacter::GetAbilitySystemComponent() const
 	return EnergyAbilitySystemComponent;
 }
 
+void AEnergyBaseCharacter::InitAbilityActorInfo()
+{
+}
+
 FVector AEnergyBaseCharacter::GetCombatSocketLocation_Implementation()
 {
 	check(Weapon);

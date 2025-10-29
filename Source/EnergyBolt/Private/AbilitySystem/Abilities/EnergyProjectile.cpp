@@ -10,7 +10,7 @@
 #include "AbilitySystem/EnergyAttributeSet.h"
 #include "Actor/EnergyBoltProjectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
-#include "Interfaces/CombatInterface.h"
+#include "Interface/CombatInterface.h"
 
 UEnergyProjectile::UEnergyProjectile()
 {

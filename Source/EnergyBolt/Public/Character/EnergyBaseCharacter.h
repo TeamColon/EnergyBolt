@@ -7,7 +7,6 @@
 #include "Data/EnergyCharacterClassInfo.h"
 #include "GameFramework/Character.h"
 #include "Interface/CombatInterface.h"
-#include "Interfaces/CombatInterface.h"
 #include "EnergyBaseCharacter.generated.h"
 
 class UGameplayEffect;

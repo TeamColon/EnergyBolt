@@ -3,3 +3,91 @@
 
 #include "AbilitySystem/EnergyAbilitySystemComponent.h"
 
+#include "AbilitySystem/Abilities/EnergyGameplayAbility.h"
+
+void UEnergyAbilitySystemComponent::AbilityActorInfoSet()
+{
+	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UEnergyAbilitySystemComponent::EffectApplied);
+}
+
+// Effect 적용 됐을 때 실행되는 함수
+void UEnergyAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle)
+{
+	/*UE_LOG(LogTemp, Display, TEXT("Effect Applied"));*/
+
+	/*FGameplayTagContainer TagContainer;
+	EffectSpec.GetAllAssetTags(TagContainer);
+
+	for (const FGameplayTag& Tag : TagContainer)
+	{
+		//TODO: Broadcast the tag to the Widget Controller
+		const FString Msg = FString::Printf(TEXT("GE Tag: %s"), *Tag.ToString());
+		GEngine->AddOnScreenDebugMessage(-1, 8.f, FColor::Blue, Msg);
+	}*/
+}
+
+
+void UEnergyAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities)
+{
+	for (const TSubclassOf<UGameplayAbility> AbilityClass : StartupAbilities)
+	{
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
+		if (const UEnergyGameplayAbility* EnergyAbility = Cast<UEnergyGameplayAbility>(AbilitySpec.Ability))
+		{
+			// 여러 태그를 AbilitySpec에 추가
+			// ex) 공격 어빌리티 = 4개 (위, 아래, 왼쪽, 오른쪽)
+			for (const FGameplayTag& Tag : EnergyAbility->StartupInputTag)	
+			{
+				if (Tag.IsValid())
+				{
+					AbilitySpec.DynamicAbilityTags.AddTag(Tag);	// 런타임에 AbilitySpec에 Tag를 붙일 수 있음
+				}
+			}
+	
+			GiveAbility(AbilitySpec);						// ASC에 AbilitySpec을 등록만 함
+			// GiveAbilityAndActivateOnce(AbilitySpec);		// Ability를 ASC에 등록하면서, 즉시 한 번 실행 (임시형)
+		}
+	}
+}
+
+void UEnergyAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTag)
+{
+	if (!InputTag.IsValid()) return;
+	
+	/*FGameplayEventData EventData;
+	EventData.EventTag = InputTag;*/
+
+	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		// AbilitySpec이 해당 InputTag를 가지고 있다면
+		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
+		{
+			AbilitySpecInputPressed(AbilitySpec);	// Pressed 상태 전달
+			if (!AbilitySpec.IsActive())				// 아직 실행 중이 아니라면
+			{
+				if (UGameplayAbility* Ability = AbilitySpec.GetPrimaryInstance())
+				{
+					if (UEnergyGameplayAbility* MyAbility = Cast<UEnergyGameplayAbility>(Ability))
+					{
+						MyAbility->TriggeredInputTag = InputTag; // Input Tag 직접 전달
+					}
+				}
+				TryActivateAbility(AbilitySpec.Handle);	// 실행 시도
+			}
+		}
+	}
+}
+
+void UEnergyAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& InputTag)
+{
+	if (!InputTag.IsValid()) return;
+
+	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		// AbilitySpec이 해당 InputTag를 가지고 있다면
+		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
+		{
+			AbilitySpecInputReleased(AbilitySpec);	// Released 상태 전달
+		}
+	}
+}

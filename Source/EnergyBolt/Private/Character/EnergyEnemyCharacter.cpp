@@ -13,7 +13,6 @@
 #include "GameFramework/CharacterMovementComponent.h"
 
 
-// Sets default values
 AEnergyEnemyCharacter::AEnergyEnemyCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -63,7 +62,6 @@ void AEnergyEnemyCharacter::PossessedBy(AController* NewController)
 	// BlackBoard의 변수 초기화
 	EnergyAIController->GetBlackboardComponent()->SetValueAsBool(FName("IsRanged"), CharacterClass != ECharacterClass::Melee);
 	EnergyAIController->GetBlackboardComponent()->SetValueAsBool(FName("IsHitReacting"), false);
-	
 }
 
 void AEnergyEnemyCharacter::SetCombatTarget_Implementation(AActor* InCombatTarget)

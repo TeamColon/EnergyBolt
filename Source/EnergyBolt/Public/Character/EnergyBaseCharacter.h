@@ -7,8 +7,12 @@
 #include "Data/EnergyCharacterClassInfo.h"
 #include "GameFramework/Character.h"
 #include "Interface/CombatInterface.h"
+#include "Interfaces/CombatInterface.h"
 #include "EnergyBaseCharacter.generated.h"
 
+class UGameplayEffect;
+class UGameplayAbility;
+class UAttributeSet;
 class UEnergyAttributeSet;
 class UEnergyAbilitySystemComponent;
 class UAnimMontage;
@@ -17,7 +21,6 @@ UCLASS()
 class ENERGYBOLT_API AEnergyBaseCharacter : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
 {
 	GENERATED_BODY()
-
 public:
 	AEnergyBaseCharacter();
 
@@ -32,6 +35,7 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TArray<FTaggedMontage> AttackMontages;
+	
 
 protected:
 	//~ Begin APawn Interface.
@@ -41,9 +45,12 @@ protected:
 	//~ Begin IAbilitySystemInterface.
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	//~ End IAbilitySystemInterface.
+
+	UEnergyAttributeSet* GetAttributeSet() const {return EnergyAttributeSet;};
+	virtual void InitAbilityActorInfo();		// Player branch
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
-	UEnergyAbilitySystemComponent* EnergyAbilitySystemComponent;
+	UEnergyAbilitySystemComponent*  EnergyAbilitySystemComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
 	UEnergyAttributeSet* EnergyAttributeSet;
@@ -64,9 +71,24 @@ private:
 	TObjectPtr<UAnimMontage> HitReactMontage;
 	
 public:
-	
-	/*FORCEINLINE UEnergyAbilitySystemComponent* GetEnergyAbilitySystemComponent() const {return EnergyAbilitySystemComponent;}
+	// Player Branch
+	/*UPROPERTY(EditAnywhere, Category = "Combat")
+	TObjectPtr<USkeletalMeshComponent> Weapon;*/		// 무기 있으면 그 Socket에 부착하기 위한 용도
 
-	FORCEINLINE UEnergyAttributeSet* GetEnergyAttributeSet() const {return EnergyAttributeSet;}*/
+	void AddCharacterAbilities();
+	
+	UPROPERTY(EditAnywhere, Category = "Abilities")
+	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
+	TSubclassOf<UGameplayEffect> DefaultCharacterAttributes;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
+	TSubclassOf<UGameplayEffect> DefaultAttackAttributes;
+
+	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, float Level) const;
+	void InitializeDefaultAttributes() const;
+	// Player Branch
 	
 };
+

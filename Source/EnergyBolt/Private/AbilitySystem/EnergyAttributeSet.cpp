@@ -15,8 +15,26 @@ UEnergyAttributeSet::UEnergyAttributeSet()
 	//InitMaxHealth(1.f);
 }
 
+// GameplayEffect 또는 직접 코드로 Attribute를 변경하기 직전 호출
+void UEnergyAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
+{
+	Super::PreAttributeChange(Attribute, NewValue);
+
+	
+	if (Attribute == GetCurrentHealthAttribute())
+	{
+		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxHealth());
+	}
+}
+
+
 void UEnergyAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const
 {
+	/* 태영
+	 * GameplayEffect 실행 맥락을 정리해서 소스/타겟 정보를 쉽게 가져다 쓰기 위함
+	 * Source = 시전자, Target = 피격자
+	 */
+
 	// FEffectProperties의 값들을 갱신하는 함수
 	// 이후 사용할 때 nullptr이 아닌지 체크 필수
 	// Target = Target of Effect (Owner of this AS) Source = Causer of the Effect
@@ -67,6 +85,7 @@ void UEnergyAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffect
 	if (Data.EvaluatedData.Attribute == GetCurrentHealthAttribute())
 	{
 		SetCurrentHealth(FMath::Clamp(GetCurrentHealth(), 0.f, GetMaxHealth()));
+		/*UE_LOG(LogTemp, Warning, TEXT("Changed Health on %s, Health: %f"), *Props.TargetAvatarActor->GetName(), GetCurrentHealth());*/
 	}
 
 	if (Data.EvaluatedData.Attribute == GetIncomingDamageAttribute())

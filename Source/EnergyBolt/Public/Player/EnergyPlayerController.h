@@ -7,6 +7,9 @@
 #include "GameFramework/PlayerController.h"
 #include "EnergyPlayerController.generated.h"
 
+struct FGameplayTag;
+class UEnergyInputConfig;
+class UEnergyAbilitySystemComponent;
 class UInputAction;
 class UInputMappingContext;
 struct FInputActionValue;
@@ -30,5 +33,19 @@ private:
 	UPROPERTY(EditAnywhere, Category = "input")
 	TObjectPtr<UInputAction> MoveAction;
 
+	UPROPERTY(EditAnywhere, Category = "input")
+	TObjectPtr<UEnergyInputConfig> InputConfig;
+	
+	
 	void Move(const FInputActionValue& InputActionValue);
+	/*void Attack();*/
+	
+	void AbilityInputTagPressed(FGameplayTag InputTag);
+	void AbilityInputTagReleased(FGameplayTag InputTag);
+	void AbilityInputTagHeld(FGameplayTag InputTag);
+	
+	UPROPERTY()
+	TObjectPtr<UEnergyAbilitySystemComponent> EnergyAbilitySystemComponent;
+	
+	UEnergyAbilitySystemComponent* GetASC();
 };

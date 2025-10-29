@@ -6,8 +6,10 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "EnergyGameplayTags.h"
+#include "Abilities/Tasks/AbilityTask_WaitDelay.h"
 #include "AbilitySystem/EnergyAttributeSet.h"
 #include "Actor/EnergyBoltProjectile.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 #include "Interfaces/CombatInterface.h"
 
 UEnergyProjectile::UEnergyProjectile()
@@ -66,11 +68,7 @@ void UEnergyProjectile::SpawnProjectile(const FGameplayTag &InputTag)
 	}
 }
 
-void UEnergyProjectile::ProjectileAttribute()
-{
-	
-}
-
+// 방향키에 따라 그쪽 방향으로 쏘도록
 void UEnergyProjectile::ProjectileCalcRotation(const FGameplayTag& InputTag, FRotator& Rotation)
 {
 	// InputTag에 따라 회전 변경
@@ -90,6 +88,24 @@ void UEnergyProjectile::ProjectileCalcRotation(const FGameplayTag& InputTag, FRo
 	{
 		Rotation.Yaw += 90.f;
 	}
-}
 
+	AActor* AvatarActor = GetAvatarActorFromActorInfo();
+	const FVector Velocity = AvatarActor->GetVelocity();
+	if (!Velocity.IsNearlyZero())
+	{
+		const FVector MoveDir = Velocity.GetSafeNormal2D();
+		const FVector AttackDir = FRotationMatrix(Rotation).GetUnitAxis(EAxis::X);
+
+		// 내적(dot): 1이면 같은 방향, -1이면 반대 방향
+		const float DirectionDot = FVector::DotProduct(MoveDir, AttackDir);
+
+		// 같은 방향일 때만 보정 (0.3 이상일 때)
+		if (DirectionDot > 0.3f)
+		{
+			const float MoveYaw = Velocity.Rotation().Yaw;
+			const float Influence = 0.3f; // 보정 강도
+			Rotation.Yaw = FMath::Lerp(Rotation.Yaw, MoveYaw, Influence);
+		}
+	}
+}
 

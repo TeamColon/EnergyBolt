@@ -105,11 +105,22 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Attack")
 	FGameplayAttributeData ProjectileSpeed;
-	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, ProjectileSpeed)		// 탄속 배율 (최대 2.0)
+	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, ProjectileSpeed)		// 탄속 배율 (최대 2.0) // 아직 적용 X
+
+	UPROPERTY(BlueprintReadOnly, Category = "Attack")
+	FGameplayAttributeData ShotCount;
+	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, ShotCount)				// 발사 되는 탄환 수 (기본 : 1)
 
 	// Tag 방식 속성 부여 (추후 고려)
 	UPROPERTY(BlueprintReadOnly, Category = "Attack")
 	FGameplayTagContainer AttackEffects; // 예: Burn, Poison, Freeze
+
+	/*
+	 */
+	UPROPERTY(BlueprintReadOnly, Category = "Attack")
+	FGameplayAttributeData Money;
+	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, Money)				// 발사 되는 탄환 수 (기본 : 1)
+	
 
 	/*UPROPERTY(BlueprintReadOnly, Category = "Attack")
 	FGameplayAttributeData CriticalDamage;

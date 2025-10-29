@@ -36,9 +36,8 @@ protected:
 	void SpawnProjectile(const FGameplayTag &InputTag);
 
 	UFUNCTION()
-	void ProjectileAttribute();
-
-	UFUNCTION()
 	void ProjectileCalcRotation(const FGameplayTag &InputTag, FRotator& Rotation);
 
+private:
+	
 };

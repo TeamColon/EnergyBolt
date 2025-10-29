@@ -21,6 +21,8 @@ public:
 
 	void InitializeProjectile(float InDamage, float InSpeed, float InRange);
 
+	void EnableGravity();
+
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovement;
 
@@ -67,6 +69,8 @@ private:
 	float LifeSpan = 1.f;
 
 	bool bHit = false;
+
+	FTimerHandle GravityTimerHandle;
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USphereComponent> Sphere;

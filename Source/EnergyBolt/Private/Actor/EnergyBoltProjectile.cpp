@@ -32,19 +32,36 @@ AEnergyBoltProjectile::AEnergyBoltProjectile()
 	ProjectileMovement->ProjectileGravityScale = 0.f;				// 중력 부여 X
 }
 
+// Damage, Shot speed, Range 설정 함수
 void AEnergyBoltProjectile::InitializeProjectile(float InDamage, float InSpeed, float InRange)
 {
 	DamageAmount = InDamage;
 	ProjectileMovement->InitialSpeed = 1000.f * InSpeed;			// 1000 유닛/초 , ue5 -> 1 Unit = 1 cm
-	SetLifeSpan(LifeSpan * InRange);						// Actor 수명 설정 Default = 3.0 -> 3초 뒤 삭제로 사거리 지정
+	Range = InRange;
+}
+
+void AEnergyBoltProjectile::EnableGravity()
+{
+	if (ProjectileMovement)
+	{
+		ProjectileMovement->ProjectileGravityScale = 1.0f; // 기본 중력 적용
+	}
 }
 
 void AEnergyBoltProjectile::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// 스폰 시점에 발사자(Instigator)를 Ignore
+	/*AActor* MyInstigator = GetInstigator();
+	if (MyInstigator)
+	{
+		Sphere->IgnoreActorWhenMoving(MyInstigator, true);
+	}*/
 	
 	Sphere->OnComponentBeginOverlap.AddDynamic(this, &AEnergyBoltProjectile::OnSphereOverlap);
 	/*LoopingSoundComponent = UGameplayStatics::SpawnSoundAttached(LoopingSound, GetRootComponent());*/
+	GetWorldTimerManager().SetTimer(GravityTimerHandle, this, &AEnergyBoltProjectile::EnableGravity, Range, false);
 }
 
 void AEnergyBoltProjectile::Destroyed()
@@ -64,6 +81,8 @@ void AEnergyBoltProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedCompo
 	/*UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
 	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
 	LoopingSoundComponent->Stop();*/
+
+	if (OtherActor == GetInstigator()) return;
 
 	if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
 	{

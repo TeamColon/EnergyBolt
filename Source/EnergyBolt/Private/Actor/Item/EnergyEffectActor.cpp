@@ -7,6 +7,7 @@
 #include "AbilitySystemInterface.h"
 #include "BlueprintGameplayTagLibrary.h"
 #include "AbilitySystem/EnergyAbilitySystemComponent.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 
 
 AEnergyEffectActor::AEnergyEffectActor()
@@ -15,13 +16,14 @@ AEnergyEffectActor::AEnergyEffectActor()
 
 	// 유연하게 만들기 위해 Scene 사용 (Sphere, mesh, box, capsule 등등은 자손에서 설정하기 )
 	// Scene component는 Transform을 가지는 "기본 루트 타입"이다.
-	SetRootComponent(CreateDefaultSubobject<USceneComponent>("SceneRoot"));
+	SceneRoot = CreateDefaultSubobject<USceneComponent>("SceneRoot");
+	SetRootComponent(SceneRoot);
+	
 }
 
 void AEnergyEffectActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // GAS Effect 적용 함수

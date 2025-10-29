@@ -6,16 +6,19 @@
 #include "GameFramework/Actor.h"
 #include "EnergyEffectActor.generated.h"
 
+class UProjectileMovementComponent;
 class UGameplayEffect;
 
-UCLASS()
+UCLASS(Blueprintable)
 class ENERGYBOLT_API AEnergyEffectActor : public AActor
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this actor's properties
 	AEnergyEffectActor();
+
+	UPROPERTY(VisibleAnywhere)
+	USceneComponent* SceneRoot;
 
 protected:
 	virtual void BeginPlay() override;
@@ -28,6 +31,5 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Applied Effects")
 	TSubclassOf<UGameplayEffect> DurationGameplayEffectClass;
-
 	
 };

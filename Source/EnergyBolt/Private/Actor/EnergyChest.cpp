@@ -21,7 +21,7 @@ void AEnergyChest::OpenTreasureChest()
 	const float Roll = FMath::FRand();
 	if (Roll > DropChance)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("No drop this time (%.2f > %.2f)"), Roll, DropChance);
+		/*UE_LOG(LogTemp, Warning, TEXT("No drop this time (%.2f > %.2f)"), Roll, DropChance);*/
 		return;
 	}
 	
@@ -31,6 +31,9 @@ void AEnergyChest::OpenTreasureChest()
 	if (SelectedItemClass == nullptr) return;
 
 	SpawnLoot(1, SelectedItemClass);
+	
+	// 골드 ??% / 체력 포션 ??% / 아이템 ??%
+	// 골드 10~300 / 체력 포션 1~2개 / 아이템 1개 나온다 만다
 
 	/*FVector SpawnLocation = GetActorLocation() + FVector(500.f, 500.f, 120.f);
 	FRotator SpawnRotation = FRotator::ZeroRotator;*/
@@ -84,7 +87,7 @@ void AEnergyChest::SpawnLoot(int32 Count, TSubclassOf<AEnergySpawnActor> TargetA
 		if (Item)
 		{
 			Item->Launch(LaunchDir, Speed);
-			UE_LOG(LogTemp, Warning, TEXT("EnergyChest Item->Launch"));
+			/*UE_LOG(LogTemp, Warning, TEXT("EnergyChest Item->Launch"));*/
 		}
 	}
 }

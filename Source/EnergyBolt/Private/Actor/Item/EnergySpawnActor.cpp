@@ -62,7 +62,7 @@ void AEnergySpawnActor::Launch(FVector Dir, float Speed)
 	if (StaticMesh && StaticMesh->IsSimulatingPhysics())
 	{
 		StaticMesh->AddImpulse(Dir * Speed, NAME_None, true);
-		UE_LOG(LogTemp, Warning, TEXT("Launch AddImpulse"));
+		/*UE_LOG(LogTemp, Warning, TEXT("Launch AddImpulse"));*/
 	}
 }
 

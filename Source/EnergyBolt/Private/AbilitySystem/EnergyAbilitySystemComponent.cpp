@@ -13,7 +13,7 @@ void UEnergyAbilitySystemComponent::AbilityActorInfoSet()
 // Effect 적용 됐을 때 실행되는 함수
 void UEnergyAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle)
 {
-	UE_LOG(LogTemp, Display, TEXT("Effect Applied"));
+	/*UE_LOG(LogTemp, Display, TEXT("Effect Applied"));*/
 
 	/*FGameplayTagContainer TagContainer;
 	EffectSpec.GetAllAssetTags(TagContainer);

@@ -14,9 +14,3 @@ void AEnergyActorBase::BeginPlay()
 	Super::BeginPlay();
 	
 }
-
-void AEnergyActorBase::Launch(FVector Dir, float Speed)
-{
-}
-
-

@@ -16,6 +16,4 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-
-	void Launch(FVector Dir, float Speed);
 };

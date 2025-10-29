@@ -74,9 +74,8 @@ void AEnergyPlayerCharacter::UpdateMovementSpeed()
 		const float FinalSpeed = Base * Multiplier;
 		
 		GetCharacterMovement()->MaxWalkSpeed = FinalSpeed;
-
-		UE_LOG(LogTemp, Warning, TEXT("Speed Updated: Base=%.1f Mult=%.2f -> MaxWalkSpeed=%.1f"), 
-			Base, Multiplier, FinalSpeed);
+		/*UE_LOG(LogTemp, Warning, TEXT("Speed Updated: Base=%.1f Mult=%.2f -> MaxWalkSpeed=%.1f"), 
+			Base, Multiplier, FinalSpeed);*/
 	}
 }
 

@@ -1,15 +1,13 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AbilitySystem/Abilities/EnergyProjectile.h"
+#include "AbilitySystem/Ability/EnergyProjectile.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "EnergyGameplayTags.h"
-#include "Abilities/Tasks/AbilityTask_WaitDelay.h"
 #include "AbilitySystem/EnergyAttributeSet.h"
 #include "Actor/EnergyBoltProjectile.h"
-#include "GameFramework/ProjectileMovementComponent.h"
 #include "Interface/CombatInterface.h"
 
 UEnergyProjectile::UEnergyProjectile()
@@ -34,7 +32,7 @@ void UEnergyProjectile::SpawnProjectile(const FGameplayTag &InputTag)
 	if (!CombatInterface) return;
 	
 	{
-		const FVector SocketLocation = CombatInterface->GetCombatSocketLocation();
+		const FVector SocketLocation = CombatInterface->Execute_GetCombatSocketLocation(GetAvatarActorFromActorInfo());
 
 		// Rotation 관련
 		// FRotator Rotation = GetAvatarActorFromActorInfo()->GetActorRotation(); // 캐릭터 기준 방향

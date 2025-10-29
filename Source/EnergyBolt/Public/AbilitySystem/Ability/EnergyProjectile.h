@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AbilitySystem/Abilities/EnergyDamageGameplayAbility.h"
+#include "AbilitySystem/Ability/EnergyDamageGameplayAbility.h"
 #include "EnergyProjectile.generated.h"
 
 

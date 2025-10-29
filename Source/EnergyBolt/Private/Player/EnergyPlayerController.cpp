@@ -8,7 +8,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "AbilitySystem/EnergyAbilitySystemComponent.h"
-#include "AbilitySystem/Abilities/EnergyProjectile.h"
+#include "AbilitySystem/Ability/EnergyProjectile.h"
 #include "Player/Input/EnergyInputComponent.h"
 
 AEnergyPlayerController::AEnergyPlayerController()

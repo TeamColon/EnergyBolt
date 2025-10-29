@@ -3,7 +3,7 @@
 
 #include "AbilitySystem/EnergyAbilitySystemComponent.h"
 
-#include "AbilitySystem/Abilities/EnergyGameplayAbility.h"
+#include "AbilitySystem/Ability/EnergyGameplayAbility.h"
 
 void UEnergyAbilitySystemComponent::AbilityActorInfoSet()
 {

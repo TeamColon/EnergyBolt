@@ -35,5 +35,5 @@ public:
 	
 	UFUNCTION(BlueprintPure, Category="EnergyFunctionLibrary")
 	static TArray<FVector> EvenlyRotatedVectors(const FVector& ForwardVector, const FVector& Axis, float Spread, int32 NumVectors);
-
+	
 };

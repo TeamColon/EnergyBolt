@@ -1,4 +1,4 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AbilitySystem/Abilities/EnergyGameplayAbility.h"
+#include "AbilitySystem/Ability/EnergyGameplayAbility.h"

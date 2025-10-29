@@ -40,11 +40,11 @@ void UEnergyEnemyRangedAttack::SpawnProjectile(const FVector& TargetLocation, AA
 		
 		Rotation.Yaw += YawOffset;
 		Rotation.Pitch += PitchOffset;
-		if (GEngine)
+		/*if (GEngine)
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red,
 				FString::Printf(TEXT("Yaw: %f, Pitch: %f"), YawOffset, PitchOffset));
-		}
+		}*/
 	}
 	
 	FTransform SpawnTransform;

@@ -30,8 +30,4 @@ private:
 	UPROPERTY(EditAnywhere)
 	TArray<TSubclassOf<AActor>> ActorsArray;
 	
-	UPROPERTY(EditDefaultsOnly)
-	int32 SpawnNum;
-
-
 };

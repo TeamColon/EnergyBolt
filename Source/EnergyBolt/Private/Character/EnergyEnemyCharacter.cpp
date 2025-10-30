@@ -10,7 +10,9 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "EnergyBolt/EnergyBolt.h"
+#include "Game/EnergyGameModeBase.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 
 AEnergyEnemyCharacter::AEnergyEnemyCharacter()
@@ -81,6 +83,10 @@ void AEnergyEnemyCharacter::Die()
 	if (EnergyAIController)
 	{
 		EnergyAIController->GetBlackboardComponent()->SetValueAsBool(FName("IsDead"), true);
+	}
+	if (const AEnergyGameModeBase* GameMode = Cast<AEnergyGameModeBase>(UGameplayStatics::GetGameMode(this)))
+	{
+		GameMode->OnEnemyDied.Broadcast(this);
 	}
 	Super::Die();
 }

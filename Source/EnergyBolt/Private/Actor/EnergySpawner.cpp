@@ -4,11 +4,14 @@
 #include "Actor/EnergySpawner.h"
 
 #include "Character/EnergyBaseCharacter.h"
+#include "Character/EnergyEnemyCharacter.h"
 #include "Components/ArrowComponent.h"
+#include "Game/EnergyGameModeBase.h"
+#include "Kismet/GameplayStatics.h"
 
 AEnergySpawner::AEnergySpawner()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	ArrowComponent = CreateDefaultSubobject<UArrowComponent>(TEXT("ArrowComponent"));
 	ArrowComponent->SetupAttachment(RootComponent);
@@ -25,45 +28,20 @@ void AEnergySpawner::SpawnSelectedActor()
 		FRotator Rotation = FRotator::ZeroRotator;
 		if (AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(ActorsArray[i], Location, Rotation))
 		{
-			if (AEnergyBaseCharacter* Character = Cast<AEnergyBaseCharacter>(SpawnedActor))
+			if (AEnergyEnemyCharacter* Character = Cast<AEnergyEnemyCharacter>(SpawnedActor))
 			{
 				Character->SpawnDefaultController();
+				/**
+				 * Delegate를 통해  GameMode에 있는 EnemyArray에 추가
+				 * Enemy가 죽으면 Array에서 제거, Array.IsEmpty() 이면 상자 소환 
+				 */
+				if (const AEnergyGameModeBase* GameMode = Cast<AEnergyGameModeBase>(UGameplayStatics::GetGameMode(this)))
+				{
+					GameMode->OnEnemySpawned.Broadcast(Character);
+				}
+				
 			}
 		}
-		
-		/**
-		 * 몬스터 소환 시 바라보는 방향을 Spawner의 Rotation이 아닌 Target에 대해 바라보게 하려고 했으나
-		 * SetCombatTarget이 BehaviorTree(PossessedBy) 이후 실행되기 때문에 GetCombatTarget이 nullptr 반환되는 것 같다.
-		 */
-		/*FTransform SpawnTransform;
-		SpawnTransform.SetLocation(GetActorLocation());
-		SpawnTransform.SetRotation(FRotator::ZeroRotator.Quaternion());
-		
-		AActor* SpawnedActor = GetWorld()->SpawnActorDeferred<AActor>(
-			ActorsArray[i],
-			SpawnTransform,
-			nullptr,
-			nullptr,
-			ESpawnActorCollisionHandlingMethod::AlwaysSpawn
-		);
-
-		if (!SpawnedActor) return;
-		if (AEnergyBaseCharacter* Character = Cast<AEnergyBaseCharacter>(SpawnedActor))
-		{
-			Character->SpawnDefaultController();
-
-			if (AActor* Target = Character->Execute_GetCombatTarget(Character))
-			{
-				const FRotator CharacterRotation = (GetActorLocation() - Target->GetActorLocation()).Rotation();
-				Character->SetActorRotation(CharacterRotation);
-			}
-			Character->FinishSpawning(SpawnTransform);
-		}
-		else
-		{
-			SpawnedActor->FinishSpawning(SpawnTransform);
-		}*/
-		
 	}
 	
 }
@@ -71,8 +49,39 @@ void AEnergySpawner::SpawnSelectedActor()
 void AEnergySpawner::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 
+/**
+		 * 몬스터 소환 시 바라보는 방향을 Spawner의 Rotation이 아닌 Target에 대해 바라보게 하려고 했으나
+		 * SetCombatTarget이 BehaviorTree(PossessedBy) 이후 실행되기 때문에 GetCombatTarget이 nullptr 반환되는 것 같다.
+		 */
+/*FTransform SpawnTransform;
+SpawnTransform.SetLocation(GetActorLocation());
+SpawnTransform.SetRotation(FRotator::ZeroRotator.Quaternion());
+
+AActor* SpawnedActor = GetWorld()->SpawnActorDeferred<AActor>(
+	ActorsArray[i],
+	SpawnTransform,
+	nullptr,
+	nullptr,
+	ESpawnActorCollisionHandlingMethod::AlwaysSpawn
+);
+
+if (!SpawnedActor) return;
+if (AEnergyBaseCharacter* Character = Cast<AEnergyBaseCharacter>(SpawnedActor))
+{
+	Character->SpawnDefaultController();
+
+	if (AActor* Target = Character->Execute_GetCombatTarget(Character))
+	{
+		const FRotator CharacterRotation = (GetActorLocation() - Target->GetActorLocation()).Rotation();
+		Character->SetActorRotation(CharacterRotation);
+	}
+	Character->FinishSpawning(SpawnTransform);
+}
+else
+{
+	SpawnedActor->FinishSpawning(SpawnTransform);
+}*/
 

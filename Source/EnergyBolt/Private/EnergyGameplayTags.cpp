@@ -33,6 +33,8 @@ namespace EnergyGameplayTags
 	/** Player Tags **/
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Attack,"Player.Ability.Attack");
 	
+	UE_DEFINE_GAMEPLAY_TAG(Player_Attack_Power,"Player.Attack.Power");
+	
 	UE_DEFINE_GAMEPLAY_TAG(Player_Attack_Left,"Player.Attack.Left");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Attack_Right,"Player.Attack.Right");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Attack_Up,"Player.Attack.Up");

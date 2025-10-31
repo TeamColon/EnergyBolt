@@ -15,7 +15,6 @@ class ENERGYBOLT_API AEnergyPlayerCharacter : public AEnergyBaseCharacter
 
 public:
 	AEnergyPlayerCharacter();
-
 	
 	//~ Begin APawn Interface.
 	virtual void PossessedBy(AController* NewController) override;
@@ -23,7 +22,6 @@ public:
 
 private:
 	virtual void InitAbilityActorInfo() override;
-
 	
 	void OnSpeedMultiplierChanged(const FOnAttributeChangeData& Data);
 	void UpdateMovementSpeed();

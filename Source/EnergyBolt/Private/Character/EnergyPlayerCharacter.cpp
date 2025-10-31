@@ -35,6 +35,7 @@ void AEnergyPlayerCharacter::PossessedBy(AController* NewController)
 	AddCharacterAbilities();
 
 	// Character Stats의 변화 감지 함수 바인딩 (배율만)
+	// ※추후 바인딩 해제도 고려해야됨. (맵 이동)
 	if (GetAttributeSet() && GetAbilitySystemComponent())
 	{
 		EnergyAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
@@ -59,7 +60,7 @@ void AEnergyPlayerCharacter::InitAbilityActorInfo()
 			EnergyHUD->InitOverlay(EnergyPlayerController, EnergyPlayerState, EnergyAbilitySystemComponent, EnergyAttributeSet);
 		}
 	}
-	InitializeDefaultAttributes(); // AttributeSet 값 설정 함수
+	// InitializeDefaultAttributes(); // AttributeSet 값 설정 함수
 }
 
 void AEnergyPlayerCharacter::OnSpeedMultiplierChanged(const FOnAttributeChangeData& Data)

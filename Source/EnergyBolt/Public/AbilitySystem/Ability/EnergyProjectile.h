@@ -31,12 +31,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Projectile")
 	TSubclassOf<UGameplayEffect> DamageEffectClass;
 	
-	
 	UFUNCTION(BlueprintCallable, Category = "Projectile")
 	void SpawnProjectile(const FGameplayTag &InputTag);
 
 	UFUNCTION()
-	void ProjectileCalcRotation(const FGameplayTag &InputTag, FRotator& Rotation);
+	void ProjectileCalcRotation(const FGameplayTag &InputTag, FRotator& Rotation) const;
 
 private:
 	

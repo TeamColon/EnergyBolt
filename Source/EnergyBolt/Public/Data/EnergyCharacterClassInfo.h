@@ -53,7 +53,6 @@ public:
 	// 모든 캐릭터들이 가지는 기본 Ability HitReact, Death 등등
 	UPROPERTY(EditDefaultsOnly, Category="Character Default Ability")
 	TArray<TSubclassOf<UGameplayAbility>> DefaultAbilities;
-
 	
 	// CharacterClassInfo[CharacterClass]를 통해 CharacterClass에 맞는 DefaultInfo 가져오기
 	FCharacterClassDefaultInfo GetClassDefaultInfo(ECharacterClass CharacterClass);

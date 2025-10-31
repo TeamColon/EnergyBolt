@@ -5,6 +5,7 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
+#include "EnergyBlueprintFunctionLibrary.h"
 #include "EnergyGameplayTags.h"
 #include "AbilitySystem/EnergyAttributeSet.h"
 #include "Actor/EnergyBoltProjectile.h"
@@ -55,9 +56,12 @@ void UEnergyProjectile::SpawnProjectile(const FGameplayTag &InputTag)
 		const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), SourceASC->MakeEffectContext());
 		Projectile->DamageEffectSpecHandle = SpecHandle;
 
-		const float Damage = SourceASC->GetNumericAttribute(UEnergyAttributeSet::GetDamageAttribute());
+		const float Damage = SourceASC->GetNumericAttribute(UEnergyAttributeSet::GetAttackPowerAttribute());
 		const float Speed = SourceASC->GetNumericAttribute(UEnergyAttributeSet::GetProjectileSpeedAttribute());
 		const float Range = SourceASC->GetNumericAttribute(UEnergyAttributeSet::GetRangeAttribute());
+		const float DamageMultipler = SourceASC->GetNumericAttribute(UEnergyAttributeSet::GetDamageMultiplierAttribute());
+		
+		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, EnergyGameplayTags::Player_Attack_Power, Damage * DamageMultipler);
 
 		// Projectile에 세팅
 		Projectile->InitializeProjectile(Damage, Speed, Range);
@@ -67,7 +71,7 @@ void UEnergyProjectile::SpawnProjectile(const FGameplayTag &InputTag)
 }
 
 // 방향키에 따라 그쪽 방향으로 쏘도록
-void UEnergyProjectile::ProjectileCalcRotation(const FGameplayTag& InputTag, FRotator& Rotation)
+void UEnergyProjectile::ProjectileCalcRotation(const FGameplayTag& InputTag, FRotator& Rotation) const
 {
 	// InputTag에 따라 회전 변경
 	if (InputTag == EnergyGameplayTags::Player_Attack_Up)
@@ -106,4 +110,3 @@ void UEnergyProjectile::ProjectileCalcRotation(const FGameplayTag& InputTag, FRo
 		}
 	}
 }
-

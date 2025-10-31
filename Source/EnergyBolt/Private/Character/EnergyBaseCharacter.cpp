@@ -110,7 +110,12 @@ void AEnergyBaseCharacter::AddCharacterAbilities()
 	EnergyASC->AddCharacterAbilities(StartupAbilities);
 }
 
-void AEnergyBaseCharacter::ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, float Level) const
+
+/*
+ * 이 부분이 Attribute 부여 부분이기 때문에
+ * Character class info에 넣는 방식으로 구현
+ */
+/*void AEnergyBaseCharacter::ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, float Level) const
 {
 	check(IsValid(GetAbilitySystemComponent()));
 	check(GameplayEffectClass);
@@ -123,5 +128,5 @@ void AEnergyBaseCharacter::InitializeDefaultAttributes() const
 {
 	ApplyEffectToSelf(DefaultCharacterAttributes, 1.f);
 	ApplyEffectToSelf(DefaultAttackAttributes, 1.f);
-}
+}*/
 // Player branch

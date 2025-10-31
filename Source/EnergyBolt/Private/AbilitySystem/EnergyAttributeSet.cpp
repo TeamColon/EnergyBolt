@@ -85,7 +85,7 @@ void UEnergyAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffect
 	if (Data.EvaluatedData.Attribute == GetCurrentHealthAttribute())
 	{
 		SetCurrentHealth(FMath::Clamp(GetCurrentHealth(), 0.f, GetMaxHealth()));
-		/*UE_LOG(LogTemp, Warning, TEXT("Changed Health on %s, Health: %f"), *Props.TargetAvatarActor->GetName(), GetCurrentHealth());*/
+		UE_LOG(LogTemp, Warning, TEXT("Changed Health on %s, Health: %f"), *Props.TargetAvatarActor->GetName(), GetCurrentHealth());
 	}
 
 	if (Data.EvaluatedData.Attribute == GetIncomingDamageAttribute())

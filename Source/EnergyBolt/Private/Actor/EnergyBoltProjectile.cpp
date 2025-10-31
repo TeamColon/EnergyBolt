@@ -88,7 +88,7 @@ void AEnergyBoltProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedCompo
 	{
 		TargetASC->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data.Get());
 
-		UE_LOG(LogTemp, Warning, TEXT("Attacking!!"));
+		/*UE_LOG(LogTemp, Warning, TEXT("Attacking!!"));*/
 	}
 	
 	Destroy();

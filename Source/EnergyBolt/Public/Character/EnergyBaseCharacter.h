@@ -79,14 +79,17 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
+	/*
+	 * Attribute는 전역함수 사용
+	 */
+	/*UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
 	TSubclassOf<UGameplayEffect> DefaultCharacterAttributes;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
-	TSubclassOf<UGameplayEffect> DefaultAttackAttributes;
-
-	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, float Level) const;
-	void InitializeDefaultAttributes() const;
+	TSubclassOf<UGameplayEffect> DefaultAttackAttributes;*/
+	
+	/*void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, float Level) const;*/
+	/*void InitializeDefaultAttributes() const;*/
 	// Player Branch
 	
 };

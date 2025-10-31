@@ -74,11 +74,7 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Character")
 	FGameplayAttributeData MaxHealth;
-	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet,MaxHealth)
-
-	UPROPERTY(BlueprintReadOnly, Category = "Damage")
-	FGameplayAttributeData IncomingDamage;
-	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, IncomingDamage)
+	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, MaxHealth)
 
 	UPROPERTY(BlueprintReadOnly, Category = "Character")
 	FGameplayAttributeData BaseSpeed;
@@ -87,14 +83,22 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Character")
 	FGameplayAttributeData SpeedMultiplier;
 	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, SpeedMultiplier)		// 이동 속도 배율 (기본 : 1)
+
+	/*
+	 * Meta Attribute
+	 */
+
+	UPROPERTY(BlueprintReadOnly, Category = "Damage")
+	FGameplayAttributeData IncomingDamage;
+	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, IncomingDamage)
 	
 
 	/**
 	 * Attack Stats (임시 / 변경가능)
 	 */
 	UPROPERTY(BlueprintReadOnly, Category = "Attack")
-	FGameplayAttributeData Damage;
-	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, Damage)				// 기본 공격력 (기본 : 10)
+	FGameplayAttributeData AttackPower;
+	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, AttackPower)			// 기본 공격력 (기본 : 10)
 
 	UPROPERTY(BlueprintReadOnly, Category = "Attack")
 	FGameplayAttributeData DamageMultiplier;

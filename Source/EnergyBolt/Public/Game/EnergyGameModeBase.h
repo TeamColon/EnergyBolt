@@ -9,8 +9,8 @@
 class AEnergyEnemyCharacter;
 class UEnergyCharacterClassInfo;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEnemySpawned, AEnergyEnemyCharacter*, Enemy);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEnemyDied, AEnergyEnemyCharacter*, Enemy);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStageCleared, bool, bIsCleared);
+
 /**
  * 
  */
@@ -30,13 +30,10 @@ public:
 	void RegisterEnemy(AEnergyEnemyCharacter* Enemy);
 
 	UFUNCTION()
-	void DeleteEnemy(AEnergyEnemyCharacter* Enemy);
+	void RemoveEnemy(AEnergyEnemyCharacter* Enemy);
 
 	UPROPERTY()
-	FOnEnemySpawned OnEnemySpawned;
-
-	UPROPERTY()
-	FOnEnemyDied OnEnemyDied;
+	FOnStageCleared OnStageCleared;
 
 protected:
 	virtual void BeginPlay() override;

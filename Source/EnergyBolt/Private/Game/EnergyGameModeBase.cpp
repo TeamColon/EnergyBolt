@@ -3,35 +3,52 @@
 
 #include "Game/EnergyGameModeBase.h"
 
+#include "EngineUtils.h"
+#include "Actor/EnergyPortal.h"
+#include "Actor/EnergySpawner.h"
 #include "Character/EnergyEnemyCharacter.h"
 
 void AEnergyGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 
-	OnEnemySpawned.AddDynamic(this, &ThisClass::RegisterEnemy);
+	/**
+	 * 
+	 */
+	for (TActorIterator<AEnergySpawner> It(GetWorld()); It; ++It)
+	{
+		AEnergySpawner* Spawner = *It;
+		Spawner->OnEnemySpawned.AddDynamic(this, &ThisClass::RegisterEnemy);
+	}
 }
 
 
 void AEnergyGameModeBase::RegisterEnemy(AEnergyEnemyCharacter* Enemy)
 {
+	check(IsValid(Enemy));
+	
+	EnemyList.Add(Enemy);
+	Enemy->OnEnemyDied.AddDynamic(this, &ThisClass::RemoveEnemy);
 	/*if (GEngine)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Cyan, FString::Printf(TEXT("%s Added"), *Enemy->GetName()));
+		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Red,
+			FString::Printf(TEXT("%s Added"), *Enemy->GetName()));
 	}*/
-	EnemyList.Add(Enemy);
 }
 
-void AEnergyGameModeBase::DeleteEnemy(AEnergyEnemyCharacter* Enemy)
+void AEnergyGameModeBase::RemoveEnemy(AEnergyEnemyCharacter* Enemy)
 {
+	if (!Enemy) return;
 	/*if (GEngine)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Cyan, FString::Printf(TEXT("%s Deleted"), *Enemy->GetName()));
+		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Red,
+			FString::Printf(TEXT("%s Removed"), *Enemy->GetName()));
 	}*/
+	
 	EnemyList.Remove(Enemy);
 	if (EnemyList.IsEmpty())
 	{
-		// Portal 보이게 하기(스테이지 클리어 bool 변수 넘기기), chest 소환 
+		OnStageCleared.Broadcast(EnemyList.IsEmpty());
 	}
 }
 

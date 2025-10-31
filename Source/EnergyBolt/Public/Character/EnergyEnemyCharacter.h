@@ -12,6 +12,8 @@ class UGameplayEffect;
 class AEnergyAIController;
 class UBehaviorTree;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEnemyDied, AEnergyEnemyCharacter*, Enemy);
+
 UCLASS()
 class ENERGYBOLT_API AEnergyEnemyCharacter : public AEnergyBaseCharacter
 {
@@ -52,6 +54,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Combat")
 	float LifeSpan = 5.f;
+
+	UPROPERTY()
+	FOnEnemyDied OnEnemyDied;
 	
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attributes")

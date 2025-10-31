@@ -79,14 +79,11 @@ AActor* AEnergyEnemyCharacter::GetCombatTarget_Implementation() const
 void AEnergyEnemyCharacter::Die()
 {
 	// LifeSpan을 정하여 N초 이후에 Destroy하게 할 수 있다.
+	OnEnemyDied.Broadcast(this);
 	SetLifeSpan(LifeSpan);
 	if (EnergyAIController)
 	{
 		EnergyAIController->GetBlackboardComponent()->SetValueAsBool(FName("IsDead"), true);
-	}
-	if (const AEnergyGameModeBase* GameMode = Cast<AEnergyGameModeBase>(UGameplayStatics::GetGameMode(this)))
-	{
-		GameMode->OnEnemyDied.Broadcast(this);
 	}
 	Super::Die();
 }

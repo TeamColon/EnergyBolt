@@ -3,11 +3,8 @@
 
 #include "Actor/EnergySpawner.h"
 
-#include "Character/EnergyBaseCharacter.h"
 #include "Character/EnergyEnemyCharacter.h"
 #include "Components/ArrowComponent.h"
-#include "Game/EnergyGameModeBase.h"
-#include "Kismet/GameplayStatics.h"
 
 AEnergySpawner::AEnergySpawner()
 {
@@ -31,15 +28,7 @@ void AEnergySpawner::SpawnSelectedActor()
 			if (AEnergyEnemyCharacter* Character = Cast<AEnergyEnemyCharacter>(SpawnedActor))
 			{
 				Character->SpawnDefaultController();
-				/**
-				 * Delegate를 통해  GameMode에 있는 EnemyArray에 추가
-				 * Enemy가 죽으면 Array에서 제거, Array.IsEmpty() 이면 상자 소환 
-				 */
-				if (const AEnergyGameModeBase* GameMode = Cast<AEnergyGameModeBase>(UGameplayStatics::GetGameMode(this)))
-				{
-					GameMode->OnEnemySpawned.Broadcast(Character);
-				}
-				
+				OnEnemySpawned.Broadcast(Character);
 			}
 		}
 	}

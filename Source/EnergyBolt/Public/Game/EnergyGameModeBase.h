@@ -9,7 +9,6 @@
 class AEnergyEnemyCharacter;
 class UEnergyCharacterClassInfo;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStageCleared, bool, bIsCleared);
 
 /**
  * 
@@ -20,6 +19,8 @@ class ENERGYBOLT_API AEnergyGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 
 public:
+	AEnergyGameModeBase();
+	
 	UPROPERTY(EditDefaultsOnly, Category="CharacterClassDefault")
 	TObjectPtr<UEnergyCharacterClassInfo> CharacterClassInfo;
 
@@ -31,9 +32,24 @@ public:
 
 	UFUNCTION()
 	void RemoveEnemy(AEnergyEnemyCharacter* Enemy);
+	
+	UPROPERTY(EditDefaultsOnly)
+	TArray<TSoftObjectPtr<UWorld>> LevelArray;
+	
+	UPROPERTY()
+	int32 LevelIndex;
+	
+	UPROPERTY()
+	int32 NextLevelIndex;
+
+	UFUNCTION()
+	void SaveGameData();
+
+	UFUNCTION()
+	void TravelNextLevel();
 
 	UPROPERTY()
-	FOnStageCleared OnStageCleared;
+	bool bIsStageCleared = false;
 
 protected:
 	virtual void BeginPlay() override;

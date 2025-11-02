@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "EnergyPortal.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPortalOverlap);
+
 UCLASS()
 class ENERGYBOLT_API AEnergyPortal : public AActor
 {
@@ -16,12 +18,10 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* StaticMesh;
-	
-	UFUNCTION()
-	void SetIsStageCleared(bool bIsCleared);
 
-	FORCEINLINE bool GetIsStageCleared() const {return bIsStageCleared;}
-	
+	UPROPERTY()
+	FOnPortalOverlap OnPortalOverlap;
+
 	
 protected:
 	virtual void BeginPlay() override;
@@ -29,7 +29,5 @@ protected:
 	UFUNCTION()
 	void OnStaticMeshOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 		int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
-
-private:
-	bool bIsStageCleared = true;
+	
 };

@@ -16,79 +16,111 @@ AEnergyChest::AEnergyChest()
 
 void AEnergyChest::OpenTreasureChest()
 {
-	if (SpawnItems.Num() == 0) return;
-
-	const float Roll = FMath::FRand();
-	if (Roll > DropChance)
-	{
-		/*UE_LOG(LogTemp, Warning, TEXT("No drop this time (%.2f > %.2f)"), Roll, DropChance);*/
-		return;
-	}
-	
-	int32 RandIndex = FMath::RandRange(0, SpawnItems.Num() - 1);
-	TSubclassOf<AEnergySpawnActor> SelectedItemClass = SpawnItems[RandIndex];
-
-	if (SelectedItemClass == nullptr) return;
-
-	SpawnLoot(1, SelectedItemClass);
-	
-	// 골드 ??% / 체력 포션 ??% / 아이템 ??%
-	// 골드 10~300 / 체력 포션 1~2개 / 아이템 1개 나온다 만다
-
-	/*FVector SpawnLocation = GetActorLocation() + FVector(500.f, 500.f, 120.f);
-	FRotator SpawnRotation = FRotator::ZeroRotator;*/
-
-
-	/*FActorSpawnParameters Params;
-	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;*/
-
-	/*AEnergyEffectActor* SpawnedItem = GetWorld()->SpawnActor<AEnergyEffectActor>(
-		SelectedItemClass, SpawnLocation, SpawnRotation);*/
-
-	/*if (SpawnedItem)
-	{
-		UE_LOG(LogTemp, Log, TEXT("Spawned item: %s"), *SpawnedItem->GetName());
-		if (GEngine)
-		{
-			GEngine->AddOnScreenDebugMessage(
-				-1, 2.0f, FColor::Green,
-				FString::Printf(TEXT("[Chest] Spawned item: %s"), *SpawnedItem->GetName())
-			);
-		}
-	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("SpawnActor FAILED for index %d"), RandIndex);
-	}*/
+	CheckAndSpawnLoot(SpawnGold, GoldDropChance); // 골드 70%
+	CheckAndSpawnLoot(SpawnHealPotion, HealDropChance); // 회복포션 50%
+	CheckAndSpawnLoot(GetRandomItemFromList(), ItemDropChance); // 아이템 10%
 }
 
-void AEnergyChest::SpawnLoot(int32 Count, TSubclassOf<AEnergySpawnActor> TargetActor)
+// 각 아이템 스폰 확률 검사 함수
+void AEnergyChest::CheckAndSpawnLoot(TSubclassOf<AEnergySpawnActor> TargetActor, float Probability)
 {
-	for (int32 i = 0; i < Count; ++i)
+	if (TargetActor == nullptr) return;
+
+	// 0.0 ~ 1.0 사이의 난수
+	const float Roll = FMath::FRand();
+
+	// 예: 확률이 0.7f면, 70% 확률로 스폰
+	if (Roll <= Probability)
 	{
-		FVector SpawnLoc = GetActorLocation() + FVector(0, 0, 100.f);
-
-		// 위를 기준으로 살짝 대각선으로 튕겨 나가게 랜덤 회전
-		FRotator RandomRot = FRotator(
-			FMath::RandRange(60.f, 100.f), // 위로 발사 각도
-			FMath::RandRange(-90.f, 90.f), // 좌우 퍼짐
-			0.f
-		);
-
-		FVector LaunchDir = RandomRot.Vector();
-		float Speed = FMath::RandRange(500.f, 700.f);
-		
-		AEnergySpawnActor* Item = GetWorld()->SpawnActor<AEnergySpawnActor>(
-			TargetActor,
-			SpawnLoc,
-			RandomRot
-		);
-
-		if (Item)
-		{
-			Item->Launch(LaunchDir, Speed);
-			/*UE_LOG(LogTemp, Warning, TEXT("EnergyChest Item->Launch"));*/
-		}
+		SpawnLoot(true, TargetActor);
 	}
 }
+
+// 아이템 스폰 시키는 함수
+void AEnergyChest::SpawnLoot(bool bIsSpawn, TSubclassOf<AEnergySpawnActor> TargetActor)
+{
+	if (!bIsSpawn || !TargetActor) return;
+
+	// 상자 기준 위치
+	const FVector ChestLoc = GetActorLocation();
+	FVector SpawnLoc = ChestLoc + FVector(0.f, 0.f, 100.f);
+
+	// 이미 스폰된 아이템들의 위치 저장 (겹침 방지용)
+	static TArray<FVector> PrevSpawnLocations;
+	PrevSpawnLocations.RemoveAll([](const FVector& Loc) { return false; });
+
+	const float MinDistance = 70.f;  // 아이템 간 최소 거리
+	const int32 MaxRetry = 10;       // 위치 재시도 횟수 제한
+
+	int32 RetryCount = 0;
+	bool bFoundValidSpot = false;
+
+	while (!bFoundValidSpot && RetryCount < MaxRetry)
+	{
+		// 랜덤 오프셋 생성
+		FVector RandomOffset(
+			FMath::RandRange(-100.f, 100.f),
+			FMath::RandRange(-100.f, 100.f),
+			FMath::RandRange(0.f, 30.f)
+		);
+
+		FVector TestLoc = ChestLoc + RandomOffset + FVector(0, 0, 100.f);
+
+		// 기존 위치들과 최소 거리 확인
+		bool bTooClose = false;
+		for (const FVector& PrevLoc : PrevSpawnLocations)
+		{
+			if (FVector::Dist(PrevLoc, TestLoc) < MinDistance)
+			{
+				bTooClose = true;
+				break;
+			}
+		}
+
+		if (!bTooClose)
+		{
+			SpawnLoc = TestLoc;
+			PrevSpawnLocations.Add(SpawnLoc);
+			bFoundValidSpot = true;
+			break;
+		}
+
+		RetryCount++;
+	}
+
+	// 랜덤 방향 (위쪽 대각선으로)
+	FRotator RandomRot = FRotator(
+		FMath::RandRange(50.f, 80.f),   // Pitch: 위로 쏘기
+		FMath::RandRange(-90.f, 90.f),  // Yaw: 좌우 랜덤
+		0.f
+	);
+
+	FVector LaunchDir = RandomRot.Vector();
+	float Speed = FMath::RandRange(500.f, 700.f);
+
+	// 실제 아이템 생성
+	AEnergySpawnActor* Item = GetWorld()->SpawnActor<AEnergySpawnActor>(
+		TargetActor,
+		SpawnLoc,
+		RandomRot
+	);
+
+	if (Item)
+	{
+		Item->Launch(LaunchDir, Speed);
+	}
+}
+
+// 랜덤 아이템 선택
+TSubclassOf<AEnergySpawnActor> AEnergyChest::GetRandomItemFromList()
+{
+	if (SpawnItems.Num() == 0)
+	{
+		return nullptr; // 아이템 리스트가 비어 있으면 nullptr 반환
+	}
+
+	int32 RandIndex = FMath::RandRange(0, SpawnItems.Num() - 1);
+	return SpawnItems[RandIndex];
+}
+
 

@@ -31,16 +31,30 @@ void UEnergyProjectile::SpawnProjectile(const FGameplayTag &InputTag)
 	// Socket 얻기 위해서 사용
 	ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo());
 	if (!CombatInterface) return;
-	
 	{
 		const FVector SocketLocation = CombatInterface->Execute_GetCombatSocketLocation(GetAvatarActorFromActorInfo());
 
 		// Rotation 관련
 		// FRotator Rotation = GetAvatarActorFromActorInfo()->GetActorRotation(); // 캐릭터 기준 방향
-		FRotator Rotation = FRotator::ZeroRotator; // world 상 방향으로 초기화 시켜두기
-		ProjectileCalcRotation(InputTag, Rotation);
+		FRotator BaseRotation = FRotator::ZeroRotator; // world 상 방향으로 초기화 시켜두기
+		ProjectileCalcRotation(InputTag, BaseRotation);
+
+		const UAbilitySystemComponent* SourceASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetAvatarActorFromActorInfo());
+		if (!SourceASC) return;
+
+		const float ShotCountValue = SourceASC->GetNumericAttribute(UEnergyAttributeSet::GetShotCountAttribute());
+		const int32 ShotCount = FMath::Max(1, FMath::RoundToInt(ShotCountValue));
+
+		if (ShotCount > 1)
+		{
+			SpawnMultipleProjectiles(SocketLocation, BaseRotation, ShotCount, SourceASC);
+		}
+		else
+		{
+			SpawnSingleProjectile(SocketLocation, BaseRotation, SourceASC);
+		}
 		
-		FTransform SpawnTransform;
+		/*FTransform SpawnTransform;
 		SpawnTransform.SetLocation(SocketLocation);
 		SpawnTransform.SetRotation(Rotation.Quaternion());
 		
@@ -60,13 +74,62 @@ void UEnergyProjectile::SpawnProjectile(const FGameplayTag &InputTag)
 		const float Speed = SourceASC->GetNumericAttribute(UEnergyAttributeSet::GetProjectileSpeedAttribute());
 		const float Range = SourceASC->GetNumericAttribute(UEnergyAttributeSet::GetRangeAttribute());
 		const float DamageMultipler = SourceASC->GetNumericAttribute(UEnergyAttributeSet::GetDamageMultiplierAttribute());
+		const float ShotCountValue = SourceASC->GetNumericAttribute(UEnergyAttributeSet::GetShotCountAttribute());
+		const int32 NumProjectiles = FMath::Max(1, FMath::RoundToInt(ShotCountValue));
 		
 		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, EnergyGameplayTags::Player_Attack_Power, Damage * DamageMultipler);
 
 		// Projectile에 세팅
 		Projectile->InitializeProjectile(Damage, Speed, Range);
 		
-		Projectile->FinishSpawning(SpawnTransform);
+		Projectile->FinishSpawning(SpawnTransform);*/
+	}
+}
+
+void UEnergyProjectile::SpawnSingleProjectile(const FVector& SocketLocation, const FRotator& Rotation,
+	const UAbilitySystemComponent* SourceASC)
+{
+	FTransform SpawnTransform;
+	SpawnTransform.SetLocation(SocketLocation);
+	SpawnTransform.SetRotation(Rotation.Quaternion());
+
+	AEnergyBoltProjectile* Projectile = GetWorld()->SpawnActorDeferred<AEnergyBoltProjectile>(
+		ProjectileClass,
+		SpawnTransform,
+		GetOwningActorFromActorInfo(),
+		Cast<APawn>(GetOwningActorFromActorInfo()),
+		ESpawnActorCollisionHandlingMethod::AlwaysSpawn
+	);
+
+	const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), SourceASC->MakeEffectContext());
+	const float Damage = SourceASC->GetNumericAttribute(UEnergyAttributeSet::GetAttackPowerAttribute());
+	const float Multiplier = SourceASC->GetNumericAttribute(UEnergyAttributeSet::GetDamageMultiplierAttribute());
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, EnergyGameplayTags::Player_Attack_Power, Damage * Multiplier);
+
+	const float Speed = SourceASC->GetNumericAttribute(UEnergyAttributeSet::GetProjectileSpeedAttribute());
+	const float Range = SourceASC->GetNumericAttribute(UEnergyAttributeSet::GetRangeAttribute());
+
+	Projectile->DamageEffectSpecHandle = SpecHandle;
+	Projectile->InitializeProjectile(Damage, Speed, Range);
+	Projectile->FinishSpawning(SpawnTransform);
+}
+
+void UEnergyProjectile::SpawnMultipleProjectiles(const FVector& SocketLocation, const FRotator& BaseRotation,
+	int32 ShotCount, const UAbilitySystemComponent* SourceASC)
+{
+	const float Spread = 10.f + (ShotCount - 1) * 1.5f; // 샷수가 많을수록 살짝 더 퍼지게
+	const FVector Forward = BaseRotation.Vector();
+
+	TArray<FRotator> Rotations = UEnergyBlueprintFunctionLibrary::EvenlySpreadRotators(
+		Forward,
+		FVector::UpVector,
+		Spread,
+		ShotCount
+	);
+
+	for (const FRotator& Rot : Rotations)
+	{
+		SpawnSingleProjectile(SocketLocation, Rot, SourceASC);
 	}
 }
 

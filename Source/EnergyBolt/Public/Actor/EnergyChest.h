@@ -17,25 +17,43 @@ class ENERGYBOLT_API AEnergyChest : public AActor
 public:
 	AEnergyChest();
 
+	UFUNCTION(BlueprintCallable)
+	void OpenTreasureChest();
+
 protected:
+	
+	void CheckAndSpawnLoot(TSubclassOf<AEnergySpawnActor> TargetActor, float Probability);
+	void SpawnLoot(bool bIsSpawn, TSubclassOf<AEnergySpawnActor> TargetActor);
+	TSubclassOf<AEnergySpawnActor> GetRandomItemFromList();
+
+protected:
+	
 	/*UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Treasure Chest")
 	UDataTable* ItemDataTable; // 데이터 테이블로 하려다가 실패*/
-
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Treasure Chest")
 	TArray<TSubclassOf<AEnergySpawnActor>> SpawnItems;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Treasure Chest")
-	TArray<TSubclassOf<AEnergySpawnActor>> SpawnHealingPotion;
+	TSubclassOf<AEnergySpawnActor> SpawnHealPotion;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Treasure Chest")
-	TArray<TSubclassOf<AEnergySpawnActor>> SpawnCoin;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Treasure Chest")
-	float DropChance = 1.0f;
-	
+	TSubclassOf<AEnergySpawnActor> SpawnGold;
 
-	UFUNCTION(BlueprintCallable)
-	void OpenTreasureChest();
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Drop Chance")
+	float ItemDropChance = 0.1f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Drop Chance")
+	float HealDropChance = 0.5f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Drop Chance")
+	float GoldDropChance = 0.7f;
 
-	void SpawnLoot(int32 Count, TSubclassOf<AEnergySpawnActor> TargetActor);
+	UPROPERTY(EditDefaultsOnly, Category="Drop|Spawn")
+	float LaunchSpeed = 600.f;
+
+	UPROPERTY(EditDefaultsOnly, Category="Drop|Spawn")
+	float SpawnHeight = 100.f;
+private:
+	
 };

@@ -12,75 +12,74 @@ AEnergySpawnActor::AEnergySpawnActor()
 	PrimaryActorTick.bCanEverTick = false;
 	
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
-	StaticMesh->SetupAttachment(SceneRoot);
-	StaticMesh->SetCollisionResponseToAllChannels(ECR_Block);
+	SetRootComponent(StaticMesh);
+	
+	StaticMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	StaticMesh->SetCollisionResponseToAllChannels(ECR_Ignore);
+	
+	// 월드Static(바닥), 월드Dynamic(움직이는 물체)만 Block
+	StaticMesh->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+	StaticMesh->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Block);
+	
+	StaticMesh->SetSimulatePhysics(false); // 물리 비활성화
+	StaticMesh->SetEnableGravity(false);
 
+	// Sphere (플레이어 감지용)
 	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
 	Sphere->SetupAttachment(StaticMesh);
+	Sphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	Sphere->SetCollisionResponseToAllChannels(ECR_Ignore);
+	Sphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 	
-	
-	/*ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovement"));
-	ProjectileMovement->ProjectileGravityScale = 1.0f;   // 중력 적용
-	ProjectileMovement->bShouldBounce = true;            // 튀기는 효과
-	ProjectileMovement->Bounciness = 0.3f;
-	ProjectileMovement->Friction = 0.5f;
-	
-	// 핵심: ProjectileMovement가 SceneRoot를 실제로 움직이게 지정
-	/*ProjectileMovement->UpdatedComponent = StaticMesh;*/
+	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovement"));
+	ProjectileMovement->bShouldBounce = false;
+	ProjectileMovement->ProjectileGravityScale = 1.0f; // 중력 적용
+	ProjectileMovement->InitialSpeed = 800.f;
+	ProjectileMovement->MaxSpeed = 800.f;
+	ProjectileMovement->bRotationFollowsVelocity = false;
+	ProjectileMovement->bAutoActivate = false; // Launch() 호출 전까지 비활성화
 }
 
 void AEnergySpawnActor::BeginPlay()
 {
 	Super::BeginPlay();
+}
 
-	if (StaticMesh)
+
+void AEnergySpawnActor::Land()
+{
+	// 투사체 이동 멈춤
+	if (ProjectileMovement)
 	{
-		/*StaticMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-		StaticMesh->SetSimulatePhysics(true);
-		StaticMesh->SetEnableGravity(true);*/
-		
-		StaticMesh->SetSimulatePhysics(true);
-		StaticMesh->SetEnableGravity(true);
-		StaticMesh->SetCollisionProfileName(TEXT("PhysicsActor")); 
+		ProjectileMovement->StopMovementImmediately();
+		ProjectileMovement->Deactivate();
 	}
 
+	// 착지 후 Sphere 오버랩 활성화
 	if (Sphere)
 	{
-		Sphere->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-		Sphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
-		Sphere->SetupAttachment(StaticMesh);
+		Sphere->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	}
+
+	// 약간 위로 고정해서 바닥 관통 방지
+	FVector FixedLoc = GetActorLocation();
+	FixedLoc.Z += 2.f;
+	SetActorLocation(FixedLoc);
 }
 
 void AEnergySpawnActor::Launch(FVector Dir, float Speed)
 {
-	/*if (ProjectileMovement)
+	if (ProjectileMovement)
 	{
 		ProjectileMovement->Velocity = Dir * Speed;
-		UE_LOG(LogTemp, Display, TEXT("Launching ProjectileMovement"));
-	}*/
-	if (StaticMesh && StaticMesh->IsSimulatingPhysics())
+		ProjectileMovement->Activate(); // ProjectileMovement 작동 시작
+
+		// 일정 시간 후 착지 처리 타이머 시작
+		GetWorldTimerManager().SetTimer(LandTimer, this, &AEnergySpawnActor::Land, 2.f, false);
+	}
+	
+	/*if (StaticMesh && StaticMesh->IsSimulatingPhysics())
 	{
 		StaticMesh->AddImpulse(Dir * Speed, NAME_None, true);
-		/*UE_LOG(LogTemp, Warning, TEXT("Launch AddImpulse"));*/
-	}
+	}*/
 }
-
-/*void AEnergySpawnActor::OnHitStop(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-	FVector NormalImpulse, const FHitResult& Hit)
-{
-	// 바닥이나 월드 스태틱에 닿았을 때만 멈추게
-	if (OtherActor && OtherActor != this && OtherComp->GetCollisionObjectType() == ECC_WorldStatic)
-	{
-		if (ProjectileMovement)
-		{
-			ProjectileMovement->StopMovementImmediately(); // 즉시 정지
-			ProjectileMovement->Deactivate();              // 더 이상 업데이트 X
-		}
-
-		// 충돌 후 위치 정확히 바닥에 고정
-		FVector NewLocation = GetActorLocation();
-		NewLocation.Z += 2.f; // 살짝 띄워서 바닥 관통 방지
-		SetActorLocation(NewLocation);
-	}
-}*/

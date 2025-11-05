@@ -22,8 +22,8 @@ AEnergyBoltProjectile::AEnergyBoltProjectile()
 	Sphere->SetCollisionObjectType(ECC_Projectile);
 	Sphere->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	Sphere->SetCollisionResponseToAllChannels(ECR_Ignore);
-	Sphere->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
 	Sphere->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Overlap);
+	Sphere->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
 	Sphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovement"));
@@ -37,15 +37,17 @@ void AEnergyBoltProjectile::InitializeProjectile(float InDamage, float InSpeed, 
 {
 	DamageAmount = InDamage;
 	ProjectileMovement->InitialSpeed = 1000.f * InSpeed;			// 1000 유닛/초 , ue5 -> 1 Unit = 1 cm
-	Range = InRange;
+	SetLifeSpan(InRange);
+	/*Range = InRange;*/
 }
 
 void AEnergyBoltProjectile::EnableGravity()
 {
-	if (ProjectileMovement)
+	// 중력 활성화해서 바닥으로 떨어지도록 하기
+	/*if (ProjectileMovement)
 	{
 		ProjectileMovement->ProjectileGravityScale = 1.0f; // 기본 중력 적용
-	}
+	}*/
 }
 
 void AEnergyBoltProjectile::BeginPlay()
@@ -53,15 +55,20 @@ void AEnergyBoltProjectile::BeginPlay()
 	Super::BeginPlay();
 
 	// 스폰 시점에 발사자(Instigator)를 Ignore
-	/*AActor* MyInstigator = GetInstigator();
+	AActor* MyInstigator = GetInstigator();
 	if (MyInstigator)
 	{
 		Sphere->IgnoreActorWhenMoving(MyInstigator, true);
-	}*/
+	}
+
+	if (Sphere)
+	{
+		Sphere->OnComponentBeginOverlap.AddDynamic(this, &AEnergyBoltProjectile::OnSphereOverlap);
+		/*Sphere->OnComponentHit.AddDynamic(this, &AEnergyBoltProjectile::OnSphereHit);*/
+	}
 	
-	Sphere->OnComponentBeginOverlap.AddDynamic(this, &AEnergyBoltProjectile::OnSphereOverlap);
 	/*LoopingSoundComponent = UGameplayStatics::SpawnSoundAttached(LoopingSound, GetRootComponent());*/
-	GetWorldTimerManager().SetTimer(GravityTimerHandle, this, &AEnergyBoltProjectile::EnableGravity, Range, false);
+	/*GetWorldTimerManager().SetTimer(GravityTimerHandle, this, &AEnergyBoltProjectile::EnableGravity, Range, false);*/
 }
 
 void AEnergyBoltProjectile::Destroyed()
@@ -93,4 +100,3 @@ void AEnergyBoltProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedCompo
 	
 	Destroy();
 }
-

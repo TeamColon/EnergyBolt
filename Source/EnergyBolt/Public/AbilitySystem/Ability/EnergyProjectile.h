@@ -33,6 +33,10 @@ protected:
 	
 	UFUNCTION(BlueprintCallable, Category = "Projectile")
 	void SpawnProjectile(const FGameplayTag &InputTag);
+	
+	void SpawnMultipleProjectiles(const FVector& SocketLocation, const FRotator& BaseRotation, int32 ShotCount, const UAbilitySystemComponent* SourceASC);
+	void SpawnSingleProjectile(const FVector& SocketLocation, const FRotator& Rotation, const UAbilitySystemComponent* SourceASC);
+
 
 	UFUNCTION()
 	void ProjectileCalcRotation(const FGameplayTag &InputTag, FRotator& Rotation) const;

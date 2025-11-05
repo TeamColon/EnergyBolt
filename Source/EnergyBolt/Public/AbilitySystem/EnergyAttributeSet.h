@@ -126,9 +126,9 @@ public:
 
 	/*
 	 */
-	UPROPERTY(BlueprintReadOnly, Category = "Attack")
-	FGameplayAttributeData Money;
-	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, Money)				// 발사 되는 탄환 수 (기본 : 1)
+	UPROPERTY(BlueprintReadOnly, Category = "Gold")
+	FGameplayAttributeData Gold;
+	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, Gold)					// 상점 아이템 사는 돈
 	
 
 	/*UPROPERTY(BlueprintReadOnly, Category = "Attack")

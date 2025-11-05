@@ -20,8 +20,8 @@ public:
 	
 	void Launch(FVector Dir, float Speed);
 	
-	/*UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UProjectileMovementComponent> ProjectileMovement;*/
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UProjectileMovementComponent> ProjectileMovement;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<USphereComponent> Sphere;
@@ -32,7 +32,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	/*virtual void OnHitStop(UPrimitiveComponent* HitComp, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);*/
-	
+	void Land();
+
+	FTimerHandle LandTimer;
 };

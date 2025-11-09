@@ -37,6 +37,7 @@ void AEnergyBaseCharacter::PossessedBy(AController* NewController)
 	{ 
 		EnergyAbilitySystemComponent->InitAbilityActorInfo(this,this);
 
+		// 추후 지우고 enemycharacter possessedby로 옮기기, classinfo data blueprint 에서 player 없애기
 		// InitializeDefaultAttributes
 		UEnergyBlueprintFunctionLibrary::InitializeDefaultAttribute(this, CharacterClass, EnergyAbilitySystemComponent);
 

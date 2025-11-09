@@ -47,7 +47,7 @@ void AEnergyPlayerCharacter::PossessedBy(AController* NewController)
 	}
 
 	bool bSavedGameExist = UGameplayStatics::DoesSaveGameExist("Slot1", 0);
-	UEnergySaveGame* SaveGameInstance = Cast<UEnergySaveGame>(UGameplayStatics::CreateSaveGameObject(UEnergySaveGame::StaticClass()));
+	//UEnergySaveGame* SaveGameInstance = Cast<UEnergySaveGame>(UGameplayStatics::CreateSaveGameObject(UEnergySaveGame::StaticClass()));
 	if (bSavedGameExist)
 	{
 		if (GEngine)

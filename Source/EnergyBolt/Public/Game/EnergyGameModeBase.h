@@ -49,7 +49,7 @@ public:
 	void TravelNextLevel();
 
 	UPROPERTY()
-	bool bIsStageCleared = false;
+	bool bIsStageCleared = true;
 
 protected:
 	virtual void BeginPlay() override;

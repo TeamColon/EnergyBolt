@@ -86,7 +86,7 @@ private:
 	TObjectPtr<USphereComponent> Sphere;
 
 	// 추후 추가 (사운드, 임펙트 등등)
-	/*UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere)
 	TObjectPtr<UNiagaraSystem> ImpactEffect;
 
 	UPROPERTY(EditAnywhere)
@@ -96,6 +96,6 @@ private:
 	TObjectPtr<USoundBase> LoopingSound;
 
 	UPROPERTY()
-	TObjectPtr<UAudioComponent> LoopingSoundComponent;*/
+	TObjectPtr<UAudioComponent> LoopingSoundComponent;
 	
 };

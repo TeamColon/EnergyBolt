@@ -70,9 +70,6 @@ private:
 	TObjectPtr<UAnimMontage> HitReactMontage;
 	
 public:
-	// Player Branch
-	/*UPROPERTY(EditAnywhere, Category = "Combat")
-	TObjectPtr<USkeletalMeshComponent> Weapon;*/		// 무기 있으면 그 Socket에 부착하기 위한 용도
 
 	void AddCharacterAbilities();
 	

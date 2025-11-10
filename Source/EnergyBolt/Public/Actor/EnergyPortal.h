@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "EnergyPortal.generated.h"
 
+class UNiagaraSystem;
+class UNiagaraComponent;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPortalOverlap);
 
 UCLASS()
@@ -16,7 +18,7 @@ class ENERGYBOLT_API AEnergyPortal : public AActor
 public:	
 	AEnergyPortal();
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* StaticMesh;
 
 	UPROPERTY()
@@ -29,5 +31,18 @@ protected:
 	UFUNCTION()
 	void OnStaticMeshOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 		int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
+
+private:
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UNiagaraComponent> Vortex;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UNiagaraComponent> Sparks1;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UNiagaraComponent> Sparks2;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UNiagaraComponent> Sparks3;
 	
 };

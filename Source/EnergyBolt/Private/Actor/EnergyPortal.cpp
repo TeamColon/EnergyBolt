@@ -20,15 +20,19 @@ AEnergyPortal::AEnergyPortal()
 
 	Vortex = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Vortex"));
 	Vortex->SetupAttachment(RootComponent);
+	Vortex->bAutoActivate = false;
 	
 	Sparks1 = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Sparks1"));
 	Sparks1->SetupAttachment(Vortex);
+	Sparks1->bAutoActivate = false;
 	
 	Sparks2 = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Sparks2"));
 	Sparks2->SetupAttachment(Vortex);
+	Sparks2->bAutoActivate = false;
 	
 	Sparks3 = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Sparks3"));
 	Sparks3->SetupAttachment(Vortex);
+	Sparks3->bAutoActivate = false;
 	
 }
 
@@ -38,6 +42,14 @@ void AEnergyPortal::BeginPlay()
 
 	StaticMesh->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnStaticMeshOverlap);
 	//StaticMesh->SetHiddenInGame(true);
+
+	if (Vortex && Sparks1 && Sparks2 && Sparks3)
+	{
+		Vortex->Activate();
+		Sparks1->Activate();
+		Sparks2->Activate();
+		Sparks3->Activate();
+	}
 	
 }
 

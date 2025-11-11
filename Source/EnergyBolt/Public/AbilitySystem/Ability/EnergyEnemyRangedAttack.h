@@ -37,7 +37,7 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly)
 	float MaxHomingAcceleration = 3000.f;
-
+#pragma region Offests
 	UPROPERTY(EditDefaultsOnly)
 	float MinYawOffset = -15.f;
 
@@ -49,7 +49,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	float MaxPitchOffset = 15.f;
-
+#pragma endregion
 	UPROPERTY(EditDefaultsOnly)
 	bool bIsHoming = false;
 };

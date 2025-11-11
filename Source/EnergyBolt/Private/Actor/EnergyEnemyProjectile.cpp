@@ -80,6 +80,8 @@ void AEnergyEnemyProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComp
 	{
 		TargetASC->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data.Get());
 	}
+
+	bHit = true;
 	
 	Destroy();
 	

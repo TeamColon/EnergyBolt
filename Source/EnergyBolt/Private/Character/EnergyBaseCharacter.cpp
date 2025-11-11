@@ -57,9 +57,7 @@ void AEnergyBaseCharacter::InitAbilityActorInfo()
 
 FVector AEnergyBaseCharacter::GetCombatSocketLocation_Implementation()
 {
-	check(Weapon);
-	return Weapon->GetSocketLocation(WeaponTipSocketName);
-
+	return IsValid(Weapon) ? Weapon->GetSocketLocation(WeaponTipSocketName) : GetMesh()->GetSocketLocation(FName("WeaponHandSocket"));
 	// check(GetMesh())
 	// return GetMesh()->GetSocketLocation(WeaponTipSocketName);
 }

@@ -33,6 +33,7 @@ protected:
 		int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
 
 private:
+#pragma region NiagaraComponent
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UNiagaraComponent> Vortex;
 
@@ -44,5 +45,5 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UNiagaraComponent> Sparks3;
-	
+#pragma endregion
 };

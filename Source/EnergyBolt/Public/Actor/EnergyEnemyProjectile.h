@@ -47,6 +47,7 @@ private:
 
 	bool bHit = false;
 
+#pragma region Niagara
 	UPROPERTY(EditDefaultsOnly, Category="Effects")
 	TObjectPtr<UNiagaraComponent> NiagaraComponent;
 
@@ -55,7 +56,7 @@ private:
 	
 	UPROPERTY(EditAnywhere, Category="Effects")
 	TObjectPtr<UNiagaraSystem> ImpactEffect;
-
+#pragma endregion
 	UPROPERTY(EditAnywhere, Category="Effects")
 	TObjectPtr<USoundBase> ImpactSound;
 };

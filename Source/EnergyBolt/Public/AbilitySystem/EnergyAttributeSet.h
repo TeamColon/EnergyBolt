@@ -139,6 +139,11 @@ public:
 	FGameplayAttributeData CriticalChance;
 	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, CriticalChance)*/
 
+	FORCEINLINE TArray<TSubclassOf<UGameplayEffect>> GetPlayerCharacterGF() const {return PlayerCharacterGameplayEffect;}
+
 private:
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const;
+
+	UPROPERTY()
+	TArray<TSubclassOf<UGameplayEffect>> PlayerCharacterGameplayEffect; 
 };

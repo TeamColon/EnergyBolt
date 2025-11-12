@@ -6,6 +6,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "EnergyGameplayTags.h"
 #include "GameplayEffectExtension.h"
+#include "Character/EnergyPlayerCharacter.h"
 #include "GameFramework/Character.h"
 #include "Interface/CombatInterface.h"
 
@@ -116,6 +117,18 @@ void UEnergyAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffect
 			
 		}
 	}
+	// PlayerCharacter가 받은 GameplayEffect가 적용될 때마다 목록에 추가, SaveGame 될 때 배열 넘겨주기
+	if (Props.TargetCharacter->ActorHasTag("Player"))
+	{
+		const UGameplayEffect* GameplayEffect = Data.EffectSpec.Def;
+		PlayerCharacterGameplayEffect.Add(GameplayEffect->GetClass());
+	}
+	// Cast 피하고 싶어서
+	/*if (AEnergyPlayerCharacter* PlayerCharacter = Cast<AEnergyPlayerCharacter>(Props.TargetCharacter))
+	{
+		const UGameplayEffect* GameplayEffect = Data.EffectSpec.Def;
+		PlayerCharacterGameplayEffect.Add(GameplayEffect->GetClass());
+	}*/
 }
 
 

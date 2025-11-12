@@ -6,6 +6,7 @@
 #include "EnergyBaseCharacter.h"
 #include "EnergyPlayerCharacter.generated.h"
 
+class USaveGame;
 struct FOnAttributeChangeData;
 
 UCLASS()
@@ -25,5 +26,8 @@ private:
 	
 	void OnSpeedMultiplierChanged(const FOnAttributeChangeData& Data);
 	void UpdateMovementSpeed();
+
+	UFUNCTION()
+	void OnGameLoaded(const FString& SlotName, const int32 UserIndex, USaveGame* LoadedGameData) const;
 	
 };

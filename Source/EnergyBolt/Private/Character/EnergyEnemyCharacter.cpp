@@ -10,7 +10,9 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "EnergyBolt/EnergyBolt.h"
+#include "Game/EnergyGameModeBase.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 
 AEnergyEnemyCharacter::AEnergyEnemyCharacter()
@@ -53,6 +55,13 @@ void AEnergyEnemyCharacter::HitReactTagChanged(const FGameplayTag CallbackTag, i
 void AEnergyEnemyCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
+
+	/*
+	// InitializeDefaultAttributes
+	UEnergyBlueprintFunctionLibrary::InitializeDefaultAttribute(this, CharacterClass, EnergyAbilitySystemComponent);
+
+	// InitializeDefaultAbilities
+	UEnergyBlueprintFunctionLibrary::GiveStartupAbilities(this, CharacterClass, EnergyAbilitySystemComponent);*/
 	
 	// Initialize BehaviorTree, BlackBoard
 	EnergyAIController = Cast<AEnergyAIController>(NewController);
@@ -77,6 +86,7 @@ AActor* AEnergyEnemyCharacter::GetCombatTarget_Implementation() const
 void AEnergyEnemyCharacter::Die()
 {
 	// LifeSpan을 정하여 N초 이후에 Destroy하게 할 수 있다.
+	OnEnemyDied.Broadcast(this);
 	SetLifeSpan(LifeSpan);
 	if (EnergyAIController)
 	{

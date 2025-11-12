@@ -16,11 +16,27 @@ void UEnergyBlueprintFunctionLibrary::InitializeDefaultAttribute(const UObject* 
 	if (EnergyGameMode == nullptr) return;
 
 	// GameMode에 저장된 DataAsset => 캐릭터 클래스에 맞는 FCharacterClassDefaultInfo(Attributes, Ability 포함된) 구조체 가져오기
-	FCharacterClassDefaultInfo ClassInfo = EnergyGameMode->CharacterClassInfo->GetClassDefaultInfo(CharacterClass);
+	//FCharacterClassDefaultInfo ClassInfo = EnergyGameMode->CharacterClassInfo->GetClassDefaultInfo(CharacterClass);
 
-	const FGameplayEffectContextHandle ContextHandle = ASC->MakeEffectContext();
-	const FGameplayEffectSpecHandle SpecHandle = ASC->MakeOutgoingSpec(ClassInfo.Attributes, 1.f, ContextHandle);
-	ASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+	UEnergyCharacterClassInfo* CharacterClassInfo = EnergyGameMode->CharacterClassInfo;
+	if (CharacterClassInfo == nullptr) return;
+
+	for (const TSubclassOf<UGameplayEffect> AttributeClass : CharacterClassInfo->DefaultAttributes)
+	{
+		const FGameplayEffectContextHandle ContextHandle = ASC->MakeEffectContext();
+		const FGameplayEffectSpecHandle SpecHandle = ASC->MakeOutgoingSpec(AttributeClass, 1.f, ContextHandle);
+		ASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+	}
+	
+	const FCharacterClassDefaultInfo& DefaultInfo = CharacterClassInfo->GetClassDefaultInfo(CharacterClass);
+
+	for (const TSubclassOf<UGameplayEffect> AttributesClass : DefaultInfo.Attributes)
+	{
+		const FGameplayEffectContextHandle ContextHandle = ASC->MakeEffectContext();
+		const FGameplayEffectSpecHandle SpecHandle = ASC->MakeOutgoingSpec(AttributesClass, 1.f, ContextHandle);
+		ASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+	}
+	
 }
 
 void UEnergyBlueprintFunctionLibrary::GiveStartupAbilities(const UObject* WorldContextObject, ECharacterClass CharacterClass,
@@ -82,7 +98,7 @@ void UEnergyBlueprintFunctionLibrary::GetLivePlayersWithRadius(const UObject* Wo
 	}
 }
 
-bool UEnergyBlueprintFunctionLibrary::IsNotFriend(AActor* FirstActor, AActor* SecondActor)
+bool UEnergyBlueprintFunctionLibrary::IsNotFriend(const AActor* FirstActor, const AActor* SecondActor)
 {
 	const bool bBothArePlayer = FirstActor->ActorHasTag(FName("Player")) && SecondActor->ActorHasTag(FName("Player"));
 	const bool bBothAreEnemy = FirstActor->ActorHasTag(FName("Enemy")) && SecondActor->ActorHasTag(FName("Enemy"));

@@ -7,7 +7,10 @@
 #include "Interface/CombatInterface.h"
 #include "EnergySpawner.generated.h"
 
+class AEnergyEnemyCharacter;
 class UArrowComponent;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEnemySpawned, AEnergyEnemyCharacter*, EnemyCharacter);
 
 UCLASS()
 class ENERGYBOLT_API AEnergySpawner : public AActor
@@ -19,6 +22,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SpawnSelectedActor();
+
+	UPROPERTY()
+	FOnEnemySpawned OnEnemySpawned;
 
 protected:
 	virtual void BeginPlay() override;

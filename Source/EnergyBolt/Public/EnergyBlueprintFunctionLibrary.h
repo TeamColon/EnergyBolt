@@ -28,7 +28,7 @@ public:
 		TArray<AActor*>& OutOverlappingActors, const TArray<AActor*>& ActorsToIgnore, float Radius, const FVector& SphereOrigin);
 
 	UFUNCTION(BlueprintPure, Category="EnergyFunctionLibrary")
-	static bool IsNotFriend(AActor* FirstActor, AActor* SecondActor);
+	static bool IsNotFriend(const AActor* FirstActor, const AActor* SecondActor);
 
 	UFUNCTION(BlueprintPure, Category="EnergyFunctionLibrary")
 	static TArray<FRotator> EvenlySpreadRotators(const FVector& ForwardVector, const FVector& Axis, float Spread, int32 NumRotators);

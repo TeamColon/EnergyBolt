@@ -30,7 +30,7 @@ struct FCharacterClassDefaultInfo
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, Category = "CharacterClass")
-	TSubclassOf<UGameplayEffect> Attributes;
+	TArray<TSubclassOf<UGameplayEffect>> Attributes;
 
 	// 클래스 특징에 따라 기본적으로 있어야 하는 Ability MeleeAttack, RangedAttack 등등
 	UPROPERTY(EditDefaultsOnly, Category="CharacterClass")
@@ -53,6 +53,9 @@ public:
 	// 모든 캐릭터들이 가지는 기본 Ability HitReact, Death 등등
 	UPROPERTY(EditDefaultsOnly, Category="Character Default Ability")
 	TArray<TSubclassOf<UGameplayAbility>> DefaultAbilities;
+
+	UPROPERTY(EditDefaultsOnly, Category="Character Default Attribute")
+	TArray<TSubclassOf<UGameplayEffect>> DefaultAttributes; 
 	
 	// CharacterClassInfo[CharacterClass]를 통해 CharacterClass에 맞는 DefaultInfo 가져오기
 	FCharacterClassDefaultInfo GetClassDefaultInfo(ECharacterClass CharacterClass);

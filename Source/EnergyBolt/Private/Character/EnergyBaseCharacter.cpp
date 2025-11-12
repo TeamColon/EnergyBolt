@@ -20,6 +20,7 @@ AEnergyBaseCharacter::AEnergyBaseCharacter()
 
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetCapsuleComponent()->SetGenerateOverlapEvents(false);							// overlap event cpp, bp 둘다 끄거나 켜줘야됨.
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Projectile, ECR_Overlap);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Projectile, ECR_Overlap);
 	GetMesh()->SetGenerateOverlapEvents(true);
@@ -37,6 +38,7 @@ void AEnergyBaseCharacter::PossessedBy(AController* NewController)
 	{ 
 		EnergyAbilitySystemComponent->InitAbilityActorInfo(this,this);
 
+		// 추후 지우고 enemycharacter possessedby로 옮기기, classinfo data blueprint 에서 player 없애기
 		// InitializeDefaultAttributes
 		UEnergyBlueprintFunctionLibrary::InitializeDefaultAttribute(this, CharacterClass, EnergyAbilitySystemComponent);
 
@@ -56,11 +58,7 @@ void AEnergyBaseCharacter::InitAbilityActorInfo()
 
 FVector AEnergyBaseCharacter::GetCombatSocketLocation_Implementation()
 {
-	check(Weapon);
-	return Weapon->GetSocketLocation(WeaponTipSocketName);
-
-	// check(GetMesh())
-	// return GetMesh()->GetSocketLocation(WeaponTipSocketName);
+	return IsValid(Weapon) ? Weapon->GetSocketLocation(WeaponTipSocketName) : GetMesh()->GetSocketLocation(FName("WeaponHandSocket"));
 }
 
 void AEnergyBaseCharacter::Die()

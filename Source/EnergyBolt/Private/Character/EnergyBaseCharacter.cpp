@@ -20,6 +20,7 @@ AEnergyBaseCharacter::AEnergyBaseCharacter()
 
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetCapsuleComponent()->SetGenerateOverlapEvents(false);							// overlap event cpp, bp 둘다 끄거나 켜줘야됨.
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Projectile, ECR_Overlap);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Projectile, ECR_Overlap);
 	GetMesh()->SetGenerateOverlapEvents(true);
@@ -58,8 +59,6 @@ void AEnergyBaseCharacter::InitAbilityActorInfo()
 FVector AEnergyBaseCharacter::GetCombatSocketLocation_Implementation()
 {
 	return IsValid(Weapon) ? Weapon->GetSocketLocation(WeaponTipSocketName) : GetMesh()->GetSocketLocation(FName("WeaponHandSocket"));
-	// check(GetMesh())
-	// return GetMesh()->GetSocketLocation(WeaponTipSocketName);
 }
 
 void AEnergyBaseCharacter::Die()

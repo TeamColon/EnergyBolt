@@ -56,12 +56,8 @@ void AEnergyEnemyCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
-	/*
-	// InitializeDefaultAttributes
-	UEnergyBlueprintFunctionLibrary::InitializeDefaultAttribute(this, CharacterClass, EnergyAbilitySystemComponent);
-
 	// InitializeDefaultAbilities
-	UEnergyBlueprintFunctionLibrary::GiveStartupAbilities(this, CharacterClass, EnergyAbilitySystemComponent);*/
+	UEnergyBlueprintFunctionLibrary::GiveStartupAbilities(this, CharacterClass, EnergyAbilitySystemComponent);
 	
 	// Initialize BehaviorTree, BlackBoard
 	EnergyAIController = Cast<AEnergyAIController>(NewController);
@@ -95,22 +91,6 @@ void AEnergyEnemyCharacter::Die()
 	Super::Die();
 }
 
-/*
-DataAsset을 통해 Class 지정, 속성 초기화 하면서 필요 없어진 함수
-추후 삭제 고려
-void AEnergyEnemyCharacter::InitializeDefaultAttributes() const
-{
-	check(IsValid(GetAbilitySystemComponent()));
-	check(DefaultAttribute);
-	const FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
-	const FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(DefaultAttribute, 1, ContextHandle);
-	
-	if (SpecHandle.IsValid())
-	{
-		GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
-	}
-}
-*/
 
 
 

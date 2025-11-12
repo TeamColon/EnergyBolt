@@ -42,8 +42,7 @@ void AEnergyBaseCharacter::PossessedBy(AController* NewController)
 		// InitializeDefaultAttributes
 		UEnergyBlueprintFunctionLibrary::InitializeDefaultAttribute(this, CharacterClass, EnergyAbilitySystemComponent);
 
-		// InitializeDefaultAbilities
-		UEnergyBlueprintFunctionLibrary::GiveStartupAbilities(this, CharacterClass, EnergyAbilitySystemComponent);
+		
 	}
 }
 

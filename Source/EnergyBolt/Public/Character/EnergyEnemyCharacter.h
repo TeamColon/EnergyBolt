@@ -61,7 +61,6 @@ public:
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attributes")
 	TSubclassOf<UGameplayEffect> DefaultAttribute;
-	
-	//void InitializeDefaultAttributes() const;
+
 	
 };

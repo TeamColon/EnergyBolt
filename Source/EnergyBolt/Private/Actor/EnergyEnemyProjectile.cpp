@@ -60,6 +60,7 @@ void AEnergyEnemyProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComp
 	if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
 	{
 		TargetASC->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data.Get());
+		UE_LOG(LogTemp, Warning, TEXT("apply damage"));
 	}
 	
 	Destroy();

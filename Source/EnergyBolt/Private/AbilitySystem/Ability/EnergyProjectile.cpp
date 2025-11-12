@@ -106,7 +106,7 @@ void UEnergyProjectile::SpawnSingleProjectile(const FVector& SocketLocation, con
 	const float Multiplier = SourceASC->GetNumericAttribute(UEnergyAttributeSet::GetDamageMultiplierAttribute());
 	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, EnergyGameplayTags::Player_Attack_Power, Damage * Multiplier);
 
-	const float Speed = SourceASC->GetNumericAttribute(UEnergyAttributeSet::GetProjectileSpeedAttribute());
+	const float Speed = SourceASC->GetNumericAttribute(UEnergyAttributeSet::GetShotSpeedAttribute());
 	const float Range = SourceASC->GetNumericAttribute(UEnergyAttributeSet::GetRangeAttribute());
 
 	Projectile->DamageEffectSpecHandle = SpecHandle;

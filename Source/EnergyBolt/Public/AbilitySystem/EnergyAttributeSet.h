@@ -113,8 +113,8 @@ public:
 	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, FireRate)				// 연사 배율 (최대 3.5)
 
 	UPROPERTY(BlueprintReadOnly, Category = "Attack")
-	FGameplayAttributeData ProjectileSpeed;
-	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, ProjectileSpeed)		// 탄속 배율 (최대 2.0) // 아직 적용 X
+	FGameplayAttributeData ShotSpeed;
+	ATTRIBUTE_ACCESSORS(UEnergyAttributeSet, ShotSpeed)				// 탄속 배율 (최대 2.0) // 아직 적용 X
 
 	UPROPERTY(BlueprintReadOnly, Category = "Attack")
 	FGameplayAttributeData ShotCount;

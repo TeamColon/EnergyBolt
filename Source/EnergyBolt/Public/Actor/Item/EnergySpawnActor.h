@@ -6,6 +6,7 @@
 #include "Actor/Item/EnergyEffectActor.h"
 #include "EnergySpawnActor.generated.h"
 
+class UNiagaraComponent;
 class UStaticMeshComponent;
 class USphereComponent;
 class UProjectileMovementComponent;
@@ -28,6 +29,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* StaticMesh;
+
+	/*UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<UNiagaraComponent> NiagaraComp;*/
 
 protected:
 	virtual void BeginPlay() override;

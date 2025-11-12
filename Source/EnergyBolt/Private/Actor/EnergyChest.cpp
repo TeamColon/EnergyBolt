@@ -16,9 +16,33 @@ AEnergyChest::AEnergyChest()
 
 void AEnergyChest::OpenTreasureChest()
 {
-	CheckAndSpawnLoot(SpawnGold, GoldDropChance); // 골드 70%
+	/*CheckAndSpawnLoot(SpawnGold, GoldDropChance); // 골드 70%
 	CheckAndSpawnLoot(SpawnHealPotion, HealDropChance); // 회복포션 50%
 	CheckAndSpawnLoot(GetRandomItemFromList(), ItemDropChance); // 아이템 10%
+	*/
+
+	TArray<TPair<TSubclassOf<AEnergySpawnActor>, float>> LootList;
+	LootList.Add({ SpawnHealPotion, HealDropChance });
+	LootList.Add({ GetRandomItemFromList(), ItemDropChance });
+	LootList.Add({ GetRandomItemFromList(), ItemDropChance });
+
+	const float Delay = 0.5f;
+
+	// 처음건 먼저 실행하기
+	CheckAndSpawnLoot(LootList[0].Key, LootList[0].Value);
+	for (int32 i = 1; i < LootList.Num(); i++)
+	{
+		FTimerHandle Timer;
+		GetWorldTimerManager().SetTimer(
+			Timer,
+			[this, Loot = LootList[i]]()
+			{
+				CheckAndSpawnLoot(Loot.Key, Loot.Value);
+			},
+			i * Delay,   // i * 0.5초 후 실행
+			false
+		);
+	}
 }
 
 // 각 아이템 스폰 확률 검사 함수
@@ -39,75 +63,53 @@ void AEnergyChest::CheckAndSpawnLoot(TSubclassOf<AEnergySpawnActor> TargetActor,
 // 아이템 스폰 시키는 함수
 void AEnergyChest::SpawnLoot(bool bIsSpawn, TSubclassOf<AEnergySpawnActor> TargetActor)
 {
-	if (!bIsSpawn || !TargetActor) return;
-
-	// 상자 기준 위치
-	const FVector ChestLoc = GetActorLocation();
-	FVector SpawnLoc = ChestLoc + FVector(0.f, 0.f, 100.f);
-
-	// 이미 스폰된 아이템들의 위치 저장 (겹침 방지용)
-	static TArray<FVector> PrevSpawnLocations;
-	PrevSpawnLocations.RemoveAll([](const FVector& Loc) { return false; });
-
-	const float MinDistance = 70.f;  // 아이템 간 최소 거리
-	const int32 MaxRetry = 10;       // 위치 재시도 횟수 제한
-
-	int32 RetryCount = 0;
-	bool bFoundValidSpot = false;
-
-	while (!bFoundValidSpot && RetryCount < MaxRetry)
+	if (!bIsSpawn || !TargetActor)
 	{
-		// 랜덤 오프셋 생성
-		FVector RandomOffset(
-			FMath::RandRange(-100.f, 100.f),
-			FMath::RandRange(-100.f, 100.f),
-			FMath::RandRange(0.f, 30.f)
-		);
-
-		FVector TestLoc = ChestLoc + RandomOffset + FVector(0, 0, 100.f);
-
-		// 기존 위치들과 최소 거리 확인
-		bool bTooClose = false;
-		for (const FVector& PrevLoc : PrevSpawnLocations)
-		{
-			if (FVector::Dist(PrevLoc, TestLoc) < MinDistance)
-			{
-				bTooClose = true;
-				break;
-			}
-		}
-
-		if (!bTooClose)
-		{
-			SpawnLoc = TestLoc;
-			PrevSpawnLocations.Add(SpawnLoc);
-			bFoundValidSpot = true;
-			break;
-		}
-
-		RetryCount++;
+		UE_LOG(LogTemp, Warning, TEXT("bIsSpawn = false or TargetActor = nullptr"))
+		return;
 	}
+	
+
+	// 상자 기준 위치, z축 +100 에서 스폰
+	const FVector ChestLoc = GetActorLocation();
+	FVector SpawnLoc = ChestLoc + FVector(0.f, 0.f, 150.f);
 
 	// 랜덤 방향 (위쪽 대각선으로)
-	FRotator RandomRot = FRotator(
-		FMath::RandRange(50.f, 80.f),   // Pitch: 위로 쏘기
-		FMath::RandRange(-90.f, 90.f),  // Yaw: 좌우 랜덤
-		0.f
-	);
+	const FRotator ChestRot = GetActorRotation();
+	float Pitch = FMath::RandRange(70.f, 80.f);
+	float YawOffset = 0.f;
 
-	FVector LaunchDir = RandomRot.Vector();
-	float Speed = FMath::RandRange(500.f, 700.f);
+	switch (SpawnItemCount)
+	{
+	case 0:
+		YawOffset = 0.f;    // 정면
+		break;
+	case 1:
+		YawOffset = -45.f;  // 왼쪽
+		break;
+	case 2:
+		YawOffset = 45.f;   // 오른쪽
+		break;
+	default:
+		YawOffset = 0.f;
+		break;
+	}
+
+	FRotator FireRot = ChestRot + FRotator(Pitch, YawOffset, 0.f);
+	const FVector LaunchDir = FireRot.Vector();
+	float Speed = FMath::RandRange(500.f, 500.f);
 
 	// 실제 아이템 생성
 	AEnergySpawnActor* Item = GetWorld()->SpawnActor<AEnergySpawnActor>(
 		TargetActor,
 		SpawnLoc,
-		RandomRot
+		FRotator::ZeroRotator
 	);
 
 	if (Item)
 	{
 		Item->Launch(LaunchDir, Speed);
+		SpawnItemCount++;
 	}
 }
 

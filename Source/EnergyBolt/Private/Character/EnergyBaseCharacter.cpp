@@ -100,7 +100,6 @@ UAnimMontage* AEnergyBaseCharacter::GetHitReactMontage_Implementation()
 	return HitReactMontage;
 }
 
-
 // Player branch
 void AEnergyBaseCharacter::AddCharacterAbilities()
 {
@@ -109,6 +108,7 @@ void AEnergyBaseCharacter::AddCharacterAbilities()
 
 	EnergyASC->AddCharacterAbilities(StartupAbilities);
 }
+// 머지하고 코드 옮기기
 
 
 /*

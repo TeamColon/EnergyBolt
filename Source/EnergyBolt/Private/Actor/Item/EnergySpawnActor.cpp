@@ -3,6 +3,7 @@
 
 #include "Actor/Item/EnergySpawnActor.h"
 
+#include "NiagaraComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
@@ -26,10 +27,16 @@ AEnergySpawnActor::AEnergySpawnActor()
 
 	// Sphere (플레이어 감지용)
 	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
-	Sphere->SetupAttachment(StaticMesh);
+	Sphere->SetupAttachment(RootComponent);
 	Sphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Sphere->SetCollisionResponseToAllChannels(ECR_Ignore);
 	Sphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+
+	
+	/*NiagaraComp = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComp"));
+	NiagaraComp->SetupAttachment(RootComponent);*/
+	// 자동 활성화 비활성화 (원할 때 에디터나 코드에서 수동 활성)
+	/*NiagaraComp->bAutoActivate = false;*/
 	
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovement"));
 	ProjectileMovement->bShouldBounce = false;

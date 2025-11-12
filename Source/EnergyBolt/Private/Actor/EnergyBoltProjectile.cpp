@@ -5,6 +5,7 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
+#include "EnergyBlueprintFunctionLibrary.h"
 #include "EnergyBolt/EnergyBolt.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Components/AudioComponent.h"
@@ -37,7 +38,7 @@ void AEnergyBoltProjectile::InitializeProjectile(float InDamage, float InSpeed, 
 {
 	DamageAmount = InDamage;
 	ProjectileMovement->InitialSpeed = 1000.f * InSpeed;			// 1000 유닛/초 , ue5 -> 1 Unit = 1 cm
-	SetLifeSpan(InRange);
+	LifeSpan = InRange * 0.7;
 	/*Range = InRange;*/
 }
 
@@ -54,6 +55,8 @@ void AEnergyBoltProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 
+	SetLifeSpan(LifeSpan);
+	
 	// 스폰 시점에 발사자(Instigator)를 Ignore
 	AActor* MyInstigator = GetInstigator();
 	if (MyInstigator)
@@ -65,18 +68,20 @@ void AEnergyBoltProjectile::BeginPlay()
 	{
 		Sphere->OnComponentBeginOverlap.AddDynamic(this, &AEnergyBoltProjectile::OnSphereOverlap);
 	}
-	
-	LoopingSoundComponent = UGameplayStatics::SpawnSoundAttached(LoopingSound, GetRootComponent());
+
+	// projectile이 날아가는 동안 들릴 사운드 부착하기
+	/*LoopingSoundComponent = UGameplayStatics::SpawnSoundAttached(LoopingSound, GetRootComponent());*/
 	/*GetWorldTimerManager().SetTimer(GravityTimerHandle, this, &AEnergyBoltProjectile::EnableGravity, Range, false);*/
 }
 
 void AEnergyBoltProjectile::Destroyed()
 {
+	// 충돌 처리 안됐으면 실행됨
 	if (!bHit)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
-		LoopingSoundComponent->Stop();
+		/*LoopingSoundComponent->Stop();*/
 	}
 	Super::Destroyed();
 }
@@ -84,18 +89,23 @@ void AEnergyBoltProjectile::Destroyed()
 void AEnergyBoltProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                             UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	// 충돌 즉시 이펙트 재생
 	UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
 	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
-	LoopingSoundComponent->Stop();
 
+	
 	if (OtherActor == GetInstigator()) return;
-
+	
+	if (!UEnergyBlueprintFunctionLibrary::IsNotFriend(GetOwner(),OtherActor)) return;
+	
+	// 데미지 적용
 	if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
 	{
 		TargetASC->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data.Get());
-
-		/*UE_LOG(LogTemp, Warning, TEXT("Attacking!!"));*/
 	}
+
+	if (bHit) return;
+	bHit = true;
 	
 	Destroy();
 }

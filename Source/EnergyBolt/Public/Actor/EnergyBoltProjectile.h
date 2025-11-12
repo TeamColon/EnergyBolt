@@ -29,6 +29,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (ExposeOnSpawn = true))		// Spawn 시점에 값을 설정 가능
 	FGameplayEffectSpecHandle DamageEffectSpecHandle;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<USphereComponent> Sphere;
+
 #pragma region AttackStats
 	
 	UPROPERTY(EditDefaultsOnly)
@@ -82,9 +85,6 @@ private:
 
 	FTimerHandle GravityTimerHandle;
 
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USphereComponent> Sphere;
-
 	// 추후 추가 (사운드, 임펙트 등등)
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UNiagaraSystem> ImpactEffect;
@@ -92,10 +92,10 @@ private:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<USoundBase> ImpactSound;
 
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<USoundBase> LoopingSound;
+	/*UPROPERTY(EditAnywhere)
+	TObjectPtr<USoundBase> LoopingSound;*/
 
-	UPROPERTY()
-	TObjectPtr<UAudioComponent> LoopingSoundComponent;
+	/*UPROPERTY()
+	TObjectPtr<UAudioComponent> LoopingSoundComponent;*/
 	
 };

@@ -49,11 +49,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Drop Chance")
 	float GoldDropChance = 0.7f;
 
-	UPROPERTY(EditDefaultsOnly, Category="Drop|Spawn")
-	float LaunchSpeed = 600.f;
-
-	UPROPERTY(EditDefaultsOnly, Category="Drop|Spawn")
-	float SpawnHeight = 100.f;
 private:
-	
+	int32 SpawnItemCount = 0;
 };

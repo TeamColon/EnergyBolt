@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "EnergyPortal.generated.h"
 
+class UPointLightComponent;
+class USpotLightComponent;
 class UNiagaraSystem;
 class UNiagaraComponent;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPortalOverlap);
@@ -45,5 +47,14 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UNiagaraComponent> Sparks3;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UNiagaraComponent> Sparks4;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<USpotLightComponent> SpotLightComponent;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UPointLightComponent> PointLightComponent;
 #pragma endregion
 };

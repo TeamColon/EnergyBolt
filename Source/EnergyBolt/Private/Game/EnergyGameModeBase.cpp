@@ -41,9 +41,13 @@ void AEnergyGameModeBase::BeginPlay()
 
 void AEnergyGameModeBase::SaveGameData()
 {
-	if (GEngine)
+	if (bool bSavedGameExist = UGameplayStatics::DoesSaveGameExist("Slot1", 0))
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 8.f, FColor::Cyan, TEXT("SaveGameData"));
+		UGameplayStatics::DeleteGameInSlot("Slot1", 0);
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 8.f, FColor::Cyan, TEXT("Delete"));
+		}
 	}
 	if (UEnergySaveGame* SaveGameInstance = Cast<UEnergySaveGame>
 		(UGameplayStatics::CreateSaveGameObject(UEnergySaveGame::StaticClass())))
@@ -96,6 +100,11 @@ void AEnergyGameModeBase::RemoveEnemy(AEnergyEnemyCharacter* Enemy)
 	if (EnemyList.IsEmpty())
 	{
 		bIsStageCleared = true;
+		for (TActorIterator<AEnergyPortal> It(GetWorld()); It; ++It)
+		{
+			AEnergyPortal* Portal = *It;
+			Portal->SetActorHiddenInGame(false);
+		}
 		// 상자 소환 시점
 	}
 }

@@ -5,6 +5,7 @@
 
 #include "NiagaraComponent.h"
 #include "Character/EnergyPlayerCharacter.h"
+#include "Components/SpotLightComponent.h"
 
 
 AEnergyPortal::AEnergyPortal()
@@ -17,6 +18,33 @@ AEnergyPortal::AEnergyPortal()
 	StaticMesh->SetCollisionObjectType(ECC_WorldDynamic);
 	StaticMesh->SetCollisionResponseToAllChannels(ECR_Block);
 	StaticMesh->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+
+	SpotLightComponent = CreateDefaultSubobject<USpotLightComponent>(TEXT("SpotLightComponent"));
+	SpotLightComponent->SetupAttachment(RootComponent);
+	SpotLightComponent->Intensity = 500000.f;
+	SpotLightComponent->IntensityUnits = ELightUnits::Unitless;
+	SpotLightComponent->LightColor =FColor(255,48, 0);
+	SpotLightComponent->AttenuationRadius = 2000.f;
+	SpotLightComponent->InnerConeAngle = 25.f;
+	SpotLightComponent->OuterConeAngle = 80.f;
+	SpotLightComponent->SourceRadius = 2000.f;
+	SpotLightComponent->SoftSourceRadius = 2000.f;
+	SpotLightComponent->SourceLength = 0.f;
+	SpotLightComponent->CastShadows = true;
+	SpotLightComponent->VolumetricScatteringIntensity = 0.f;
+	
+	PointLightComponent = CreateDefaultSubobject<UPointLightComponent>(TEXT("PointLightComponent"));
+	PointLightComponent->SetupAttachment(RootComponent);
+
+	PointLightComponent->Intensity = 75.f;
+	PointLightComponent->IntensityUnits = ELightUnits::Candelas;
+	PointLightComponent->LightColor = FColor(255,48,0);
+	PointLightComponent->AttenuationRadius = 2000.f;
+	PointLightComponent->SourceRadius = 2000.f;
+	PointLightComponent->SoftSourceRadius = 2000.f;
+	PointLightComponent->SourceLength = 0.f;
+	PointLightComponent->CastShadows = false;
+	PointLightComponent->VolumetricScatteringIntensity = 0.f;
 
 	Vortex = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Vortex"));
 	Vortex->SetupAttachment(RootComponent);
@@ -33,22 +61,27 @@ AEnergyPortal::AEnergyPortal()
 	Sparks3 = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Sparks3"));
 	Sparks3->SetupAttachment(Vortex);
 	Sparks3->bAutoActivate = false;
-	
+
+	Sparks4 = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Sparks4"));
+	Sparks4->SetupAttachment(Vortex);
+	Sparks4->bAutoActivate = false;
 }
 
 void AEnergyPortal::BeginPlay()
 {
 	Super::BeginPlay();
 
+	SetActorHiddenInGame(true);
+	
 	StaticMesh->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnStaticMeshOverlap);
-	//StaticMesh->SetHiddenInGame(true);
-
+	
 	if (Vortex && Sparks1 && Sparks2 && Sparks3)
 	{
 		Vortex->Activate();
 		Sparks1->Activate();
 		Sparks2->Activate();
 		Sparks3->Activate();
+		Sparks4->Activate();
 	}
 	
 }

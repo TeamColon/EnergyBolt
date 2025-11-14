@@ -44,10 +44,7 @@ void AEnergyGameModeBase::SaveGameData()
 	if (bool bSavedGameExist = UGameplayStatics::DoesSaveGameExist("Slot1", 0))
 	{
 		UGameplayStatics::DeleteGameInSlot("Slot1", 0);
-		if (GEngine)
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 8.f, FColor::Cyan, TEXT("Delete"));
-		}
+		
 	}
 	if (UEnergySaveGame* SaveGameInstance = Cast<UEnergySaveGame>
 		(UGameplayStatics::CreateSaveGameObject(UEnergySaveGame::StaticClass())))
@@ -63,7 +60,18 @@ void AEnergyGameModeBase::SaveGameData()
 		{
 			UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(PlayerCharacter);
 			
-			SaveGameInstance->GASData.AttributesData = ASC->GetSet<UEnergyAttributeSet>()->GetPlayerCharacterGF();
+			const UEnergyAttributeSet* AS = ASC->GetSet<UEnergyAttributeSet>();
+			TArray<FGameplayAttribute> ASArray;
+			AS->GetAttributesFromSetClass(AS->GetClass(),ASArray);
+			
+			TMap<FString, float> AttributeData;
+			for (const FGameplayAttribute& Attribute : ASArray)
+			{
+				FString AttrName =  Attribute.GetName();
+				float Value = ASC->GetNumericAttribute(Attribute);
+				AttributeData.Add(AttrName, Value);
+			}
+			SaveGameInstance->GASData.AttributeData = AttributeData;
 		}
 		
 		UGameplayStatics::AsyncSaveGameToSlot(SaveGameInstance, SaveGameInstance->SaveSlotName, SaveGameInstance->UserIndex);

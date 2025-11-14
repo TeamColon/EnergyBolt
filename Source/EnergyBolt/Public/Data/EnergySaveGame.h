@@ -16,7 +16,7 @@ struct FGameAbilitySystemData
 	GENERATED_BODY()
 	
 	UPROPERTY(BlueprintReadWrite)
-	TArray<TSubclassOf<UGameplayEffect>> AttributesData;
+	TMap<FString, float> AttributeData;
 };
 
 UCLASS()

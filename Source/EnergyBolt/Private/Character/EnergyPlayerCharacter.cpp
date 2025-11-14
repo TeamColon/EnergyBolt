@@ -112,16 +112,21 @@ void AEnergyPlayerCharacter::UpdateMovementSpeed()
 void AEnergyPlayerCharacter::OnGameLoaded(const FString& SlotName, const int32 UserIndex, USaveGame* LoadedGameData) const
 {
 	const UEnergySaveGame* SaveGameData = Cast<UEnergySaveGame>(LoadedGameData);
-	TArray<TSubclassOf<UGameplayEffect>> EffectArray = SaveGameData->GASData.AttributesData;
-	if (EffectArray.IsEmpty()) return;
-	
+	TMap<FString, float> AttributeDataMap =  SaveGameData->GASData.AttributeData;
+
 	UAbilitySystemComponent* ASC = GetAbilitySystemComponent();
-	for (const TSubclassOf<UGameplayEffect> Effect : EffectArray)
+	UClass* ASClass = ASC->GetSet<UEnergyAttributeSet>()->GetClass();
+	
+	for (const TPair<FString, float>& Attr : AttributeDataMap)
 	{
-		const FGameplayEffectContextHandle ContextHandle = ASC->MakeEffectContext();
-		const FGameplayEffectSpecHandle SpecHandle = ASC->MakeOutgoingSpec(Effect, 1.f, ContextHandle);
-		ASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+		const FString& AttrName = Attr.Key;
+		const float Value = Attr.Value;
+		
+		FProperty* Prop = FindFProperty<FProperty>(ASClass, *AttrName);
+		FGameplayAttribute GameplayAttribute(Prop);
+		ASC->SetNumericAttributeBase(GameplayAttribute, Value);
 	}
+	
 	if (AEnergyGameModeBase* GameMode = Cast<AEnergyGameModeBase>(UGameplayStatics::GetGameMode(this)))
 	{
 		GameMode->LevelIndex = SaveGameData->NextMapIndex;

@@ -53,21 +53,25 @@ void AEnergyGameModeBase::SaveGameData()
 		SaveGameInstance->PlayerName = TEXT("Player1");
 		SaveGameInstance->UserIndex = 0;
 		SaveGameInstance->MapIndex = LevelIndex;
-		SaveGameInstance->NextMapIndex = LevelIndex + 1;
+		SaveGameInstance->NextMapIndex = NextLevelIndex;
 
 		AEnergyPlayerCharacter* PlayerCharacter = Cast<AEnergyPlayerCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(),0));
 		if (PlayerCharacter)
 		{
 			UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(PlayerCharacter);
-			
 			const UEnergyAttributeSet* AS = ASC->GetSet<UEnergyAttributeSet>();
+			
 			TArray<FGameplayAttribute> ASArray;
 			AS->GetAttributesFromSetClass(AS->GetClass(),ASArray);
-			
+			/**
+			 * FGameplayAttribute는 TMap으로 저장할 수 없기 때문에
+			 * TMap<FString, float> Attribute 이름과 수치를 저장.
+			 * Attribute -> FString -> 저장 -> 불러오기 -> FString -> Attribute의 과정을 거치게 된다.
+			 */
 			TMap<FString, float> AttributeData;
 			for (const FGameplayAttribute& Attribute : ASArray)
 			{
-				FString AttrName =  Attribute.GetName();
+				FString AttrName = Attribute.GetName();
 				float Value = ASC->GetNumericAttribute(Attribute);
 				AttributeData.Add(AttrName, Value);
 			}

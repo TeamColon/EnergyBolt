@@ -51,10 +51,6 @@ void AEnergyPlayerCharacter::PossessedBy(AController* NewController)
 	//UEnergySaveGame* SaveGameInstance = Cast<UEnergySaveGame>(UGameplayStatics::CreateSaveGameObject(UEnergySaveGame::StaticClass()));
 	if (bSavedGameExist)
 	{
-		if (GEngine)
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 8.f, FColor::Black, TEXT("bSavedGameExist true"));
-		}
 		UGameplayStatics::AsyncLoadGameFromSlot(TEXT("Slot1"), 0,
 			FAsyncLoadGameFromSlotDelegate::CreateUObject(this, &ThisClass::OnGameLoaded));
 	}
@@ -64,10 +60,6 @@ void AEnergyPlayerCharacter::PossessedBy(AController* NewController)
 		{
 			GameMode->LevelIndex = 0;
 			GameMode->NextLevelIndex = 1;
-		}
-		if (GEngine)
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 8.f, FColor::Red, TEXT("bSavedGameExist false"));
 		}
 	}
 }
@@ -130,6 +122,6 @@ void AEnergyPlayerCharacter::OnGameLoaded(const FString& SlotName, const int32 U
 	if (AEnergyGameModeBase* GameMode = Cast<AEnergyGameModeBase>(UGameplayStatics::GetGameMode(this)))
 	{
 		GameMode->LevelIndex = SaveGameData->NextMapIndex;
-		//GameMode->NextLevelIndex = SaveGameData->NextMapIndex + 1;
+		GameMode->NextLevelIndex = SaveGameData->NextMapIndex + 1;
 	}
 }

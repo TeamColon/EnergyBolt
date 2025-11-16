@@ -64,6 +64,14 @@ void AEnergyPlayerCharacter::PossessedBy(AController* NewController)
 	}
 }
 
+void AEnergyPlayerCharacter::AddCharacterAbilities()
+{
+	// PlayerCharacter PossessedBy에서 호출됨.
+	UEnergyAbilitySystemComponent* EnergyASC = CastChecked<UEnergyAbilitySystemComponent>(EnergyAbilitySystemComponent);
+
+	EnergyASC->AddCharacterAbilities(StartupAbilities);
+}
+
 void AEnergyPlayerCharacter::InitAbilityActorInfo()
 {
 	AEnergyPlayerState* EnergyPlayerState = GetPlayerState<AEnergyPlayerState>();

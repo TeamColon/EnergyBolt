@@ -41,8 +41,6 @@ void AEnergyBaseCharacter::PossessedBy(AController* NewController)
 		// 추후 지우고 enemycharacter possessedby로 옮기기, classinfo data blueprint 에서 player 없애기
 		// InitializeDefaultAttributes
 		UEnergyBlueprintFunctionLibrary::InitializeDefaultAttribute(this, CharacterClass, EnergyAbilitySystemComponent);
-
-		
 	}
 }
 
@@ -96,34 +94,3 @@ UAnimMontage* AEnergyBaseCharacter::GetHitReactMontage_Implementation()
 {
 	return HitReactMontage;
 }
-
-// Player branch
-void AEnergyBaseCharacter::AddCharacterAbilities()
-{
-	// PlayerCharacter PossessedBy에서 호출됨.
-	UEnergyAbilitySystemComponent* EnergyASC = CastChecked<UEnergyAbilitySystemComponent>(EnergyAbilitySystemComponent);
-
-	EnergyASC->AddCharacterAbilities(StartupAbilities);
-}
-// 머지하고 코드 옮기기
-
-
-/*
- * 이 부분이 Attribute 부여 부분이기 때문에
- * Character class info에 넣는 방식으로 구현
- */
-/*void AEnergyBaseCharacter::ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, float Level) const
-{
-	check(IsValid(GetAbilitySystemComponent()));
-	check(GameplayEffectClass);
-	const FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
-	const FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(GameplayEffectClass, Level, ContextHandle);
-	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), GetAbilitySystemComponent());
-}
-
-void AEnergyBaseCharacter::InitializeDefaultAttributes() const
-{
-	ApplyEffectToSelf(DefaultCharacterAttributes, 1.f);
-	ApplyEffectToSelf(DefaultAttackAttributes, 1.f);
-}*/
-// Player branch

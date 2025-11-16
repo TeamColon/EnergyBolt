@@ -21,7 +21,13 @@ public:
 	virtual void PossessedBy(AController* NewController) override;
 	//~ End APawn Interface.
 
+protected:
+	UPROPERTY(EditAnywhere, Category = "Abilities")
+	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
+
 private:
+	void AddCharacterAbilities();
+	
 	virtual void InitAbilityActorInfo() override;
 	
 	void OnSpeedMultiplierChanged(const FOnAttributeChangeData& Data);

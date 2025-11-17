@@ -22,11 +22,10 @@ public:
 
 protected:
 	
-	void CheckAndSpawnLoot(TSubclassOf<AEnergySpawnActor> TargetActor, float Probability);
-	void SpawnLoot(bool bIsSpawn, TSubclassOf<AEnergySpawnActor> TargetActor);
+	void CheckAndSpawnLoot(const TSubclassOf<AEnergySpawnActor>& TargetActor,const float Probability);
+	void SpawnLoot(bool bIsSpawn, const TSubclassOf<AEnergySpawnActor>& TargetActor);
 	TSubclassOf<AEnergySpawnActor> GetRandomItemFromList();
-
-protected:
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
 	/*UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Treasure Chest")
 	UDataTable* ItemDataTable; // 데이터 테이블로 하려다가 실패*/

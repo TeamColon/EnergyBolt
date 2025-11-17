@@ -3,9 +3,7 @@
 
 #include "Actor/EnergyChest.h"
 
-#include "Actor/Item/EnergyEffectActor.h"
 #include "Actor/Item/EnergySpawnActor.h"
-#include "Data/ItemDataStruct.h"
 
 
 // Sets default values
@@ -16,37 +14,19 @@ AEnergyChest::AEnergyChest()
 
 void AEnergyChest::OpenTreasureChest()
 {
-	/*CheckAndSpawnLoot(SpawnGold, GoldDropChance); // 골드 70%
-	CheckAndSpawnLoot(SpawnHealPotion, HealDropChance); // 회복포션 50%
-	CheckAndSpawnLoot(GetRandomItemFromList(), ItemDropChance); // 아이템 10%
-	*/
-
 	TArray<TPair<TSubclassOf<AEnergySpawnActor>, float>> LootList;
 	LootList.Add({ SpawnHealPotion, HealDropChance });
 	LootList.Add({ GetRandomItemFromList(), ItemDropChance });
 	LootList.Add({ GetRandomItemFromList(), ItemDropChance });
-
-	const float Delay = 0.5f;
-
-	// 처음건 먼저 실행하기
-	CheckAndSpawnLoot(LootList[0].Key, LootList[0].Value);
-	for (int32 i = 1; i < LootList.Num(); i++)
+	
+	for (int32 i = 0; i < LootList.Num(); i++)
 	{
-		FTimerHandle Timer;
-		GetWorldTimerManager().SetTimer(
-			Timer,
-			[this, Loot = LootList[i]]()
-			{
-				CheckAndSpawnLoot(Loot.Key, Loot.Value);
-			},
-			i * Delay,   // i * 0.5초 후 실행
-			false
-		);
+		CheckAndSpawnLoot(LootList[i].Key, LootList[i].Value);
 	}
 }
 
 // 각 아이템 스폰 확률 검사 함수
-void AEnergyChest::CheckAndSpawnLoot(TSubclassOf<AEnergySpawnActor> TargetActor, float Probability)
+void AEnergyChest::CheckAndSpawnLoot(const TSubclassOf<AEnergySpawnActor>& TargetActor, const float Probability)
 {
 	if (TargetActor == nullptr) return;
 
@@ -61,14 +41,18 @@ void AEnergyChest::CheckAndSpawnLoot(TSubclassOf<AEnergySpawnActor> TargetActor,
 }
 
 // 아이템 스폰 시키는 함수
-void AEnergyChest::SpawnLoot(bool bIsSpawn, TSubclassOf<AEnergySpawnActor> TargetActor)
+void AEnergyChest::SpawnLoot(bool bIsSpawn, const TSubclassOf<AEnergySpawnActor>& TargetActor)
 {
-	if (!bIsSpawn || !TargetActor)
+	UWorld* World = GetWorld();
+	if (!World || World->bIsTearingDown)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("bIsSpawn = false or TargetActor = nullptr"))
-		return;
+		return; // 현재 World가 아닐때 실행 취소
 	}
 	
+	if (!bIsSpawn || !TargetActor)
+	{
+		return;
+	}
 
 	// 상자 기준 위치, z축 +100 에서 스폰
 	const FVector ChestLoc = GetActorLocation();
@@ -77,7 +61,7 @@ void AEnergyChest::SpawnLoot(bool bIsSpawn, TSubclassOf<AEnergySpawnActor> Targe
 	// 랜덤 방향 (위쪽 대각선으로)
 	const FRotator ChestRot = GetActorRotation();
 	float Pitch = FMath::RandRange(70.f, 80.f);
-	float YawOffset = 0.f;
+	float YawOffset;
 
 	switch (SpawnItemCount)
 	{
@@ -125,4 +109,12 @@ TSubclassOf<AEnergySpawnActor> AEnergyChest::GetRandomItemFromList()
 	return SpawnItems[RandIndex];
 }
 
+
+void AEnergyChest::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+
+	// 해당 액터와 관련된 타이머 삭제
+	GetWorldTimerManager().ClearAllTimersForObject(this);
+}
 

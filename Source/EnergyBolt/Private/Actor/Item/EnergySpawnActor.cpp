@@ -20,7 +20,7 @@ AEnergySpawnActor::AEnergySpawnActor()
 	
 	// 월드Static(바닥), 월드Dynamic(움직이는 물체)만 Block
 	StaticMesh->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
-	StaticMesh->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Block);
+	StaticMesh->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Ignore);
 	
 	StaticMesh->SetSimulatePhysics(false); // 물리 비활성화
 	StaticMesh->SetEnableGravity(false);

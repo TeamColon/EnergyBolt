@@ -42,7 +42,7 @@ void AEnergyPlayerController::SetupInputComponent()
 void AEnergyPlayerController::Move(const FInputActionValue& InputActionValue)
 {
 	const FVector2D InputAxisVector = InputActionValue.Get<FVector2D>();
-	const FRotator Rotation = GetControlRotation();
+	/*const FRotator Rotation = GetControlRotation();
 	const FRotator YawRotation(0.f, Rotation.Yaw, 0);
 
 	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
@@ -52,24 +52,26 @@ void AEnergyPlayerController::Move(const FInputActionValue& InputActionValue)
 	{
 		ControllerPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y);
 		ControllerPawn->AddMovementInput(RightDirection, InputAxisVector.X);
+	}*/
+	
+	// 카메라의 Rotation 가져오기
+	FRotator CamRot = PlayerCameraManager->GetCameraRotation();
+
+	// Pitch와 Roll은 필요 없음
+	CamRot.Pitch = 0.f;
+	CamRot.Roll  = 0.f;
+
+	// 카메라 기준 Forward / Right 벡터 생성
+	const FVector ForwardDirection = FRotationMatrix(CamRot).GetUnitAxis(EAxis::X);
+	const FVector RightDirection   = FRotationMatrix(CamRot).GetUnitAxis(EAxis::Y);
+
+	// 적용
+	if (APawn* ControllerPawn = GetPawn<APawn>())
+	{
+		ControllerPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y);	// 위, 아래
+		ControllerPawn->AddMovementInput(RightDirection, InputAxisVector.X);	// 왼, 오
 	}
 }
-
-
-/*void AEnergyPlayerController::Attack(o)
-{
-	// Projectile 발사 코드 추가
-	FVector Direction = FVector::ZeroVector;
-
-	for (const FGameplayAbilitySpec& Spec : GetASC()->GetActivatableAbilities())
-	{
-		if (Spec.Ability && Spec.Ability->GetClass()->IsChildOf(UEnergyProjectile::StaticClass()))
-		{
-			GetASC()->TryActivateAbility(Spec.Handle);
-			break;
-		}
-	}
-}*/
 
 void AEnergyPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {

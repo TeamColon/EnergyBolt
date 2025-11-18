@@ -15,6 +15,7 @@ AEnergyPortal::AEnergyPortal()
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
 	SetRootComponent(StaticMesh);
 	//StaticMesh->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	StaticMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	StaticMesh->SetCollisionObjectType(ECC_WorldDynamic);
 	StaticMesh->SetCollisionResponseToAllChannels(ECR_Block);
 	StaticMesh->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);

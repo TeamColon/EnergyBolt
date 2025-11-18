@@ -116,6 +116,7 @@ void AEnergyGameModeBase::RemoveEnemy(AEnergyEnemyCharacter* Enemy)
 		{
 			AEnergyPortal* Portal = *It;
 			Portal->SetActorHiddenInGame(false);
+			Portal->StaticMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		}
 		// 상자 소환 시점
 	}

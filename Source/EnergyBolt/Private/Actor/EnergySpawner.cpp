@@ -5,6 +5,7 @@
 
 #include "Character/EnergyEnemyCharacter.h"
 #include "Components/ArrowComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 AEnergySpawner::AEnergySpawner()
 {
@@ -25,6 +26,10 @@ void AEnergySpawner::SpawnSelectedActor()
 		FRotator Rotation = FRotator::ZeroRotator;
 		if (AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(ActorsArray[i], Location, Rotation))
 		{
+			if (SpawnSound)
+			{
+				UGameplayStatics::PlaySoundAtLocation(this, SpawnSound, GetActorLocation(), FRotator::ZeroRotator);
+			}
 			if (AEnergyEnemyCharacter* Character = Cast<AEnergyEnemyCharacter>(SpawnedActor))
 			{
 				Character->SpawnDefaultController();

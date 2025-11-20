@@ -20,6 +20,7 @@ AEnergyPortal::AEnergyPortal()
 	StaticMesh->SetCollisionResponseToAllChannels(ECR_Block);
 	StaticMesh->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 
+#pragma region ComponentSettings
 	SpotLightComponent = CreateDefaultSubobject<USpotLightComponent>(TEXT("SpotLightComponent"));
 	SpotLightComponent->SetupAttachment(RootComponent);
 	SpotLightComponent->Intensity = 500000.f;
@@ -66,6 +67,7 @@ AEnergyPortal::AEnergyPortal()
 	Sparks4 = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Sparks4"));
 	Sparks4->SetupAttachment(Vortex);
 	Sparks4->bAutoActivate = false;
+#pragma endregion 
 }
 
 void AEnergyPortal::BeginPlay()

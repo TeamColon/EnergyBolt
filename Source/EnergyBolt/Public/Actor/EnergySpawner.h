@@ -35,5 +35,7 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TArray<TSubclassOf<AActor>> ActorsArray;
-	
+
+	UPROPERTY(EditAnywhere, Category="Effects")
+	TObjectPtr<USoundBase> SpawnSound;
 };

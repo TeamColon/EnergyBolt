@@ -90,6 +90,11 @@ void AEnergyGameModeBase::TravelNextLevel()
 		SaveGameData();
 		if (!LevelArray.IsEmpty() && 0 <= NextLevelIndex && NextLevelIndex < LevelArray.Num())
 		{
+			AEnergyPlayerCharacter* PlayerCharacter = Cast<AEnergyPlayerCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(),0));
+			if (TravelSound && PlayerCharacter)
+			{
+				UGameplayStatics::PlaySoundAtLocation(this, TravelSound, PlayerCharacter->GetActorLocation(), FRotator::ZeroRotator);
+			}
 			UGameplayStatics::OpenLevelBySoftObjectPtr(this, LevelArray[NextLevelIndex]);
 		}
 	}
@@ -117,6 +122,7 @@ void AEnergyGameModeBase::RemoveEnemy(AEnergyEnemyCharacter* Enemy)
 			AEnergyPortal* Portal = *It;
 			Portal->SetActorHiddenInGame(false);
 			Portal->StaticMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+			
 		}
 		// 상자 소환 시점
 	}

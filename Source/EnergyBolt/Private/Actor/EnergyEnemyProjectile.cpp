@@ -73,13 +73,14 @@ void AEnergyEnemyProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComp
 	if (GetInstigator() == OtherActor) return;
 	if (!UEnergyBlueprintFunctionLibrary::IsNotFriend(GetOwner(),OtherActor)) return;
 
-	//UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
-	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
-	
+	if (ImpactSound && ImpactEffect)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
+	}
 	if (UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
 	{
 		TargetASC->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data.Get());
-		UE_LOG(LogTemp, Warning, TEXT("apply damage"));
 	}
 
 	bHit = true;

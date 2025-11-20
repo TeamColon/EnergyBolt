@@ -4,6 +4,7 @@
 #include "AbilitySystem/Ability/EnergyEnemySummonAbility.h"
 
 #include "EnergyBlueprintFunctionLibrary.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetArrayLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Runtime/Core/Tests/Containers/TestUtils.h"
@@ -81,6 +82,11 @@ void UEnergyEnemySummonAbility::ActivateAbility(const FGameplayAbilitySpecHandle
 			{
 				APawn* SpawnedMinion = GetWorld()->SpawnActor<APawn>(GetRandomClass(), Location, Rotation);
 				if (SpawnedMinion) SpawnedMinion->SpawnDefaultController();
+				if (SummonSound)
+				{
+					UGameplayStatics::PlaySoundAtLocation(this, SummonSound, Location, Rotation);
+				}
+				
 			},
 			i * SpawnDelay,
 			false

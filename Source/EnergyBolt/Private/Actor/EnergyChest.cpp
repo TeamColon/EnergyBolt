@@ -92,6 +92,7 @@ void AEnergyChest::SpawnLoot(bool bIsSpawn, const TSubclassOf<AEnergySpawnActor>
 
 	if (Item)
 	{
+		Item->bSpawnActor = true;
 		Item->Launch(LaunchDir, Speed);
 		SpawnItemCount++;
 	}
@@ -107,14 +108,5 @@ TSubclassOf<AEnergySpawnActor> AEnergyChest::GetRandomItemFromList()
 
 	int32 RandIndex = FMath::RandRange(0, SpawnItems.Num() - 1);
 	return SpawnItems[RandIndex];
-}
-
-
-void AEnergyChest::EndPlay(const EEndPlayReason::Type EndPlayReason)
-{
-	Super::EndPlay(EndPlayReason);
-
-	// 해당 액터와 관련된 타이머 삭제
-	GetWorldTimerManager().ClearAllTimersForObject(this);
 }
 

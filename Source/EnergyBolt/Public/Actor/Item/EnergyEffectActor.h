@@ -3,23 +3,28 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "EnergyItemBase.h"
 #include "GameFramework/Actor.h"
 #include "EnergyEffectActor.generated.h"
 
+class USphereComponent;
 class UProjectileMovementComponent;
 class UGameplayEffect;
 
 UCLASS(Blueprintable)
-class ENERGYBOLT_API AEnergyEffectActor : public AActor
+class ENERGYBOLT_API AEnergyEffectActor : public AEnergyItemBase
 {
 	GENERATED_BODY()
 
 public:
 	AEnergyEffectActor();
 
-	UPROPERTY(VisibleAnywhere)
-	USceneComponent* SceneRoot;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	TObjectPtr<USphereComponent> Sphere;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	TObjectPtr<UStaticMeshComponent> StaticMesh;
+	
 protected:
 	virtual void BeginPlay() override;
 	

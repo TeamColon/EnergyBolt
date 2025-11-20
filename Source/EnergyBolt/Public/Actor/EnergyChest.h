@@ -4,13 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Item/EnergyItemBase.h"
 #include "EnergyChest.generated.h"
 
 class AEnergySpawnActor;
 struct FItemData;
 
 UCLASS()
-class ENERGYBOLT_API AEnergyChest : public AActor
+class ENERGYBOLT_API AEnergyChest : public AEnergyItemBase
 {
 	GENERATED_BODY()
 
@@ -25,7 +26,6 @@ protected:
 	void CheckAndSpawnLoot(const TSubclassOf<AEnergySpawnActor>& TargetActor,const float Probability);
 	void SpawnLoot(bool bIsSpawn, const TSubclassOf<AEnergySpawnActor>& TargetActor);
 	TSubclassOf<AEnergySpawnActor> GetRandomItemFromList();
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
 	/*UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Treasure Chest")
 	UDataTable* ItemDataTable; // 데이터 테이블로 하려다가 실패*/

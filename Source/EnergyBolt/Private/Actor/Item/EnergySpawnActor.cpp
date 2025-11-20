@@ -3,7 +3,6 @@
 
 #include "Actor/Item/EnergySpawnActor.h"
 
-#include "NiagaraComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
@@ -12,26 +11,7 @@ AEnergySpawnActor::AEnergySpawnActor()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	
-	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
 	SetRootComponent(StaticMesh);
-	
-	StaticMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	StaticMesh->SetCollisionResponseToAllChannels(ECR_Ignore);
-	
-	// 월드Static(바닥), 월드Dynamic(움직이는 물체)만 Block
-	StaticMesh->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
-	StaticMesh->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Ignore);
-	
-	StaticMesh->SetSimulatePhysics(false); // 물리 비활성화
-	StaticMesh->SetEnableGravity(false);
-
-	// Sphere (플레이어 감지용)
-	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
-	Sphere->SetupAttachment(RootComponent);
-	Sphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	Sphere->SetCollisionResponseToAllChannels(ECR_Ignore);
-	Sphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
-
 	
 	/*NiagaraComp = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComp"));
 	NiagaraComp->SetupAttachment(RootComponent);*/
@@ -50,8 +30,13 @@ AEnergySpawnActor::AEnergySpawnActor()
 void AEnergySpawnActor::BeginPlay()
 {
 	Super::BeginPlay();
-}
 
+	if (!bSpawnActor)
+	{
+		// 일반 아이템이라면 충돌 켜기
+		Sphere->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	}
+}
 
 void AEnergySpawnActor::Land()
 {
@@ -76,7 +61,7 @@ void AEnergySpawnActor::Land()
 
 void AEnergySpawnActor::Launch(FVector Dir, float Speed)
 {
-	if (ProjectileMovement)
+	if (ProjectileMovement && bSpawnActor)
 	{
 		ProjectileMovement->Velocity = Dir * Speed;
 		ProjectileMovement->Activate(); // ProjectileMovement 작동 시작
@@ -84,9 +69,4 @@ void AEnergySpawnActor::Launch(FVector Dir, float Speed)
 		// 일정 시간 후 착지 처리 타이머 시작
 		GetWorldTimerManager().SetTimer(LandTimer, this, &AEnergySpawnActor::Land, 2.f, false);
 	}
-	
-	/*if (StaticMesh && StaticMesh->IsSimulatingPhysics())
-	{
-		StaticMesh->AddImpulse(Dir * Speed, NAME_None, true);
-	}*/
 }

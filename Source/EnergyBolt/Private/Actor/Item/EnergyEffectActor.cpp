@@ -7,6 +7,7 @@
 #include "AbilitySystemInterface.h"
 #include "BlueprintGameplayTagLibrary.h"
 #include "AbilitySystem/EnergyAbilitySystemComponent.h"
+#include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
 
@@ -14,11 +15,20 @@ AEnergyEffectActor::AEnergyEffectActor()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
-	// 유연하게 만들기 위해 Scene 사용 (Sphere, mesh, box, capsule 등등은 자손에서 설정하기 )
-	// Scene component는 Transform을 가지는 "기본 루트 타입"이다.
-	SceneRoot = CreateDefaultSubobject<USceneComponent>("SceneRoot");
-	SetRootComponent(SceneRoot);
-	
+	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
+	StaticMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	StaticMesh->SetCollisionResponseToAllChannels(ECR_Ignore);
+	StaticMesh->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+	StaticMesh->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Ignore);
+	StaticMesh->SetSimulatePhysics(false);
+	StaticMesh->SetEnableGravity(false);
+
+	// Sphere (플레이어 감지용)
+	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
+	Sphere->SetupAttachment(StaticMesh);
+	Sphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	Sphere->SetCollisionResponseToAllChannels(ECR_Ignore);
+	Sphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 }
 
 void AEnergyEffectActor::BeginPlay()

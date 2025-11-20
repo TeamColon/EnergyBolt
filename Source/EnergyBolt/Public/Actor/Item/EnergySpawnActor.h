@@ -6,6 +6,7 @@
 #include "Actor/Item/EnergyEffectActor.h"
 #include "EnergySpawnActor.generated.h"
 
+class UShopItemComponent;
 class UNiagaraComponent;
 class UStaticMeshComponent;
 class USphereComponent;
@@ -24,14 +25,11 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovement;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	TObjectPtr<USphereComponent> Sphere;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	UStaticMeshComponent* StaticMesh;
-
 	/*UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UNiagaraComponent> NiagaraComp;*/
+
+	UPROPERTY(VisibleAnywhere, Category = "SpawnActor")
+	bool bSpawnActor = false;
 
 protected:
 	virtual void BeginPlay() override;

@@ -106,7 +106,13 @@ TSubclassOf<AEnergySpawnActor> AEnergyChest::GetRandomItemFromList()
 		return nullptr; // 아이템 리스트가 비어 있으면 nullptr 반환
 	}
 
-	int32 RandIndex = FMath::RandRange(0, SpawnItems.Num() - 1);
-	return SpawnItems[RandIndex];
+	float RandItem = FMath::RandRange(0, 1);
+	if (RandItem < 0.5f)
+	{
+		return SpawnGold;
+	} else {
+		int32 RandIndex = FMath::RandRange(0, SpawnItems.Num() - 1);
+		return SpawnItems[RandIndex];
+	}
 }
 

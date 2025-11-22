@@ -44,7 +44,7 @@ void AEnergyEffectActor::ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UG
 	 * 인터페이스 에서 가져오기
 	 */
 	
-	/*IAbilitySystemInterface* ASCInterface = Cast<IAbilitySystemInterface>(Target);
+	/*IAbilitySystemInterface* ASCInterface = Cast<IAbilitySystemInterface>(TargetActor);
 	if (ASCInterface)
 	{
 		ASCInterface->GetAbilitySystemComponent();

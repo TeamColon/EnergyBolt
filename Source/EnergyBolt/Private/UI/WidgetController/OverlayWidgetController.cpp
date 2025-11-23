@@ -3,30 +3,38 @@
 
 #include "UI/WidgetController/OverlayWidgetController.h"
 
+#include "EnergyGameplayTags.h"
 #include "AbilitySystem/EnergyAttributeSet.h"
+#include "Data/AttributeInfo.h"
 
 void UOverlayWidgetController::BroadcastInitialValues()
 {
-	const UEnergyAttributeSet* EnergyAttributeSet = CastChecked<UEnergyAttributeSet>(AttributeSet);
+	const UEnergyAttributeSet* EAS = CastChecked<UEnergyAttributeSet>(AttributeSet);
 
-	// 초기 Health 값 UI로 전달
-	OnHealthChanged.Broadcast(EnergyAttributeSet->GetCurrentHealth());
-	OnMaxHealthChanged.Broadcast(EnergyAttributeSet->GetMaxHealth());
+	check(AttributeInfo);
+
+	FEnergyAttributeInfoRow Info = AttributeInfo->FindAttributeInfoForTag(EnergyGameplayTags::Attributes_Attack_AttackPower);
+	Info.AttributeValue = EAS->GetAttackPower();
+	AttributeInfoDelegate.Broadcast(Info);
+
+	// 초기 값 UI로 전달
+	OnHealthChanged.Broadcast(EAS->GetCurrentHealth());
+	OnMaxHealthChanged.Broadcast(EAS->GetMaxHealth());
 }
 
 void UOverlayWidgetController::BindCallbacksToDependencies()
 {
 	Super::BindCallbacksToDependencies();
 
-	const UEnergyAttributeSet* EnergyAttributeSet = CastChecked<UEnergyAttributeSet>(AttributeSet);
+	const UEnergyAttributeSet* EAS = CastChecked<UEnergyAttributeSet>(AttributeSet);
 
 	// "GetGameplayAttributeValueChangeDelegate" 사용
 	// ASC 자체에서 제공하는 Attribute Change Delegate를 사용해서 값 변경 실시간으로 감지하게 만듦.
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
-		EnergyAttributeSet->GetCurrentHealthAttribute()).AddUObject(this, &UOverlayWidgetController::HealthChanged);
+		EAS->GetCurrentHealthAttribute()).AddUObject(this, &UOverlayWidgetController::HealthChanged);
 
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
-		EnergyAttributeSet->GetMaxHealthAttribute()).AddUObject(this, &UOverlayWidgetController::MaxHealthChanged);
+		EAS->GetMaxHealthAttribute()).AddUObject(this, &UOverlayWidgetController::MaxHealthChanged);
 }
 
 void UOverlayWidgetController::HealthChanged(const FOnAttributeChangeData& Data) const

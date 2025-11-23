@@ -8,9 +8,12 @@
 #include "Game/EnergyGameModeBase.h"
 #include "Interface/CombatInterface.h"
 #include "Kismet/GameplayStatics.h"
+#include "Player/EnergyPlayerState.h"
+#include "UI/HUD/EnergyHUD.h"
+#include "UI/WidgetController/EnergyWidgetController.h"
 
 void UEnergyBlueprintFunctionLibrary::InitializeDefaultAttribute(const UObject* WorldContextObject, ECharacterClass CharacterClass,
-	UAbilitySystemComponent* ASC)
+                                                                 UAbilitySystemComponent* ASC)
 {
 	const AEnergyGameModeBase* EnergyGameMode = Cast<AEnergyGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
 	if (EnergyGameMode == nullptr) return;
@@ -151,3 +154,4 @@ TArray<FVector> UEnergyBlueprintFunctionLibrary::EvenlyRotatedVectors(const FVec
 	
 	return Vectors;
 }
+

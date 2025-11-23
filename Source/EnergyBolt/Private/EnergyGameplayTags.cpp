@@ -39,6 +39,19 @@ namespace EnergyGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Player_Attack_Right,"Player.Attack.Right");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Attack_Up,"Player.Attack.Up");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Attack_Down,"Player.Attack.Down");
+
+	/** Attribute Tags **/
+	UE_DEFINE_GAMEPLAY_TAG(Attributes_Attack_AttackPower,"Attributes.Attack.AttackPower");
+	UE_DEFINE_GAMEPLAY_TAG(Attributes_Attack_DamageMultiplier,"Attributes.Attack.DamageMultiplier");
+	UE_DEFINE_GAMEPLAY_TAG(Attributes_Attack_Range,"Attributes.Attack.Range");
+	UE_DEFINE_GAMEPLAY_TAG(Attributes_Attack_FireRate,"Attributes.Attack.FireRate");
+	UE_DEFINE_GAMEPLAY_TAG(Attributes_Attack_ShotSpeed,"Attributes.Attack.ShotSpeed");
+	UE_DEFINE_GAMEPLAY_TAG(Attributes_Attack_ShotCount,"Attributes.Attack.ShotCount");
+	
+	UE_DEFINE_GAMEPLAY_TAG(Attributes_Player_MaxHealth,"Attributes.Player.MaxHealth");
+	UE_DEFINE_GAMEPLAY_TAG(Attributes_Player_CurrentHealth,"Attributes.Player.CurrentHealth");
+	UE_DEFINE_GAMEPLAY_TAG(Attributes_Player_BaseSpeed,"Attributes.Player.BaseSpeed");
+	UE_DEFINE_GAMEPLAY_TAG(Attributes_Player_SpeedMultiplier,"Attributes.Player.SpeedMultiplier");
 	
 	/** Event Tags **/
 	UE_DEFINE_GAMEPLAY_TAG(Event_Montage_EnergyBolt ,"Event.Montage.EnergyBolt");

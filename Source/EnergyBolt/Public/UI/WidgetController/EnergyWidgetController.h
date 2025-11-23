@@ -8,6 +8,10 @@
 #include "EnergyWidgetController.generated.h"
 
 
+class UEnergyAttributeSet;
+class AEnergyPlayerState;
+class UEnergyAbilitySystemComponent;
+class AEnergyPlayerController;
 class UAttributeSet;
 class UAbilitySystemComponent;
 
@@ -44,6 +48,8 @@ class ENERGYBOLT_API UEnergyWidgetController : public UObject
 public:
 	UFUNCTION(BlueprintCallable)
 	void SetWidgetControllerParams(const FWidgetControllerParams& WCParams);
+
+	UFUNCTION(BlueprintCallable)
 	virtual void BroadcastInitialValues();
 	virtual void BindCallbacksToDependencies();
 	
@@ -60,5 +66,22 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category="WidgetController")
 	TObjectPtr<UAttributeSet> AttributeSet;
-	
+
+
+	UPROPERTY(BlueprintReadOnly, Category="WidgetController")
+	TObjectPtr<AEnergyPlayerController> EnergyPlayerController;
+
+	UPROPERTY(BlueprintReadOnly, Category="WidgetController")
+	TObjectPtr<AEnergyPlayerState> EnergyPlayerState;
+
+	UPROPERTY(BlueprintReadOnly, Category="WidgetController")
+	TObjectPtr<UEnergyAbilitySystemComponent> EnergyAbilitySystemComponent;
+
+	UPROPERTY(BlueprintReadOnly, Category="WidgetController")
+	TObjectPtr<UEnergyAttributeSet> EnergyAttributeSet;
+
+	AEnergyPlayerController* GetEnergyPC();
+	AEnergyPlayerState* GetEnergyPS();
+	UEnergyAbilitySystemComponent* GetEnergyASC();
+	UEnergyAttributeSet* GetEnergyAS();
 };

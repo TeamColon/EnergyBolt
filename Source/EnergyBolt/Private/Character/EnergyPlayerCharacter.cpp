@@ -34,8 +34,8 @@ void AEnergyPlayerCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	// 초기 액터 정보 부여
-	InitAbilityActorInfo();
-	AddCharacterAbilities();
+	InitAbilityActorInfo();				// ability overlay 부여
+	AddCharacterAbilities();			// ability 부여
 
 	// Character Stats의 변화 감지 함수 바인딩 (배율만)
 	// ※추후 바인딩 해제도 고려해야됨. (맵 이동)

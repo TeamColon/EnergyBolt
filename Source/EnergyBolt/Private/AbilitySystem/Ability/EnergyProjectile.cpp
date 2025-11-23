@@ -101,11 +101,14 @@ void UEnergyProjectile::SpawnSingleProjectile(const FVector& SocketLocation, con
 		ESpawnActorCollisionHandlingMethod::AlwaysSpawn
 	);
 
+	// Damage 로직
 	const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), SourceASC->MakeEffectContext());
 	const float Damage = SourceASC->GetNumericAttribute(UEnergyAttributeSet::GetAttackPowerAttribute());
 	const float Multiplier = SourceASC->GetNumericAttribute(UEnergyAttributeSet::GetDamageMultiplierAttribute());
 	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, EnergyGameplayTags::Player_Attack_Power, Damage * Multiplier);
-
+	// 태그 바꿔주기
+	
+	// 추가 attributes 값 넘겨주기
 	const float Speed = SourceASC->GetNumericAttribute(UEnergyAttributeSet::GetShotSpeedAttribute());
 	const float Range = SourceASC->GetNumericAttribute(UEnergyAttributeSet::GetRangeAttribute());
 

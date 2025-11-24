@@ -11,8 +11,14 @@
 
 UEnergyAttributeSet::UEnergyAttributeSet()
 {
-	//InitCurrentHealth(1.f);
-	//InitMaxHealth(1.f);
+	// 일단 Overlay에 띄울 수치들만
+	TagsToAttributes.Add(EnergyGameplayTags::Attributes_Player_SpeedMultiplier, GetSpeedMultiplierAttribute);
+	TagsToAttributes.Add(EnergyGameplayTags::Attributes_Attack_AttackPower, GetAttackPowerAttribute);
+	TagsToAttributes.Add(EnergyGameplayTags::Attributes_Attack_Range, GetRangeAttribute);
+	TagsToAttributes.Add(EnergyGameplayTags::Attributes_Attack_FireRate, GetFireRateAttribute);
+	TagsToAttributes.Add(EnergyGameplayTags::Attributes_Attack_ShotSpeed, GetShotSpeedAttribute);
+
+	TagsToAttributes.Add(EnergyGameplayTags::Attributes_Player_Gold, GetGoldAttribute);
 }
 
 // GameplayEffect 또는 직접 코드로 Attribute를 변경하기 직전 호출

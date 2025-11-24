@@ -55,6 +55,8 @@ namespace EnergyGameplayTags
 	ENERGYBOLT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Player_BaseSpeed);
 	ENERGYBOLT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Player_SpeedMultiplier);
 
+	ENERGYBOLT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Player_Gold);
+
 	/** Event **/
 	ENERGYBOLT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Event_Montage_EnergyBolt);
 	

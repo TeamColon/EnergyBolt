@@ -13,9 +13,16 @@ void UOverlayWidgetController::BroadcastInitialValues()
 
 	check(AttributeInfo);
 
-	FEnergyAttributeInfoRow Info = AttributeInfo->FindAttributeInfoForTag(EnergyGameplayTags::Attributes_Attack_AttackPower);
+	// 기존 방식
+	/*FEnergyAttributeInfoRow Info = AttributeInfo->FindAttributeInfoForTag(EnergyGameplayTags::Attributes_Attack_AttackPower);
 	Info.AttributeValue = EAS->GetAttackPower();
-	AttributeInfoDelegate.Broadcast(Info);
+	AttributeInfoDelegate.Broadcast(Info);*/
+
+	// 자동화 방식
+	for (auto& Pair : EAS->TagsToAttributes)
+	{
+		BroadcastAttributeInfo(Pair.Key, Pair.Value());
+	}
 
 	// 초기 값 UI로 전달
 	OnHealthChanged.Broadcast(EAS->GetCurrentHealth());
@@ -27,6 +34,18 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	Super::BindCallbacksToDependencies();
 
 	const UEnergyAttributeSet* EAS = CastChecked<UEnergyAttributeSet>(AttributeSet);
+	check(AttributeInfo);
+
+	// 모든 공격 관련 Attribute 값이 변하면 자동으로 UI를 업데이트 하도록 델리게이트 등록
+	for (auto& Pair : EAS->TagsToAttributes)
+	{
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Pair.Value()).AddLambda(
+		[this, Pair](const FOnAttributeChangeData& Data)
+		{
+			BroadcastAttributeInfo(Pair.Key, Pair.Value());
+		}
+	);
+	}
 
 	// "GetGameplayAttributeValueChangeDelegate" 사용
 	// ASC 자체에서 제공하는 Attribute Change Delegate를 사용해서 값 변경 실시간으로 감지하게 만듦.
@@ -45,4 +64,12 @@ void UOverlayWidgetController::HealthChanged(const FOnAttributeChangeData& Data)
 void UOverlayWidgetController::MaxHealthChanged(const FOnAttributeChangeData& Data) const
 {
 	OnMaxHealthChanged.Broadcast(Data.NewValue);
+}
+
+
+void UOverlayWidgetController::BroadcastAttributeInfo(const FGameplayTag& AttributeTag, const FGameplayAttribute& Attribute) const
+{
+	FEnergyAttributeInfoRow Info = AttributeInfo->FindAttributeInfoForTag(AttributeTag);
+	Info.AttributeValue = Attribute.GetNumericValue(AttributeSet);
+	AttributeInfoDelegate.Broadcast(Info);
 }

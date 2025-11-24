@@ -6,6 +6,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "EnergyBlueprintFunctionLibrary.generated.h"
 
+class UOverlayWidgetController;
 class UAbilitySystemComponent;
 enum class ECharacterClass : uint8;
 /**
@@ -35,5 +36,7 @@ public:
 	
 	UFUNCTION(BlueprintPure, Category="EnergyFunctionLibrary")
 	static TArray<FVector> EvenlyRotatedVectors(const FVector& ForwardVector, const FVector& Axis, float Spread, int32 NumVectors);
-	
+
+	UFUNCTION(BlueprintPure, Category="AuraAbilitySystemLibrary|WidgetController")
+	static UOverlayWidgetController* GetOverlayWidgetController(const UObject* WorldContextObject);
 };

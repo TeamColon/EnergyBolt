@@ -20,6 +20,7 @@ UOverlayWidgetController* AEnergyHUD::GetOverlayWidgetController(const FWidgetCo
 	return OverlayWidgetController;
 }
 
+// Player Character에서 실행시킴
 void AEnergyHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* ASC, UAttributeSet* AS)
 {
 	checkf(OverlayWidgetClass, TEXT("Overlay Widget Class uninitialized"));

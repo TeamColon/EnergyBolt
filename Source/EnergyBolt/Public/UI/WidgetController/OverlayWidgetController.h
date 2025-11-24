@@ -35,31 +35,13 @@ public:
 	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
 	FOnMaxHealtChangedSignature OnMaxHealthChanged;
 
-	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
-	FAttributeInfoSignature OnGoldChanged;
-
-	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
-	FAttributeInfoSignature OnSpeedMultiperChanged;
-
-	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
-	FAttributeInfoSignature OnAttackPowerChanged;
-
-	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
-	FAttributeInfoSignature OnDamageMultiplierChanged;
-
-	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
-	FAttributeInfoSignature OnRangeChanged;
-
-	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
-	FAttributeInfoSignature OnFireRateChanged;
-
-	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
-	FAttributeInfoSignature OnShotSpeedChanged;
-
 protected:
 	void HealthChanged(const FOnAttributeChangeData& Data) const;
 	void MaxHealthChanged(const FOnAttributeChangeData& Data) const;
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UAttributeInfo> AttributeInfo;
+
+private:
+	void BroadcastAttributeInfo(const FGameplayTag& AttributeTag, const FGameplayAttribute& Attribute) const;
 };

@@ -53,6 +53,8 @@ namespace EnergyGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Attributes_Player_BaseSpeed,"Attributes.Player.BaseSpeed");
 	UE_DEFINE_GAMEPLAY_TAG(Attributes_Player_SpeedMultiplier,"Attributes.Player.SpeedMultiplier");
 	
+	UE_DEFINE_GAMEPLAY_TAG(Attributes_Player_Gold,"Attributes.Player.Gold");
+	
 	/** Event Tags **/
 	UE_DEFINE_GAMEPLAY_TAG(Event_Montage_EnergyBolt ,"Event.Montage.EnergyBolt");
 	

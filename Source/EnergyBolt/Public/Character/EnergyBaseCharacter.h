@@ -34,18 +34,18 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TArray<FTaggedMontage> AttackMontages;
-	
 
+	
+	//~ Begin IAbilitySystemInterface.
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	//~ End IAbilitySystemInterface.
+	UEnergyAttributeSet* GetAttributeSet() const {return EnergyAttributeSet;};
+	
 protected:
 	//~ Begin APawn Interface.
 	virtual void PossessedBy(AController* NewController) override;
 	//~ End APawn Interface.
-
-	//~ Begin IAbilitySystemInterface.
-	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-	//~ End IAbilitySystemInterface.
-
-	UEnergyAttributeSet* GetAttributeSet() const {return EnergyAttributeSet;};
+	
 	virtual void InitAbilityActorInfo();		// Player branch
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")

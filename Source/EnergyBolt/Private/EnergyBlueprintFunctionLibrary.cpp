@@ -4,6 +4,8 @@
 #include "EnergyBlueprintFunctionLibrary.h"
 
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/EnergyAttributeSet.h"
+#include "Character/EnergyBaseCharacter.h"
 #include "Data/EnergyCharacterClassInfo.h"
 #include "Game/EnergyGameModeBase.h"
 #include "Interface/CombatInterface.h"
@@ -153,5 +155,24 @@ TArray<FVector> UEnergyBlueprintFunctionLibrary::EvenlyRotatedVectors(const FVec
 	}
 	
 	return Vectors;
+}
+
+UOverlayWidgetController* UEnergyBlueprintFunctionLibrary::GetOverlayWidgetController(const UObject* WorldContextObject)
+{
+	if (APlayerController* PC = UGameplayStatics::GetPlayerController(WorldContextObject, 0))
+	{
+		if (AEnergyHUD* AuraHUD = Cast<AEnergyHUD>(PC->GetHUD()))
+		{
+			if (AEnergyBaseCharacter* Character = Cast<AEnergyBaseCharacter>(PC->GetPawn()))
+			{
+				AEnergyPlayerState* PS = PC->GetPlayerState<AEnergyPlayerState>();
+				UAbilitySystemComponent* ASC = Character->GetAbilitySystemComponent();
+				UAttributeSet* AS = Character->GetAttributeSet();
+				const FWidgetControllerParams WidgetControllerParams(PC, PS, ASC, AS);
+				return AuraHUD->GetOverlayWidgetController(WidgetControllerParams);
+			}
+		}
+	}
+	return nullptr;
 }
 

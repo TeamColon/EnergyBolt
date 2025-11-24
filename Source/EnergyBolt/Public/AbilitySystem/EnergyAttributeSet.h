@@ -50,6 +50,10 @@ struct FEffectProperties
 	
 };
 
+// 
+template<class T>
+using TStaticFuncPtr = typename TBaseStaticDelegateInstance<T, FDefaultDelegateUserPolicy>::FFuncPtr;
+
 /**
  * 
  */
@@ -59,11 +63,12 @@ class ENERGYBOLT_API UEnergyAttributeSet : public UAttributeSet
 	GENERATED_BODY()
 	
 public:
-
 	UEnergyAttributeSet();
 
 	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
+
+	TMap<FGameplayTag, TStaticFuncPtr<FGameplayAttribute()>> TagsToAttributes;
 
 	/**
 	 * Character Stats (임시 / 변경가능)

@@ -65,4 +65,10 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	TArray<FTaggedMontage> GetAttackMontages();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	int32 GetMinionCount() const;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void SetMinionCount(const int32 Num);
 };

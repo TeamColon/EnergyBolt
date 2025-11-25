@@ -9,6 +9,9 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Runtime/Core/Tests/Containers/TestUtils.h"
 
+/**
+ * ActivateAbility는 블루프린트로 구현
+ */
 TArray<FVector> UEnergyEnemySummonAbility::GetSummonLocations()
 {
 	const FVector Forward = GetAvatarActorFromActorInfo()->GetActorForwardVector();
@@ -28,14 +31,14 @@ TArray<FVector> UEnergyEnemySummonAbility::GetSummonLocations()
 		FVector SummonLocation = Location + Direction * Distance;
 		
 		/*DrawDebugSphere(GetWorld(), SummonLocation, 30.f, 12, FColor::Cyan, false, 5.f);*/
-
+		
 		FHitResult Hit;
 		GetWorld()->LineTraceSingleByChannel(Hit,
 			SummonLocation + FVector(0.f, 0.f, 500.f),
 			SummonLocation - FVector(0.f, 0.f, 500.f),
 			ECC_Visibility
 		);
-
+		
 		if (Hit.bBlockingHit)
 		{
 			SummonLocation = Hit.ImpactPoint;
@@ -54,46 +57,4 @@ TSubclassOf<APawn> UEnergyEnemySummonAbility::GetRandomClass()
 	return MinionClasses[Index];
 }
 
-void UEnergyEnemySummonAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
-	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
-	const FGameplayEventData* TriggerEventData)
-{
-	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	if (MinionClasses.IsEmpty())
-	{
-		EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
-		return;
-	}
-	
-	TArray<FVector> SummonLocations = GetSummonLocations();
-	Test::Shuffle(SummonLocations);
-	
-	TArray<FTimerHandle> ActiveSpawnTimers;
-	for (int32 i = 0; i < SummonLocations.Num(); i++)
-	{
-		FVector Location = SummonLocations[i] + FVector(0.f, 0.f, 65.f);
-		FRotator Rotation = GetAvatarActorFromActorInfo()->GetActorRotation();
-		FTimerHandle TimerHandle;
-		ActiveSpawnTimers.Add(TimerHandle);
-		GetWorld()->GetTimerManager().SetTimer(
-			TimerHandle,
-			[this, Location, Rotation]()
-			{
-				APawn* SpawnedMinion = GetWorld()->SpawnActor<APawn>(GetRandomClass(), Location, Rotation);
-				if (SpawnedMinion) SpawnedMinion->SpawnDefaultController();
-				if (SummonSound)
-				{
-					UGameplayStatics::PlaySoundAtLocation(this, SummonSound, Location, Rotation);
-				}
-				
-			},
-			i * SpawnDelay,
-			false
-		);
-		if (i == SummonLocations.Num() - 1) return;
-	}
-	
-	
-	EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
-}

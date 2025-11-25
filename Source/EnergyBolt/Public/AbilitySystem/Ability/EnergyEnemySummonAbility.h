@@ -38,11 +38,11 @@ class ENERGYBOLT_API UEnergyEnemySummonAbility : public UGameplayAbility
 	UPROPERTY(EditAnywhere)
 	float SpawnDelay = 1.5f;
 
-
-protected:
-	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
-
 private:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<USoundBase> SummonSound;
+
+	UPROPERTY(EditAnywhere)
+	FVector LocationPivot = FVector::ZeroVector;
+
 };

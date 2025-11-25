@@ -50,6 +50,8 @@ public:
 	virtual void SetCombatTarget_Implementation(AActor* InCombatTarget) override;
 	virtual AActor* GetCombatTarget_Implementation() const override;
 	virtual void Die() override;
+	virtual int32 GetMinionCount_Implementation() const override;
+	virtual void SetMinionCount_Implementation(const int32 Num) override;
 	//~End ICombatInterface
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Combat")
@@ -57,6 +59,8 @@ public:
 
 	UPROPERTY()
 	FOnEnemyDied OnEnemyDied;
+
+	int32 MinionCount = 0;
 	
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attributes")

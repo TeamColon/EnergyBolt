@@ -91,6 +91,16 @@ void AEnergyEnemyCharacter::Die()
 	Super::Die();
 }
 
+int32 AEnergyEnemyCharacter::GetMinionCount_Implementation() const
+{
+	return MinionCount;
+}
+
+void AEnergyEnemyCharacter::SetMinionCount_Implementation(const int32 Num)
+{
+	MinionCount = Num;
+}
+
 
 
 
